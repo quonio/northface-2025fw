@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/* Tailwind v4 カスタムテーマ */
+@theme {
+  --color-navy: #0e2540;
+  --color-beige: #efe5d6;
+  --color-paper: #e7dac5;
+  --color-terra: #9c6a4a;
+  --color-tnf-blue: #1e75bb;
+  --color-muted: #6b6b6b;
+
+  --font-sans: "Noto Sans JP", system-ui, -apple-system, sans-serif;
+  --font-display: "Lexend", system-ui, -apple-system, sans-serif;
+
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-card-strong: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ベーススタイル */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+}
+
+/* カスタムコンポーネント */
+@layer components {
+  .container {
+    @apply mx-auto px-4 md:px-6 lg:px-8;
+    max-width: 1280px;
+  }
+
+  .section {
+    @apply py-14 md:py-20 lg:py-24;
+  }
+
+  /* テープ風ラベル */
+  .label-tape {
+    position: relative;
+    display: inline-block;
+    background: #f6f0e6;
+    padding: 0.5rem 1rem;
+    transform: rotate(-1.2deg);
+    box-shadow: var(--shadow-card);
+  }
+
+  .label-tape:before,
+  .label-tape:after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #e9dfcf;
+  }
+
+  .label-tape:before {
+    left: -6px;
+    top: -6px;
+    transform: rotate(12deg);
+  }
+
+  .label-tape:after {
+    right: -6px;
+    bottom: -6px;
+    transform: rotate(-12deg);
+  }
+
+  /* カルーセルのページャ（数字） */
+  .pager {
+    @apply flex gap-2 text-sm;
+  }
+
+  .pager a {
+    @apply px-2 py-1 rounded-md bg-white/80 hover:bg-white;
+  }
+
+  .pager .is-active {
+    @apply font-semibold underline;
+  }
+}

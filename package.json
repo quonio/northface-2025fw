@@ -1,0 +1,23 @@
+{
+  "name": "tnf-maternity-2025fw",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@tailwindcss/vite": "^4.1.12",
+    "astro": "^5.13.5",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@types/three": "^0.179.0",
+    "three": "^0.179.1"
+  }
+}
