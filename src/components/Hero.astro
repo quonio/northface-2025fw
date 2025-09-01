@@ -1,0 +1,28 @@
+---
+import type { HeroProps } from '@/types/hero';
+import HeroNav from './HeroNav.astro';
+
+export interface Props extends HeroProps {}
+
+const { image, navigation = [] } = Astro.props;
+---
+
+<section class="relative h-screen w-full lg:p-2.5" aria-label="Hero section">
+  <div class="bg-navy relative flex h-full w-full items-center justify-center overflow-hidden">
+    <img
+      src={image.src}
+      alt={image.alt}
+      srcset={image.srcset}
+      sizes={image.sizes}
+      loading="eager"
+      fetchpriority="high"
+      class="absolute inset-0 h-full w-full object-cover object-center"
+      data-animation-target="hero-image"
+    />
+    {
+      navigation.length > 0 && (
+        <HeroNav items={navigation} class="absolute top-4 right-4 z-10 md:top-6 md:right-6" />
+      )
+    }
+  </div>
+</section>

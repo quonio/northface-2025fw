@@ -1,30 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
 import '../app.css';
+
+const heroData = {
+  image: {
+    src: '/images/hero-sample.jpg',
+    alt: 'THE NORTH FACE Maternity+ 2025FW - 家族の温かい時間',
+    srcset: '/images/hero-sample.jpg 1920w',
+    sizes: '100vw',
+  },
+  navigation: [
+    { label: 'Shop', href: '#shop' },
+    { label: 'Story', href: '#story' },
+  ],
+};
 ---
 
 <BaseLayout title="THE NORTH FACE Maternity+ 2025FW">
-  <main>
-    <div class="min-h-screen bg-beige">
-      <h1 class="text-4xl font-bold text-center py-16 text-navy font-display">
-        TNF Maternity+ 2025FW
-      </h1>
-      <p class="text-center text-lg text-black font-sans">
-        開発準備が整いました。
-      </p>
-      <div class="text-center mt-8 space-y-4">
-        <p class="text-sm text-muted">Tailwind CSS v4.1.12</p>
-        <div class="flex justify-center gap-4">
-          <div class="w-20 h-20 bg-navy rounded shadow-card"></div>
-          <div class="w-20 h-20 bg-beige rounded shadow-card border border-gray-300"></div>
-          <div class="w-20 h-20 bg-paper rounded shadow-card"></div>
-          <div class="w-20 h-20 bg-terra rounded shadow-card"></div>
-          <div class="w-20 h-20 bg-tnf-blue rounded shadow-card"></div>
-        </div>
-        <div class="mt-8">
-          <span class="label-tape">テープ風ラベルのテスト</span>
-        </div>
+  <Hero {...heroData} />
+
+  <!-- 以下は確認用のセクション -->
+  <section class="bg-beige section">
+    <div class="container">
+      <h2 class="text-navy mb-8 text-center text-2xl font-bold">Heroセクション実装完了</h2>
+      <div class="space-y-4 text-center">
+        <p class="text-muted">上記のHeroセクションは以下の要件を満たしています：</p>
+        <ul class="mx-auto max-w-2xl space-y-2 text-left">
+          <li>✓ PC: 10px相当の余白（lg:p-2.5）</li>
+          <li>✓ モバイル/タブレット: 画面いっぱい</li>
+          <li>✓ 画像: object-cover & object-center</li>
+          <li>✓ ナビゲーション: 右上配置</li>
+          <li>✓ レスポンシブ対応</li>
+        </ul>
       </div>
     </div>
-  </main>
+  </section>
 </BaseLayout>

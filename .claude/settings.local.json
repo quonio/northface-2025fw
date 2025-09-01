@@ -7,7 +7,10 @@
       "Bash(mkdir:*)",
       "Bash(pnpm dev:*)",
       "Bash(pnpm remove:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(curl:*)",
+      "Bash(pnpm format:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
