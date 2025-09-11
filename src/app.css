@@ -2,14 +2,14 @@
 
 /* Tailwind v4 カスタムテーマ */
 @theme {
-  --color-navy: #0e2540;
-  --color-beige: #efe5d6;
-  --color-paper: #e7dac5;
-  --color-terra: #9c6a4a;
-  --color-tnf-blue: #1e75bb;
-  --color-muted: #6b6b6b;
+  --color-navy: oklch(0.2 0.08 240);
+  --color-beige: oklch(0.92 0.03 68);
+  --color-paper: oklch(0.87 0.04 75);
+  --color-terra: oklch(0.55 0.08 45);
+  --color-tnf-blue: oklch(0.55 0.15 250);
+  --color-muted: oklch(0.55 0.01 0);
 
-  --font-sans: 'Noto Sans JP', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Lexend', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
   --font-display: 'Lexend', system-ui, -apple-system, sans-serif;
 
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
