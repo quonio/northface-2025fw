@@ -19,6 +19,15 @@ pnpm install      # Install dependencies
 pnpm add -D <pkg> # Add dev dependency
 ```
 
+## ⚠️ IMPORTANT RULES
+
+### PORT Configuration
+**NEVER change the PORT number (4321) under any circumstances.** 
+- The development server MUST always run on port 4321
+- If port 4321 is in use, stop the existing process first
+- Do NOT allow Vite/Astro to auto-select alternative ports
+- This is a strict requirement for project consistency
+
 ## Architecture & Key Decisions
 
 ### Technology Stack

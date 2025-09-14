@@ -1,0 +1,295 @@
+---
+// Grid-based Komorebi effect using provided code structure
+---
+
+<div id="komorebi-grid"></div>
+<div id="komorebi-overlay"></div>
+
+<!-- p5.js library -->
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+
+<!-- Grid Komorebi effect -->
+<script is:inline>
+  // Particle class for grid system
+  class Particle {
+    constructor(x, y) {
+      // 【位置のランダム化】値を大きくすると、よりランダムに配置
+      this.baseX = x + (Math.random() - 0.5) * 40;
+      this.baseY = y + (Math.random() - 0.5) * 40;
+
+      // 【影のサイズ】Math.random() * (最大-最小) + 最小
+      this.size = Math.random() * 150 + 100; // 100px〜250pxの範囲（大きめ）
+
+      // 【影の濃さ】Math.random() * (最大-最小) + 最小
+      this.opacity = Math.random() * 10 + 8; // 透明度8〜18の範囲（程よい濃さ）
+
+      this.shapeType = Math.floor(Math.random() * 5); // 形状タイプを5種類に増やす
+      this.rotation = Math.random() * Math.PI * 2; // ランダムな初期回転
+      this.shapeRotation = (Math.random() - 0.5) * 0.3; // 形状ごとの固定回転角
+      
+      // 楓の形状用のランダム値を事前に生成
+      this.maplePoints = [];
+      for (let i = 0; i < 10; i++) {
+        this.maplePoints.push(0.8 + Math.random() * 0.4);
+      }
+    }
+
+    draw(p, offset) {
+      // 【風による動きの幅】値を大きくすると動きが大きくなる
+      let movementX = (offset - 0.5) * 25; // 横方向の動き幅（一定）
+      let movementY = (offset - 0.5) * 15; // 縦方向の動き幅（一定）
+
+      p.push();
+      p.translate(this.baseX + movementX, this.baseY + movementY);
+      // 左下から右上への基準角度（-45度）+ 風による揺らぎ
+      p.rotate(-p.PI / 4 + (offset - 0.5) * p.PI * 0.2);
+
+      // Draw multiple layers for soft blur effect (without actual blur)
+      p.noStroke();
+
+      // 【ぼかしレイヤー数】3に減らして軽く
+      for (let layer = 3; layer > 0; layer--) {
+        let layerSize = this.size * (1 + (layer - 1) * 0.25); // 控えめな拡散
+        let layerOpacity = this.opacity / (layer * 2.0); // 程よい濃さ
+
+        // 【影の色】RGB値で調整 (R, G, B, 透明度)
+        p.fill(60, 80, 100, layerOpacity); // 青みがかったグレー
+
+        if (this.shapeType === 0) {
+          // ソフトな楕円（少しモクモク感）
+          p.ellipse(0, 0, layerSize * 1.3, layerSize * 0.8);
+          // 煙のような小さな追加円
+          if (layer === 1) {
+            p.ellipse(layerSize * 0.15, layerSize * 0.1, layerSize * 0.4);
+            p.ellipse(-layerSize * 0.1, -layerSize * 0.15, layerSize * 0.35);
+          }
+        } else if (this.shapeType === 1) {
+          // 細長い葉（左下から右上向き）
+          p.push();
+          p.rotate(this.shapeRotation); // 固定の角度を使用
+          p.ellipse(0, 0, layerSize * 1.8, layerSize * 0.5); // 横長に変更
+          if (layer === 1) {
+            p.ellipse(layerSize * 0.3, 0, layerSize * 0.6, layerSize * 0.3);
+          }
+          p.pop();
+        } else if (this.shapeType === 2) {
+          // やや細長い葉（斜め配置）
+          p.push();
+          p.rotate(this.shapeRotation * 0.5); // 固定の角度を使用（控えめ）
+          p.ellipse(0, 0, layerSize * 2, layerSize * 0.4); // 左下から右上の向き
+          if (layer === 1) {
+            p.ellipse(layerSize * 0.2, -layerSize * 0.1, layerSize * 0.8, layerSize * 0.3);
+          }
+          p.pop();
+        } else if (this.shapeType === 3) {
+          // 楓（もみじ）のような形
+          p.push();
+          p.rotate(this.shapeRotation * 0.2); // わずかな回転
+          
+          // 楓の葉を描く（右上に広がる形）
+          p.beginShape();
+          
+          // 楓の特徴的な形状（7つの点で構成）
+          let scale = layerSize * 0.8;
+          
+          // 下部（茎側）
+          p.vertex(0, scale * 0.5);
+          
+          // 左下の葉
+          p.vertex(-scale * 0.3, scale * 0.2);
+          p.vertex(-scale * 0.5, scale * 0.1);
+          p.vertex(-scale * 0.35, 0);
+          
+          // 左上の葉
+          p.vertex(-scale * 0.4, -scale * 0.2);
+          p.vertex(-scale * 0.3, -scale * 0.35);
+          p.vertex(-scale * 0.15, -scale * 0.25);
+          
+          // 上部中央の葉
+          p.vertex(0, -scale * 0.5);
+          
+          // 右上の葉（より大きく広がる）
+          p.vertex(scale * 0.2, -scale * 0.4);
+          p.vertex(scale * 0.45, -scale * 0.45);
+          p.vertex(scale * 0.35, -scale * 0.2);
+          
+          // 右の葉
+          p.vertex(scale * 0.5, -scale * 0.1);
+          p.vertex(scale * 0.4, scale * 0.1);
+          p.vertex(scale * 0.25, scale * 0.15);
+          
+          p.endShape(p.CLOSE);
+          p.pop();
+        } else {
+          // ダブルサークル（煙のような重なり）
+          if (layer === 1) {
+            p.ellipse(-layerSize * 0.15, 0, layerSize * 0.9);
+            p.ellipse(layerSize * 0.15, 0, layerSize * 0.9);
+            p.ellipse(0, layerSize * 0.1, layerSize * 0.6);
+          } else {
+            p.ellipse(0, 0, layerSize, layerSize * 0.95);
+          }
+        }
+      }
+
+      p.pop();
+    }
+  }
+
+  // Main sketch
+  new p5((p) => {
+    let grid = [];
+    const gridSize = 8; // 【グリッド密度】小さくすると影が少なく、大きくすると多くなる（8で疎らに）
+    let canvasWidth, canvasHeight;
+    let cellSize;
+    const movementFactor = 100;
+    const noiseOffset = 1; // 【ノイズの細かさ】大きくすると動きが細かくなる
+    let timeOffset = 0;
+    const timeOffsetFactor = 0.01; // 【アニメーション速度】大きくすると速くなる
+    
+    // 風の強さ制御
+    let windTime = 0;
+    let gustIntensity = 0; // 突風の強さ（0〜1）
+    let baseWindSpeed = 0.01; // 基本の風速
+    let windCycle = 0; // 風のサイクルカウンター
+    let windPhase = 'calm'; // 'calm' または 'gust'
+    let phaseTimer = 0; // 各フェーズの持続時間
+    let phaseDuration = 100; // 現在のフェーズの持続時間
+
+    p.setup = function () {
+      canvasWidth = p.windowWidth;
+      canvasHeight = p.windowHeight;
+      cellSize = Math.max(canvasWidth, canvasHeight) / gridSize;
+
+      const canvas = p.createCanvas(canvasWidth, canvasHeight);
+      canvas.parent('komorebi-grid');
+      canvas.position(0, 0);
+      canvas.style('position', 'fixed');
+      canvas.style('z-index', '-2');
+
+      // Initialize grid
+      for (let i = 0; i < gridSize + 2; i++) {
+        grid[i] = [];
+        for (let j = 0; j < gridSize + 2; j++) {
+          grid[i][j] = new Particle(
+            i * cellSize - cellSize * 0.5, // 中央寄りに配置
+            j * cellSize - cellSize * 0.5
+          );
+        }
+      }
+
+      p.ellipseMode(p.CORNER);
+      p.noStroke();
+      p.frameRate(24);
+    };
+
+    p.windowResized = function () {
+      canvasWidth = p.windowWidth;
+      canvasHeight = p.windowHeight;
+      cellSize = Math.max(canvasWidth, canvasHeight) / gridSize;
+      p.resizeCanvas(canvasWidth, canvasHeight);
+
+      // Reinitialize grid
+      grid = [];
+      for (let i = 0; i < gridSize + 2; i++) {
+        grid[i] = [];
+        for (let j = 0; j < gridSize + 2; j++) {
+          grid[i][j] = new Particle(
+            i * cellSize - cellSize * 0.5, // 中央寄りに配置
+            j * cellSize - cellSize * 0.5
+          );
+        }
+      }
+    };
+
+    p.draw = function () {
+      // 【背景色】RGB値で調整 (明るいベージュ)
+      p.background(230, 220, 205);
+
+      // 【グラデーション効果】
+      for (let i = 0; i <= p.height; i += 20) {
+        let alpha = p.map(i, 0, p.height, 20, 40); // 透明度の範囲
+        p.stroke(210, 200, 185, alpha); // グラデーションの色
+        p.strokeWeight(20); // 線の太さ
+        p.line(0, i, p.width, i);
+      }
+
+      p.noStroke();
+      
+      // 風のサイクル管理
+      windCycle++;
+      phaseTimer++;
+      
+      // フェーズの切り替え（穏やか→強風→穏やか のサイクル）
+      if (windPhase === 'calm') {
+        // 穏やかな風の時間（3〜5秒程度）
+        if (phaseTimer > phaseDuration) {
+          windPhase = 'gust';
+          phaseTimer = 0;
+          phaseDuration = 120 + Math.random() * 48; // 次の強風は5〜7秒
+        }
+        // 穏やかな時は風をほぼゼロに
+        gustIntensity *= 0.85; // 速やかに減衰
+        if (gustIntensity < 0.02) gustIntensity = 0;
+      } else if (windPhase === 'gust') {
+        // 強い風の時間（5〜7秒程度）
+        if (phaseTimer > phaseDuration) {
+          windPhase = 'calm';
+          phaseTimer = 0;
+          phaseDuration = 72 + Math.random() * 48; // 次の穏やかな時間は3〜5秒
+        }
+        // 強風時は徐々に強まる
+        gustIntensity = p.min(gustIntensity + 0.12, 1.0);
+      }
+      
+      // 風の強さに応じてアニメーション速度を変える
+      let currentWindSpeed = baseWindSpeed * (0.2 + gustIntensity * 6); // 穏やか時0.2倍速、強風時6.2倍速
+
+      // Draw grid particles directly
+      for (let i = 0; i < gridSize + 2; i++) {
+        for (let j = 0; j < gridSize + 2; j++) {
+          let offset = p.noise(
+            (i / gridSize) * noiseOffset + timeOffset,
+            (j / gridSize) * noiseOffset + timeOffset
+          );
+          grid[i][j].draw(p, offset);
+        }
+      }
+
+      // Animate with variable wind speed
+      timeOffset += currentWindSpeed;
+    };
+  });
+</script>
+
+<style>
+  #komorebi-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+  }
+
+  /* 【CSSぼかし効果】パフォーマンスが良い */
+  #komorebi-grid canvas {
+    filter: blur(6px); /* ぼかしの強さ（モクモク感を出す）*/
+    transform: scale(1.05); /* 端の処理（1.0〜1.1）*/
+  }
+
+  /* 【オーバーレイぼかし効果】全体に柔らかいぼかしを追加 */
+  #komorebi-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    backdrop-filter: blur(16px); /* 全体のぼかし効果 */
+    -webkit-backdrop-filter: blur(16px); /* Safari対応 */
+    background: rgba(255, 255, 255, 0.02); /* わずかな白色オーバーレイ */
+  }
+</style>

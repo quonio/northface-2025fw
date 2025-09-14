@@ -1,4 +1,6 @@
 ---
+import KomorebiGrid from '@components/KomorebiGrid.astro';
+
 export interface Props {
   title: string;
   description?: string;
@@ -40,6 +42,7 @@ const { title, description = 'THE NORTH FACE Maternity+ 2025 Fall/Winter Collect
     <!-- Global CSS -->
   </head>
   <body>
+    <KomorebiGrid />
     <slot />
   </body>
 </html>
