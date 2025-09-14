@@ -26,7 +26,7 @@
       this.shapeType = Math.floor(Math.random() * 5); // 形状タイプを5種類に増やす
       this.rotation = Math.random() * Math.PI * 2; // ランダムな初期回転
       this.shapeRotation = (Math.random() - 0.5) * 0.3; // 形状ごとの固定回転角
-      
+
       // 楓の形状用のランダム値を事前に生成
       this.maplePoints = [];
       for (let i = 0; i < 10; i++) {
@@ -85,39 +85,39 @@
           // 楓（もみじ）のような形
           p.push();
           p.rotate(this.shapeRotation * 0.2); // わずかな回転
-          
+
           // 楓の葉を描く（右上に広がる形）
           p.beginShape();
-          
+
           // 楓の特徴的な形状（7つの点で構成）
           let scale = layerSize * 0.8;
-          
+
           // 下部（茎側）
           p.vertex(0, scale * 0.5);
-          
+
           // 左下の葉
           p.vertex(-scale * 0.3, scale * 0.2);
           p.vertex(-scale * 0.5, scale * 0.1);
           p.vertex(-scale * 0.35, 0);
-          
+
           // 左上の葉
           p.vertex(-scale * 0.4, -scale * 0.2);
           p.vertex(-scale * 0.3, -scale * 0.35);
           p.vertex(-scale * 0.15, -scale * 0.25);
-          
+
           // 上部中央の葉
           p.vertex(0, -scale * 0.5);
-          
+
           // 右上の葉（より大きく広がる）
           p.vertex(scale * 0.2, -scale * 0.4);
           p.vertex(scale * 0.45, -scale * 0.45);
           p.vertex(scale * 0.35, -scale * 0.2);
-          
+
           // 右の葉
           p.vertex(scale * 0.5, -scale * 0.1);
           p.vertex(scale * 0.4, scale * 0.1);
           p.vertex(scale * 0.25, scale * 0.15);
-          
+
           p.endShape(p.CLOSE);
           p.pop();
         } else {
@@ -146,7 +146,7 @@
     const noiseOffset = 1; // 【ノイズの細かさ】大きくすると動きが細かくなる
     let timeOffset = 0;
     const timeOffsetFactor = 0.01; // 【アニメーション速度】大きくすると速くなる
-    
+
     // 風の強さ制御
     let windTime = 0;
     let gustIntensity = 0; // 突風の強さ（0〜1）
@@ -215,11 +215,11 @@
       }
 
       p.noStroke();
-      
+
       // 風のサイクル管理
       windCycle++;
       phaseTimer++;
-      
+
       // フェーズの切り替え（穏やか→強風→穏やか のサイクル）
       if (windPhase === 'calm') {
         // 穏やかな風の時間（3〜5秒程度）
@@ -241,7 +241,7 @@
         // 強風時は徐々に強まる
         gustIntensity = p.min(gustIntensity + 0.12, 1.0);
       }
-      
+
       // 風の強さに応じてアニメーション速度を変える
       let currentWindSpeed = baseWindSpeed * (0.2 + gustIntensity * 6); // 穏やか時0.2倍速、強風時6.2倍速
 

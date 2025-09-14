@@ -1,15 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import heroImage from '@/assets/images/main-kv.jpg';
 import '../app.css';
 
 const heroData = {
-  image: {
-    src: '/images/hero-sample.jpg',
-    alt: 'THE NORTH FACE Maternity+ 2025FW - 家族の温かい時間',
-    srcset: '/images/hero-sample.jpg 1920w',
-    sizes: '100vw',
-  },
+  image: heroImage,
+  imageAlt: 'THE NORTH FACE Maternity+ 2025FW - 家族の温かい時間',
   navigation: [
     { label: 'Shop', href: '#shop' },
     { label: 'Story', href: '#story' },

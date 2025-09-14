@@ -15,7 +15,8 @@
       "Bash(git push:*)",
       "Bash(kill:*)",
       "mcp__puppeteer__puppeteer_navigate",
-      "mcp__puppeteer__puppeteer_screenshot"
+      "mcp__puppeteer__puppeteer_screenshot",
+      "Bash(xargs kill:*)"
     ],
     "deny": []
   }
