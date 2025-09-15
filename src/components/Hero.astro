@@ -1,16 +1,14 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import HeroNav from './HeroNav.astro';
-import type { HeroNavItem } from '@/types/hero';
+import Logo from './Logo.astro';
 
 export interface Props {
   image: ImageMetadata;
   imageAlt: string;
-  navigation?: HeroNavItem[];
 }
 
-const { image, imageAlt, navigation = [] } = Astro.props;
+const { image, imageAlt } = Astro.props;
 ---
 
 <section class="relative h-screen w-full lg:p-5" aria-label="Hero section">
@@ -27,10 +25,23 @@ const { image, imageAlt, navigation = [] } = Astro.props;
       format="webp"
       quality={85}
     />
-    {
-      navigation.length > 0 && (
-        <HeroNav items={navigation} class="absolute top-4 right-4 z-10 md:top-6 md:right-6" />
-      )
-    }
+    <Logo class="absolute top-8 left-1/2 z-20 w-32 -translate-x-1/2 text-paper md:top-12 md:w-40 lg:w-48" />
+    
+    <!-- Left side text -->
+    <div class="absolute left-4 top-8 z-10 text-paper md:left-8 md:top-12 lg:left-12">
+      <h1 class="font-display text-lg font-medium leading-tight md:text-xl lg:text-2xl">
+        THE NORTH FACE MATERNITY+
+      </h1>
+      <p class="mt-1 text-sm md:text-base lg:text-lg">
+        for the Pregnant, Moms and Dads.
+      </p>
+    </div>
+    
+    <!-- Right side text -->
+    <div class="absolute right-4 top-8 z-10 text-paper text-right md:right-8 md:top-12 lg:right-12">
+      <p class="font-display text-lg font-medium md:text-xl lg:text-2xl">
+        2025 FALL&WINTER
+      </p>
+    </div>
   </div>
 </section>
