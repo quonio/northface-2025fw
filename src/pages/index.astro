@@ -1,19 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import IntroLabel from '../components/IntroLabel.astro';
+import HighlightGallery from '../components/HighlightGallery.astro';
 import heroImage from '@/assets/images/main-kv.jpg';
 import '../app.css';
 
 const heroData = {
   image: heroImage,
   imageAlt: 'THE NORTH FACE Maternity+ 2025FW - 家族の温かい時間',
-  navigation: [
-    { label: 'Shop', href: '#shop' },
-    { label: 'Story', href: '#story' },
-  ],
 };
 ---
 
 <BaseLayout title="THE NORTH FACE Maternity+ 2025FW">
   <Hero {...heroData} />
+  <IntroLabel />
+  <HighlightGallery />
 </BaseLayout>

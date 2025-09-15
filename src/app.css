@@ -8,9 +8,12 @@
   --color-terra: oklch(0.55 0.08 45); /* #A67C52 */
   --color-tnf-blue: oklch(0.55 0.15 250); /* #0055FF */
   --color-muted: oklch(0.55 0.01 0); /* #8A8A8A */
+  --color-tape-orange: oklch(0.75 0.12 55); /* Orange for tape */
+  --color-tape-navy: oklch(0.35 0.15 250); /* Navy for tape */
 
   --font-sans: 'Lexend', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
   --font-display: 'Lexend', system-ui, -apple-system, sans-serif;
+  --font-handwriting: 'Klee One', 'Noto Sans JP', cursive;
 
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-card-strong: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -42,31 +45,92 @@
   .label-tape {
     position: relative;
     display: inline-block;
-    background: #f6f0e6;
-    padding: 0.5rem 1rem;
-    transform: rotate(-1.2deg);
-    box-shadow: var(--shadow-card);
+    padding: 1rem 2rem;
+    transform: rotate(-3deg);
+    border-radius: 2px;
+    isolation: isolate;
   }
 
-  .label-tape:before,
-  .label-tape:after {
+  /* オレンジテープ */
+  .label-tape-orange {
+    background: var(--color-tape-orange);
+    color: var(--color-paper);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* ネイビーテープ */
+  .label-tape-navy {
+    background: var(--color-tape-navy);
+    color: var(--color-paper);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* テープの端のギザギザエフェクト */
+  .label-tape::before,
+  .label-tape::after {
     content: '';
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #e9dfcf;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    background: inherit;
+    z-index: -1;
   }
 
-  .label-tape:before {
-    left: -6px;
-    top: -6px;
-    transform: rotate(12deg);
+  .label-tape::before {
+    left: -10px;
+    clip-path: polygon(
+      0 0,
+      10px 5%,
+      0 10%,
+      10px 15%,
+      0 20%,
+      10px 25%,
+      0 30%,
+      10px 35%,
+      0 40%,
+      10px 45%,
+      0 50%,
+      10px 55%,
+      0 60%,
+      10px 65%,
+      0 70%,
+      10px 75%,
+      0 80%,
+      10px 85%,
+      0 90%,
+      10px 95%,
+      0 100%
+    );
   }
 
-  .label-tape:after {
-    right: -6px;
-    bottom: -6px;
-    transform: rotate(-12deg);
+  .label-tape::after {
+    right: -10px;
+    clip-path: polygon(
+      10px 0,
+      20px 5%,
+      10px 10%,
+      20px 15%,
+      10px 20%,
+      20px 25%,
+      10px 30%,
+      20px 35%,
+      10px 40%,
+      20px 45%,
+      10px 50%,
+      20px 55%,
+      10px 60%,
+      20px 65%,
+      10px 70%,
+      20px 75%,
+      10px 80%,
+      20px 85%,
+      10px 90%,
+      20px 95%,
+      10px 100%,
+      20px 100%,
+      20px 0
+    );
   }
 
   /* カルーセルのページャ（数字） */

@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import sealImage1 from '@/assets/images/img-seal-01.png';
+import sealImage2 from '@/assets/images/img-seal-02.png';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<section class={`relative py-20 md:py-32 lg:py-40 ${className}`}>
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col items-center gap-8 md:gap-12">
+      <!-- Japanese text label -->
+      <div 
+        class="relative"
+        data-animation="tape-label"
+        data-animation-delay="0"
+      >
+        <Image
+          src={sealImage1}
+          alt="きみがいるから、行き先がふえていく"
+          width={800}
+          height={200}
+          loading="lazy"
+          class="w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px] h-auto"
+        />
+      </div>
+      
+      <!-- English text label -->
+      <div 
+        class="relative"
+        data-animation="tape-label"
+        data-animation-delay="200"
+      >
+        <Image
+          src={sealImage2}
+          alt="A heart beat, echoing into the wild."
+          width={800}
+          height={200}
+          loading="lazy"
+          class="w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px] h-auto"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes tape-stick {
+    0% {
+      opacity: 0;
+      transform: translateY(-30px) rotate(-8deg) scale(0.9);
+    }
+    40% {
+      transform: translateY(10px) rotate(2deg) scale(1.05);
+    }
+    70% {
+      transform: translateY(-5px) rotate(-1deg) scale(0.98);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotate(-2deg) scale(1);
+    }
+  }
+
+  [data-animation="tape-label"] {
+    opacity: 0;
+    animation: tape-stick 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  [data-animation-delay="200"] {
+    animation-delay: 200ms;
+  }
+</style>
+
+<script>
+  // Intersection Observer for scroll-triggered animations
+  const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px 0px -100px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const element = entry.target as HTMLElement;
+        const delay = parseInt(element.dataset.animationDelay || '0');
+        
+        setTimeout(() => {
+          element.style.animationPlayState = 'running';
+        }, delay);
+        
+        observer.unobserve(element);
+      }
+    });
+  }, observerOptions);
+
+  // Observe all tape labels
+  document.addEventListener('DOMContentLoaded', () => {
+    const tapeLabels = document.querySelectorAll('[data-animation="tape-label"]');
+    tapeLabels.forEach((label) => {
+      (label as HTMLElement).style.animationPlayState = 'paused';
+      observer.observe(label);
+    });
+  });
+
+  // Respect prefers-reduced-motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  
+  if (prefersReducedMotion.matches) {
+    document.querySelectorAll('[data-animation="tape-label"]').forEach((label) => {
+      (label as HTMLElement).style.animation = 'none';
+      (label as HTMLElement).style.opacity = '1';
+    });
+  }
+</script>
