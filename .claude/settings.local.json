@@ -16,7 +16,8 @@
       "Bash(kill:*)",
       "mcp__puppeteer__puppeteer_navigate",
       "mcp__puppeteer__puppeteer_screenshot",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

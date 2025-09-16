@@ -5,6 +5,7 @@
   --color-navy: oklch(0.2 0.08 240); /* #001F3F */
   --color-beige: oklch(0.92 0.03 68); /* #F5F1E9 */
   --color-paper: oklch(0.87 0.04 75); /* #FAF7F0 */
+  --color-cream: oklch(0.95 0.05 85); /* #FBF4E2 */
   --color-terra: oklch(0.55 0.08 45); /* #A67C52 */
   --color-tnf-blue: oklch(0.55 0.15 250); /* #0055FF */
   --color-muted: oklch(0.55 0.01 0); /* #8A8A8A */

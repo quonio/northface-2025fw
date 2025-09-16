@@ -17,89 +17,219 @@ const { class: className = '' } = Astro.props;
 <section class={`py-16 md:py-24 lg:py-32 ${className}`}>
   <div class="container mx-auto px-4">
     <!-- First 3 images -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-16 md:mb-24">
-      <div class="aspect-[3/4] overflow-hidden">
+    <div class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8">
+      <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style01}
           alt="THE NORTH FACE MATERNITY+ Style 1"
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
-      <div class="aspect-[3/4] overflow-hidden">
+      <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style02}
           alt="THE NORTH FACE MATERNITY+ Style 2"
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
-      <div class="aspect-[3/4] overflow-hidden">
+      <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style03}
           alt="THE NORTH FACE MATERNITY+ Style 3"
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
     </div>
 
     <!-- Title Section -->
-    <div class="text-center mb-16 md:mb-24">
-      <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-medium text-navy">
+    <div class="mb-16 text-center md:mb-24">
+      <h2 class="font-display text-navy text-3xl font-medium md:text-4xl lg:text-5xl">
         THE NORTH FACE MATERNITY+
       </h2>
     </div>
 
     <!-- Second 3 images -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 mb-16 md:mb-24">
-      <div class="aspect-[3/4] overflow-hidden">
+    <div class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8">
+      <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style04}
           alt="THE NORTH FACE MATERNITY+ Style 4"
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
-      <div class="aspect-[3/4] overflow-hidden">
+      <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style05}
           alt="THE NORTH FACE MATERNITY+ Style 5"
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
-      <div class="aspect-[3/4] overflow-hidden">
+      <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style06}
           alt="THE NORTH FACE MATERNITY+ Style 6"
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"
+          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
     </div>
 
     <!-- Description Text -->
-    <div class="max-w-4xl mx-auto">
-      <p class="text-base md:text-lg lg:text-xl leading-relaxed text-navy text-center">
-        THE NORTH FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。<br>
-        性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、<br class="hidden md:block">
-        長く愛着を持つことができるウエアを取り揃えています。<br>
-        MATERNITY+は、「妊娠・出産や子育てを経験する家族」のEXPLORATIONを叶えるカテゴリーとして、<br class="hidden md:block">
+    <div class="mx-auto max-w-4xl">
+      <p class="text-navy text-center text-base leading-relaxed md:text-lg lg:text-xl">
+        THE NORTH FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。<br
+        />
+        性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、<br
+          class="hidden md:block"
+        />
+        長く愛着を持つことができるウエアを取り揃えています。<br />
+        MATERNITY+は、「妊娠・出産や子育てを経験する家族」のEXPLORATIONを叶えるカテゴリーとして、<br
+          class="hidden md:block"
+        />
         育児をするひとを性別を問わずサポートします。
       </p>
     </div>
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger);
+
+  function initBasicGSAPTest() {
+    console.log('🚀 GSAP Test Starting');
+    console.log('GSAP version:', gsap.version);
+    console.log('ScrollTrigger available:', !!ScrollTrigger);
+
+    // 全てのギャラリーアイテムの初期状態を設定
+    const allGalleryItems = document.querySelectorAll('.gallery-item');
+    allGalleryItems.forEach((item, index) => {
+      gsap.set(item, {
+        x: index % 2 === 0 ? -200 : 200,
+        opacity: 0,
+        scale: 0.8
+      });
+    });
+
+    // 最初の3つの画像用のScrollTrigger
+    const firstGallerySection = document.querySelectorAll('.grid')[0];
+    if (firstGallerySection) {
+      ScrollTrigger.create({
+        trigger: firstGallerySection,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        markers: true, // デバッグマーカー
+        onEnter: () => {
+          console.log('📍 First Gallery ScrollTrigger: onEnter');
+          // 最初の3つの画像をアニメーション
+          const firstThreeItems = firstGallerySection.querySelectorAll('.gallery-item');
+          gsap.to(firstThreeItems, {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: 'power3.out',
+          });
+        },
+        onLeave: () => console.log('📍 First Gallery ScrollTrigger: onLeave'),
+        onEnterBack: () => console.log('📍 First Gallery ScrollTrigger: onEnterBack'),
+        onLeaveBack: () => console.log('📍 First Gallery ScrollTrigger: onLeaveBack'),
+      });
+    }
+
+    // タイトルのアニメーション
+    const testElement = document.querySelector('.text-center h2');
+    if (testElement) {
+      console.log('✅ Test element found:', testElement);
+
+      // シンプルなアニメーション
+      gsap.from(testElement, {
+        duration: 2,
+        y: 50,
+        opacity: 0,
+        ease: 'bounce.out',
+        onComplete: () => {
+          console.log('🎉 Basic animation completed!');
+        },
+      });
+    }
+
+    // 2番目の3つの画像用のScrollTrigger
+    const secondGallerySection = document.querySelectorAll('.grid')[1];
+    if (secondGallerySection) {
+      ScrollTrigger.create({
+        trigger: secondGallerySection,
+        start: 'top 80%',
+        end: 'bottom 20%',
+        markers: true, // デバッグマーカー
+        onEnter: () => {
+          console.log('📍 Second Gallery ScrollTrigger: onEnter');
+          // 2番目の3つの画像をアニメーション
+          const secondThreeItems = secondGallerySection.querySelectorAll('.gallery-item');
+          gsap.to(secondThreeItems, {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: 'power3.out',
+          });
+        },
+        onLeave: () => console.log('📍 Second Gallery ScrollTrigger: onLeave'),
+        onEnterBack: () => console.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
+        onLeaveBack: () => console.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
+        onUpdate: (self) => console.log('📊 ScrollTrigger progress:', self.progress.toFixed(2)),
+      });
+    }
+
+    // メモリ使用量を表示（Chrome限定）
+    const memoryInfo = (performance as any).memory;
+    if (memoryInfo) {
+      console.log('💾 Memory usage:', {
+        used: Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB',
+        total: Math.round(memoryInfo.totalJSHeapSize / 1024 / 1024) + ' MB',
+        limit: Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024) + ' MB',
+      });
+    } else {
+      console.log('💾 Memory API not available (Chrome only)');
+    }
+  }
+
+  // 初期化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('📄 DOM loaded, starting GSAP test in 500ms...');
+      setTimeout(initBasicGSAPTest, 500);
+    });
+  } else {
+    console.log('📄 DOM ready, starting GSAP test in 500ms...');
+    setTimeout(initBasicGSAPTest, 500);
+  }
+
+  // Astro page transitions
+  document.addEventListener('astro:page-load', () => {
+    console.log('🔄 Astro page loaded, restarting GSAP test...');
+    setTimeout(initBasicGSAPTest, 500);
+  });
+</script>

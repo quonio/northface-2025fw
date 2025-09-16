@@ -1,127 +1,72 @@
-# CLAUDE.md
+# Claude Code Spec-Driven Development
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Kiro-style Spec Driven Development implementation using claude code slash commands, hooks and agents.
 
-## Project Overview
+## Project Context
 
-THE NORTH FACE Maternity+ 2025FW Landing Page - Built with Astro + Tailwind CSS v4
+### Paths
+- Steering: `.kiro/steering/`
+- Specs: `.kiro/specs/`
+- Commands: `.claude/commands/`
 
-## Commands
+### Steering vs Specification
 
-```bash
-# Development
-pnpm dev          # Start development server (http://localhost:4321)
-pnpm build        # Type check + production build
-pnpm preview      # Preview production build
+**Steering** (`.kiro/steering/`) - Guide AI with project-wide rules and context
+**Specs** (`.kiro/specs/`) - Formalize development process for individual features
 
-# Package management
-pnpm install      # Install dependencies
-pnpm add -D <pkg> # Add dev dependency
-```
+### Active Specifications
+- Check `.kiro/specs/` for active specifications
+- Use `/kiro:spec-status [feature-name]` to check progress
 
-## ⚠️ IMPORTANT RULES
+## Development Guidelines
+- Think in English, but generate responses in Japanese (思考は英語、回答の生成は日本語で行うように)
 
-### PORT Configuration
-**NEVER change the PORT number (4321) under any circumstances.** 
-- The development server MUST always run on port 4321
-- If port 4321 is in use, stop the existing process first
-- Do NOT allow Vite/Astro to auto-select alternative ports
-- This is a strict requirement for project consistency
+## Workflow
 
-## Architecture & Key Decisions
+### Phase 0: Steering (Optional)
+`/kiro:steering` - Create/update steering documents
+`/kiro:steering-custom` - Create custom steering for specialized contexts
 
-### Technology Stack
+Note: Optional for new features or small additions. You can proceed directly to spec-init.
 
-- **Astro** (v5.13.5) - Static site generation with Island architecture
-- **Tailwind CSS v4** (v4.1.12) - Using @theme directive and Vite plugin integration
-- **Three.js** (v0.179.1) - For komorebi (dappled light) background animations
-- **TypeScript** - Strict mode enabled
+### Phase 1: Specification Creation
+1. `/kiro:spec-init [detailed description]` - Initialize spec with detailed project description
+2. `/kiro:spec-requirements [feature]` - Generate requirements document
+3. `/kiro:spec-design [feature]` - Interactive: "Have you reviewed requirements.md? [y/N]"
+4. `/kiro:spec-tasks [feature]` - Interactive: Confirms both requirements and design review
 
-### Tailwind CSS v4 Configuration
+### Phase 2: Progress Tracking
+`/kiro:spec-status [feature]` - Check current progress and phases
 
-Located in `/src/app.css`:
+## Development Rules
+1. **Consider steering**: Run `/kiro:steering` before major development (optional for new features)
+2. **Follow 3-phase approval workflow**: Requirements → Design → Tasks → Implementation
+3. **Approval required**: Each phase requires human review (interactive prompt or manual)
+4. **No skipping phases**: Design requires approved requirements; Tasks require approved design
+5. **Update task status**: Mark tasks as completed when working on them
+6. **Keep steering current**: Run `/kiro:steering` after significant changes
+7. **Check spec compliance**: Use `/kiro:spec-status` to verify alignment
 
-- Uses `@theme` directive for custom design tokens
-- Custom colors: navy, beige, paper, terra, tnf-blue, muted
-- Custom fonts: Noto Sans JP (sans), Lexend (display)
-- Custom shadows: shadow-card, shadow-card-strong
+## Steering Configuration
 
-### Path Aliases
+### Current Steering Files
+Managed by `/kiro:steering` command. Updates here reflect command changes.
 
-- `@/*` → `src/*`
-- `@components/*` → `src/components/*`
-- `@layouts/*` → `src/layouts/*`
+### Active Steering Files
+- `product.md`: Always included - Product context and business objectives
+- `tech.md`: Always included - Technology stack and architectural decisions
+- `structure.md`: Always included - File organization and code patterns
 
-## Design Specifications
+### Custom Steering Files
+<!-- Added by /kiro:steering-custom command -->
+<!-- Format:
+- `filename.md`: Mode - Pattern(s) - Description
+  Mode: Always|Conditional|Manual
+  Pattern: File patterns for Conditional mode
+-->
 
-Detailed specifications exist in `/docs/research/仕様書.md` covering:
+### Inclusion Modes
+- **Always**: Loaded in every interaction (default)
+- **Conditional**: Loaded for specific file patterns (e.g., "*.test.js")
+- **Manual**: Reference with `@filename.md` syntax
 
-### Key Design Elements
-
-- **Color Palette**: Deep navy (#0e2540), Beige (#efe5d6), Paper (#e7dac5), Terracotta (#9c6a4a), TNF Blue (#1e75bb)
-- **Typography**: Noto Sans JP (Japanese), Lexend (English)
-- **Grid**: 4px base spacing scale
-- **Breakpoints**: Mobile (390px), Tablet (768px), Desktop (1280-1440px)
-
-### Page Sections (10 total)
-
-1. Hero - Family visual with minimal nav
-2. Intro Copy - Handwritten label style
-3. Highlight Gallery - 3-4 image grid/swipe
-4. Product Lines banner
-5. 2025FW Collection - Card carousels in multiple rows
-6. Dual CTA (ALL ITEMS / STAFF STYLING)
-7. Baby Blanket Collection
-8. Pickup Products (3 columns)
-9. Family Photo (full bleed)
-10. Footer
-
-### Special Components
-
-- **Tape Label** (`.label-tape`) - Rotated label with torn edge effect
-- **Carousel** - With numeric pager (`.pager`)
-- **Product Cards** - 3:4 aspect ratio with navigation dots
-
-### Background Animation
-
-Three.js WebGL shader implementation planned for:
-
-- Komorebi (dappled sunlight through trees) effect
-- Performance-optimized with `prefers-reduced-motion` support
-- Uses fractal noise for natural shadow movement
-
-## Development Notes
-
-### Current Implementation Status
-
-✅ Astro + Tailwind CSS v4 setup
-✅ Base layout and color system
-✅ Custom component styles (tape label, pager)
-❌ Section components
-❌ Three.js background animation
-❌ Data models and content management
-❌ Interactive components (carousel, etc.)
-
-### Performance Targets
-
-- LCP < 2.5s
-- CLS < 0.1
-- Respect `prefers-reduced-motion`
-
-### Analytics Integration
-
-FTL templates require:
-
-1. `<#ftl output_format="HTML" auto_esc=true>` at file start
-2. `<#include '/common/google-analytics.ftl'>` before `</head>`
-3. `<#include '/common/google-tagmanager_noscript.ftl'>` after `<body>`
-
-### Directory Structure (Production)
-
-- **Goldwin Desktop**: `/web/template/ja/full/page/`
-- **Goldwin Mobile**: `/web/template/ja/lite/page/`
-- **TNF Desktop**: `/web/template/ja/full/page/tnf/`
-- **TNF Mobile**: `/web/template/ja/lite/page/tnf/`
-- **Assets**: `/web/template/ja/full/page/static/full/[tnf/]`
-
-Note: User agent switching requires files in both desktop and mobile directories.
