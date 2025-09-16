@@ -1,0 +1,57 @@
+---
+import Logo from './Logo.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<footer class={`bg-navy text-paper py-12 md:py-16 lg:py-20 ${className}`}>
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12">
+      <!-- Staff Credit -->
+      <div>
+        <h3 class="font-display text-lg font-medium mb-4 text-gold">STAFF CREDIT</h3>
+        <div class="space-y-2 text-sm md:text-base">
+          <p>Produce & Web Direction & Writing: Ayumi Yagi (Pivolo)</p>
+          <p>Art Direction & Design: Shinpei Nakaya (HARO inc,)</p>
+          <p>Development: Ryuichi Hayashi</p>
+        </div>
+      </div>
+      
+      <!-- Photo -->
+      <div>
+        <h3 class="font-display text-lg font-medium mb-4 text-gold">PHOTO</h3>
+        <div class="space-y-2 text-sm md:text-base">
+          <p>Photography: Kentaro Otsuka</p>
+          <p>Hair: Akemi Ezashi (mod's hair)</p>
+          <p>Casting: Ai Ushijima</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="border-t border-paper/20 pt-8 md:pt-12">
+      <!-- Company Info -->
+      <div class="mb-8">
+        <p class="font-display text-lg md:text-xl mb-3">Goldwin Inc.</p>
+        <div class="space-y-1 text-sm md:text-base">
+          <p>TEL: <a href="tel:0120-307-560" class="hover:text-gold transition-colors">0120-307-560</a></p>
+          <p>WEB: <a href="https://www.thenorthface.jp/" target="_blank" rel="noopener noreferrer" class="hover:text-gold transition-colors">https://www.thenorthface.jp/</a></p>
+        </div>
+      </div>
+      
+      <!-- Logo -->
+      <div class="mb-8">
+        <Logo class="w-32 md:w-40 text-gold" />
+      </div>
+      
+      <!-- Disclaimer & Copyright -->
+      <div class="space-y-4 text-xs md:text-sm text-paper/70">
+        <p>※内容および詳細・商品価格は、予告なく変更されることもありますので予めご了承ください。</p>
+        <p>Our sale is limited to Japan only. © GOLDWIN INC.</p>
+      </div>
+    </div>
+  </div>
+</footer>

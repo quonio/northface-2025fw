@@ -1,0 +1,103 @@
+---
+interface Props {
+  title: string;
+  badge?: string;
+  description?: string;
+  colors?: string[];
+  sizes?: string[];
+  price?: string;
+  totalPages: number;
+  carouselId: string;
+}
+
+const {
+  title,
+  badge,
+  description,
+  colors = [],
+  sizes = [],
+  price,
+  totalPages,
+  carouselId
+} = Astro.props;
+---
+
+<article class="product-info-card bg-paper rounded-lg p-6 h-full flex flex-col justify-between">
+  <div>
+    {badge && (
+      <span class="inline-block bg-red-500 text-white text-xs px-2 py-1 rounded mb-4">
+        {badge}
+      </span>
+    )}
+    
+    <h3 class="font-sans text-lg font-medium text-navy mb-3">
+      {title}
+    </h3>
+    
+    {description && (
+      <p class="text-sm text-muted mb-4 leading-relaxed">
+        {description}
+      </p>
+    )}
+    
+    {colors.length > 0 && (
+      <div class="flex gap-2 mb-4">
+        {colors.map((color) => (
+          <span
+            class="w-6 h-6 rounded-full border border-gray-300 shadow-sm"
+            style={`background-color: ${color}`}
+            aria-label={`Color: ${color}`}
+          />
+        ))}
+      </div>
+    )}
+    
+    {sizes.length > 0 && (
+      <div class="flex flex-wrap gap-2 mb-4">
+        {sizes.map((size) => (
+          <span class="text-xs px-3 py-1 border border-gray-300 rounded">
+            {size}
+          </span>
+        ))}
+      </div>
+    )}
+    
+    {price && (
+      <p class="text-base font-medium text-navy mb-6">
+        {price}
+      </p>
+    )}
+  </div>
+  
+  <!-- Pagination -->
+  <div class="pager flex gap-0" data-carousel-pagination={carouselId}>
+    {Array.from({ length: totalPages }, (_, i) => (
+      <button
+        class="pagination-btn px-3 py-2 text-sm bg-white border border-gray-300 hover:bg-gray-50 transition-colors first:rounded-l last:rounded-r -ml-px first:ml-0"
+        data-page={i}
+        aria-label={`Go to page ${i + 1}`}
+      >
+        {i + 1}
+      </button>
+    ))}
+  </div>
+</article>
+
+<style>
+  .pagination-btn {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .pagination-btn.is-active {
+    background-color: var(--color-navy);
+    color: white;
+    border-color: var(--color-navy);
+    z-index: 2;
+  }
+  
+  .product-info-card {
+    min-height: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+// Placeholder images for banners
+import placeholderImage from '@/assets/images/main-kv.jpg';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+// Banner data - replace with actual banner images when available
+const banners = [
+  {
+    id: 'banner-1',
+    image: placeholderImage,
+    alt: 'MATERNITY+ 新規会員登録キャンペーン',
+    href: '#campaign-1',
+    title: '新規会員登録で10%OFF',
+    subtitle: '期間限定キャンペーン実施中',
+  },
+  {
+    id: 'banner-2',
+    image: placeholderImage,
+    alt: 'MATERNITY+ ギフトラッピングサービス',
+    href: '#campaign-2',
+    title: 'ギフトラッピング無料',
+    subtitle: '出産祝いに最適なサービス',
+  },
+];
+---
+
+<section class={`py-16 md:py-24 lg:py-32 ${className}`}>
+  <div class="container mx-auto px-4">
+    <!-- White border line -->
+    <div class="w-full h-px bg-gray-200 mb-8 md:mb-12"></div>
+    
+    <!-- Banner Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+      {banners.map((banner) => (
+        <a 
+          href={banner.href}
+          class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+        >
+          <div class="relative aspect-[16/9] overflow-hidden">
+            <Image
+              src={banner.image}
+              alt={banner.alt}
+              widths={[390, 600, 800]}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              loading="lazy"
+              class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            
+            <!-- Overlay content -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6 md:p-8">
+              <div class="text-white">
+                <h3 class="font-display text-xl md:text-2xl font-medium mb-2">
+                  {banner.title}
+                </h3>
+                <p class="text-sm md:text-base opacity-90">
+                  {banner.subtitle}
+                </p>
+              </div>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

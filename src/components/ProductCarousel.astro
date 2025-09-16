@@ -1,0 +1,240 @@
+---
+import ProductInfoCard from './ProductInfoCard.astro';
+import ImageCard from './ImageCard.astro';
+import type { ImageMetadata } from 'astro';
+
+export interface ProductInfo {
+  title: string;
+  badge?: string;
+  description?: string;
+  colors?: string[];
+  sizes?: string[];
+  price?: string;
+}
+
+export interface CarouselItem {
+  id: string;
+  image: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  productInfo: ProductInfo;
+  items: CarouselItem[];
+  id: string;
+}
+
+const { productInfo, items, id } = Astro.props;
+---
+
+<div class="product-carousel relative" data-carousel={id}>
+  <div class="overflow-hidden">
+    <div class="flex gap-4 md:gap-6 transition-transform duration-500 ease-out" data-carousel-track>
+      <!-- Product Info Card -->
+      <div class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[360px]" data-carousel-item>
+        <ProductInfoCard {...productInfo} totalPages={items.length} carouselId={id} />
+      </div>
+      
+      <!-- Image Cards -->
+      {items.map((item) => (
+        <div class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[360px]" data-carousel-item>
+          <ImageCard image={item.image} alt={item.alt} />
+        </div>
+      ))}
+      
+      <!-- Clone first few items for seamless loop -->
+      <div class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[360px]" data-carousel-clone>
+        <ProductInfoCard {...productInfo} totalPages={items.length} carouselId={id} />
+      </div>
+      {items.slice(0, 3).map((item) => (
+        <div class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[360px]" data-carousel-clone>
+          <ImageCard image={item.image} alt={item.alt} />
+        </div>
+      ))}
+    </div>
+  </div>
+  
+  <!-- Navigation buttons -->
+  <button
+    class="carousel-prev absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+    aria-label="Previous items"
+    data-carousel-prev
+  >
+    <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+    </svg>
+  </button>
+  
+  <button
+    class="carousel-next absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+    aria-label="Next items"
+    data-carousel-next
+  >
+    <svg class="w-5 h-5 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+</div>
+
+<script define:vars={{ }}>
+  function initCarousels() {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    
+    carousels.forEach((carousel) => {
+      const track = carousel.querySelector('[data-carousel-track]');
+      const prevBtn = carousel.querySelector('[data-carousel-prev]');
+      const nextBtn = carousel.querySelector('[data-carousel-next]');
+      const carouselId = carousel.getAttribute('data-carousel');
+      const pagination = document.querySelector(`[data-carousel-pagination="${carouselId}"]`);
+      
+      if (!track || !prevBtn || !nextBtn) return;
+      
+      let currentIndex = 0;
+      let autoScrollInterval;
+      let isTransitioning = false;
+      
+      const originalItems = track.querySelectorAll('[data-carousel-item]');
+      const totalOriginalItems = originalItems.length;
+      if (totalOriginalItems === 0) return;
+      
+      const updateCarousel = (skipTransition = false) => {
+        const itemWidth = track.children[0].offsetWidth;
+        const gap = window.innerWidth >= 768 ? 24 : 16;
+        const offset = currentIndex * (itemWidth + gap);
+        
+        if (skipTransition) {
+          track.style.transition = 'none';
+        } else {
+          track.style.transition = 'transform 500ms ease-out';
+        }
+        
+        track.style.transform = `translateX(-${offset}px)`;
+        
+        // Update pagination
+        if (pagination) {
+          const paginationBtns = pagination.querySelectorAll('.pagination-btn');
+          const actualIndex = currentIndex % totalOriginalItems;
+          paginationBtns.forEach((btn, index) => {
+            // If we're on the info card (index 0), no pagination button is active
+            // Otherwise, the active button corresponds to the image index
+            const isActive = actualIndex > 0 && index === actualIndex - 1;
+            btn.classList.toggle('is-active', isActive);
+          });
+        }
+        
+        // Force reflow if we removed transition
+        if (skipTransition) {
+          track.offsetHeight; // Force reflow
+          track.style.transition = 'transform 500ms ease-out';
+        }
+      };
+      
+      const handleTransitionEnd = () => {
+        isTransitioning = false;
+        
+        // If we've reached the cloned items, jump back to the original
+        if (currentIndex >= totalOriginalItems) {
+          currentIndex = currentIndex % totalOriginalItems;
+          updateCarousel(true);
+        }
+      };
+      
+      track.addEventListener('transitionend', handleTransitionEnd);
+      
+      const moveNext = () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        currentIndex++;
+        updateCarousel();
+      };
+      
+      const movePrev = () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        
+        if (currentIndex === 0) {
+          // Jump to the last real item
+          currentIndex = totalOriginalItems;
+          updateCarousel(true);
+          setTimeout(() => {
+            currentIndex--;
+            updateCarousel();
+          }, 50);
+        } else {
+          currentIndex--;
+          updateCarousel();
+        }
+      };
+      
+      const startAutoScroll = () => {
+        autoScrollInterval = setInterval(moveNext, 3000);
+      };
+      
+      const stopAutoScroll = () => {
+        if (autoScrollInterval) {
+          clearInterval(autoScrollInterval);
+        }
+      };
+      
+      // Stop auto scroll on interaction
+      carousel.addEventListener('mouseenter', stopAutoScroll);
+      carousel.addEventListener('mouseleave', startAutoScroll);
+      carousel.addEventListener('touchstart', stopAutoScroll);
+      
+      // Pagination click handlers
+      if (pagination) {
+        const paginationBtns = pagination.querySelectorAll('.pagination-btn');
+        paginationBtns.forEach((btn, index) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (isTransitioning) return;
+            stopAutoScroll();
+            // Pagination index 0 corresponds to carousel index 1 (skip info card)
+            currentIndex = index + 1;
+            updateCarousel();
+          });
+        });
+      }
+      
+      prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        stopAutoScroll();
+        movePrev();
+      });
+      
+      nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        stopAutoScroll();
+        moveNext();
+      });
+      
+      // Handle resize
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          updateCarousel(true);
+        }, 150);
+      });
+      
+      // Initial update and start auto scroll
+      setTimeout(() => {
+        updateCarousel(true);
+        startAutoScroll();
+      }, 100);
+      
+      // Clean up on page unload
+      window.addEventListener('beforeunload', stopAutoScroll);
+    });
+  }
+  
+  // Initialize on DOM content loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCarousels);
+  } else {
+    initCarousels();
+  }
+  
+  // Reinitialize on Astro page transitions
+  document.addEventListener('astro:page-load', initCarousels);
+</script>

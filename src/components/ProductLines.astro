@@ -1,0 +1,40 @@
+---
+import { Image } from 'astro:assets';
+import graphImage from '@/assets/images/img-graph-01.png';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<section class={`py-16 md:py-24 lg:py-32 bg-beige ${className}`}>
+  <div class="container mx-auto px-4">
+    <!-- Section Title -->
+    <h2 class="text-center font-display text-3xl md:text-4xl lg:text-5xl font-medium text-navy mb-12 md:mb-16">
+      PRODUCT LINES
+    </h2>
+
+    <!-- Graph Image -->
+    <div class="mb-12 md:mb-16 lg:mb-20">
+      <Image
+        src={graphImage}
+        alt="MATERNITY+ Product Lines Timeline"
+        widths={[390, 768, 1024, 1280]}
+        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
+        loading="lazy"
+        class="w-full max-w-6xl mx-auto h-auto"
+      />
+    </div>
+
+    <!-- Description Text -->
+    <div class="max-w-4xl mx-auto">
+      <p class="text-base md:text-lg lg:text-xl leading-relaxed text-navy text-center">
+        心身ともに変化の大きな妊娠期。<br>
+        妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。<br class="hidden md:block">
+        さまざまなシーンに対応する、高い拡張性を備えるアイテムがMATERNITY+には揃っています。
+      </p>
+    </div>
+  </div>
+</section>

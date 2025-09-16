@@ -1,0 +1,97 @@
+---
+import ProductCarousel from './ProductCarousel.astro';
+import type { ProductInfo, CarouselItem } from './ProductCarousel.astro';
+// Import style images
+import style01 from '@/assets/images/img-style-01.jpg';
+import style02 from '@/assets/images/img-style-02.jpg';
+import style03 from '@/assets/images/img-style-03.jpg';
+import style04 from '@/assets/images/img-style-04.jpg';
+import style05 from '@/assets/images/img-style-05.jpg';
+import style06 from '@/assets/images/img-style-06.jpg';
+import placeholderImage from '@/assets/images/main-kv.jpg';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+// Create carousel data for each row
+const productInfos: ProductInfo[] = [
+  {
+    title: 'CR Move Insulation Jacket',
+    badge: '限定モデル発売開始',
+    description: '撥水加工済みのエコマテリアル搭載のジャケット',
+    colors: ['#1e40af', '#dc2626', '#000000'],
+    sizes: ['S', 'M', 'L', 'XL'],
+    price: '¥24,200 (税込)',
+  },
+  {
+    title: 'Maternity Rain Coat',
+    description: '妊娠中も産後も使える2WAYレインコート',
+    colors: ['#059669', '#7c3aed', '#000000'],
+    sizes: ['M', 'L', 'XL'],
+    price: '¥18,700 (税込)',
+  },
+  {
+    title: 'Baby Carrier Cover',
+    badge: 'NEW',
+    description: '抱っこ紐ごと包める防寒カバー',
+    colors: ['#dc2626', '#000000', '#6b7280'],
+    sizes: ['ONE SIZE'],
+    price: '¥13,200 (税込)',
+  },
+  {
+    title: 'Versatile Daypack',
+    description: 'マザーズバッグとしても使える多機能リュック',
+    colors: ['#000000', '#1e40af', '#6b7280'],
+    sizes: ['ONE SIZE'],
+    price: '¥15,400 (税込)',
+  },
+  {
+    title: 'Fleece Blanket Set',
+    description: '親子でお揃いできるフリースブランケット',
+    colors: ['#f59e0b', '#ec4899', '#10b981'],
+    sizes: ['S', 'L'],
+    price: '¥8,800 (税込)',
+  },
+];
+
+// Create items for carousels using style images
+const createCarouselItems = (startIndex: number): CarouselItem[] => {
+  const images = [style01, style02, style03, style04, style05, style06];
+  return Array.from({ length: 7 }, (_, i) => ({
+    id: `item-${startIndex}-${i}`,
+    image: images[i % images.length] || placeholderImage,
+    alt: `THE NORTH FACE MATERNITY+ Style ${(i % images.length) + 1}`,
+  }));
+};
+
+const carouselRows = productInfos.map((info, index) => ({
+  id: `carousel-${index + 1}`,
+  productInfo: info,
+  items: createCarouselItems(index),
+}));
+---
+
+<section class={`py-16 md:py-24 lg:py-32 ${className}`}>
+  <div class="container mx-auto mb-12 px-4 md:mb-16">
+    <!-- Section Title -->
+    <h2 class="font-display text-center text-3xl font-medium md:text-4xl lg:text-5xl">
+      <span class="text-terra">MATERNITY+</span>
+      <br class="md:hidden" />
+      <span class="text-navy">2025FW COLLECTION</span>
+    </h2>
+  </div>
+
+  <!-- Carousel Rows -->
+  <div class="space-y-12 md:space-y-16">
+    {
+      carouselRows.map((row) => (
+        <div class="relative px-0">
+          <ProductCarousel {...row} />
+        </div>
+      ))
+    }
+  </div>
+</section>

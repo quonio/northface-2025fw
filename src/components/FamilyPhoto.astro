@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import footerCoverImage from '@/assets/images/img-footer-cover.jpg';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<section class={`relative w-full ${className}`}>
+  <div class="relative h-[60vh] md:h-[70vh] lg:h-[80vh] w-full">
+    <Image
+      src={footerCoverImage}
+      alt="THE NORTH FACE MATERNITY+ Family"
+      widths={[390, 768, 1280, 1920, 2560]}
+      sizes="100vw"
+      loading="lazy"
+      class="absolute inset-0 h-full w-full object-cover object-center"
+    />
+  </div>
+</section>
