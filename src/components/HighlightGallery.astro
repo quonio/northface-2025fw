@@ -1,23 +1,25 @@
 ---
-import { Image } from 'astro:assets';
-import style01 from '@/assets/images/img-style-01.jpg';
-import style02 from '@/assets/images/img-style-02.jpg';
-import style03 from '@/assets/images/img-style-03.jpg';
-import style04 from '@/assets/images/img-style-04.jpg';
-import style05 from '@/assets/images/img-style-05.jpg';
-import style06 from '@/assets/images/img-style-06.jpg';
+import { Image } from 'astro:assets'
+import style01 from '@/assets/images/img-style-01.jpg'
+import style02 from '@/assets/images/img-style-02.jpg'
+import style03 from '@/assets/images/img-style-03.jpg'
+import style04 from '@/assets/images/img-style-04.jpg'
+import style05 from '@/assets/images/img-style-05.jpg'
+import style06 from '@/assets/images/img-style-06.jpg'
 
 interface Props {
-  class?: string;
+  class?: string
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props
 ---
 
-<section class={`py-16 md:py-24 lg:py-32 ${className}`}>
+<section class={`pb-16 md:pb-24 lg:pb-32 ${className}`}>
   <div class="container mx-auto px-4">
     <!-- First 3 images -->
-    <div class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8">
+    <div
+      class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8"
+    >
       <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style01}
@@ -52,13 +54,17 @@ const { class: className = '' } = Astro.props;
 
     <!-- Title Section -->
     <div class="mb-16 text-center md:mb-24">
-      <h2 class="font-display text-navy text-3xl font-medium md:text-4xl lg:text-5xl">
+      <h2
+        class="font-display text-navy text-3xl font-medium md:text-4xl lg:text-5xl"
+      >
         THE NORTH FACE MATERNITY+
       </h2>
     </div>
 
     <!-- Second 3 images -->
-    <div class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8">
+    <div
+      class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8"
+    >
       <div class="gallery-item aspect-[3/4] overflow-hidden">
         <Image
           src={style04}
@@ -93,8 +99,11 @@ const { class: className = '' } = Astro.props;
 
     <!-- Description Text -->
     <div class="mx-auto max-w-4xl">
-      <p class="text-navy text-center text-base leading-relaxed md:text-lg lg:text-xl">
-        THE NORTH FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。<br
+      <p
+        class="text-navy text-center text-base leading-relaxed md:text-lg lg:text-xl"
+      >
+        THE NORTH
+        FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。<br
         />
         性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、<br
           class="hidden md:block"
@@ -110,29 +119,29 @@ const { class: className = '' } = Astro.props;
 </section>
 
 <script>
-  import { gsap } from 'gsap';
-  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
   // Register ScrollTrigger plugin
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger)
 
   function initBasicGSAPTest() {
-    console.log('🚀 GSAP Test Starting');
-    console.log('GSAP version:', gsap.version);
-    console.log('ScrollTrigger available:', !!ScrollTrigger);
+    console.log('🚀 GSAP Test Starting')
+    console.log('GSAP version:', gsap.version)
+    console.log('ScrollTrigger available:', !!ScrollTrigger)
 
     // 全てのギャラリーアイテムの初期状態を設定
-    const allGalleryItems = document.querySelectorAll('.gallery-item');
+    const allGalleryItems = document.querySelectorAll('.gallery-item')
     allGalleryItems.forEach((item, index) => {
       gsap.set(item, {
         x: index % 2 === 0 ? -200 : 200,
         opacity: 0,
-        scale: 0.8
-      });
-    });
+        scale: 0.8,
+      })
+    })
 
     // 最初の3つの画像用のScrollTrigger
-    const firstGallerySection = document.querySelectorAll('.grid')[0];
+    const firstGallerySection = document.querySelectorAll('.grid')[0]
     if (firstGallerySection) {
       ScrollTrigger.create({
         trigger: firstGallerySection,
@@ -140,9 +149,10 @@ const { class: className = '' } = Astro.props;
         end: 'bottom 20%',
         markers: true, // デバッグマーカー
         onEnter: () => {
-          console.log('📍 First Gallery ScrollTrigger: onEnter');
+          console.log('📍 First Gallery ScrollTrigger: onEnter')
           // 最初の3つの画像をアニメーション
-          const firstThreeItems = firstGallerySection.querySelectorAll('.gallery-item');
+          const firstThreeItems =
+            firstGallerySection.querySelectorAll('.gallery-item')
           gsap.to(firstThreeItems, {
             x: 0,
             opacity: 1,
@@ -150,18 +160,20 @@ const { class: className = '' } = Astro.props;
             duration: 1.2,
             stagger: 0.15,
             ease: 'power3.out',
-          });
+          })
         },
         onLeave: () => console.log('📍 First Gallery ScrollTrigger: onLeave'),
-        onEnterBack: () => console.log('📍 First Gallery ScrollTrigger: onEnterBack'),
-        onLeaveBack: () => console.log('📍 First Gallery ScrollTrigger: onLeaveBack'),
-      });
+        onEnterBack: () =>
+          console.log('📍 First Gallery ScrollTrigger: onEnterBack'),
+        onLeaveBack: () =>
+          console.log('📍 First Gallery ScrollTrigger: onLeaveBack'),
+      })
     }
 
     // タイトルのアニメーション
-    const testElement = document.querySelector('.text-center h2');
+    const testElement = document.querySelector('.text-center h2')
     if (testElement) {
-      console.log('✅ Test element found:', testElement);
+      console.log('✅ Test element found:', testElement)
 
       // シンプルなアニメーション
       gsap.from(testElement, {
@@ -170,13 +182,13 @@ const { class: className = '' } = Astro.props;
         opacity: 0,
         ease: 'bounce.out',
         onComplete: () => {
-          console.log('🎉 Basic animation completed!');
+          console.log('🎉 Basic animation completed!')
         },
-      });
+      })
     }
 
     // 2番目の3つの画像用のScrollTrigger
-    const secondGallerySection = document.querySelectorAll('.grid')[1];
+    const secondGallerySection = document.querySelectorAll('.grid')[1]
     if (secondGallerySection) {
       ScrollTrigger.create({
         trigger: secondGallerySection,
@@ -184,9 +196,10 @@ const { class: className = '' } = Astro.props;
         end: 'bottom 20%',
         markers: true, // デバッグマーカー
         onEnter: () => {
-          console.log('📍 Second Gallery ScrollTrigger: onEnter');
+          console.log('📍 Second Gallery ScrollTrigger: onEnter')
           // 2番目の3つの画像をアニメーション
-          const secondThreeItems = secondGallerySection.querySelectorAll('.gallery-item');
+          const secondThreeItems =
+            secondGallerySection.querySelectorAll('.gallery-item')
           gsap.to(secondThreeItems, {
             x: 0,
             opacity: 1,
@@ -194,42 +207,45 @@ const { class: className = '' } = Astro.props;
             duration: 1.2,
             stagger: 0.15,
             ease: 'power3.out',
-          });
+          })
         },
         onLeave: () => console.log('📍 Second Gallery ScrollTrigger: onLeave'),
-        onEnterBack: () => console.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
-        onLeaveBack: () => console.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
-        onUpdate: (self) => console.log('📊 ScrollTrigger progress:', self.progress.toFixed(2)),
-      });
+        onEnterBack: () =>
+          console.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
+        onLeaveBack: () =>
+          console.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
+        onUpdate: (self) =>
+          console.log('📊 ScrollTrigger progress:', self.progress.toFixed(2)),
+      })
     }
 
     // メモリ使用量を表示（Chrome限定）
-    const memoryInfo = (performance as any).memory;
+    const memoryInfo = (performance as any).memory
     if (memoryInfo) {
       console.log('💾 Memory usage:', {
         used: Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB',
         total: Math.round(memoryInfo.totalJSHeapSize / 1024 / 1024) + ' MB',
         limit: Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024) + ' MB',
-      });
+      })
     } else {
-      console.log('💾 Memory API not available (Chrome only)');
+      console.log('💾 Memory API not available (Chrome only)')
     }
   }
 
   // 初期化
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('📄 DOM loaded, starting GSAP test in 500ms...');
-      setTimeout(initBasicGSAPTest, 500);
-    });
+      console.log('📄 DOM loaded, starting GSAP test in 500ms...')
+      setTimeout(initBasicGSAPTest, 500)
+    })
   } else {
-    console.log('📄 DOM ready, starting GSAP test in 500ms...');
-    setTimeout(initBasicGSAPTest, 500);
+    console.log('📄 DOM ready, starting GSAP test in 500ms...')
+    setTimeout(initBasicGSAPTest, 500)
   }
 
   // Astro page transitions
   document.addEventListener('astro:page-load', () => {
-    console.log('🔄 Astro page loaded, restarting GSAP test...');
-    setTimeout(initBasicGSAPTest, 500);
-  });
+    console.log('🔄 Astro page loaded, restarting GSAP test...')
+    setTimeout(initBasicGSAPTest, 500)
+  })
 </script>

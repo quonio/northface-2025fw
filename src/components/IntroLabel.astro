@@ -1,20 +1,25 @@
 ---
-import { Image } from 'astro:assets';
-import sealImage1 from '@/assets/images/img-seal-01.png';
-import sealImage2 from '@/assets/images/img-seal-02.png';
+import { Image } from 'astro:assets'
+import sealImage1 from '@/assets/images/img-seal-01.png'
+import sealImage2 from '@/assets/images/img-seal-02.png'
+import { cn } from '@/utils/cn'
 
 interface Props {
-  class?: string;
+  class?: string
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props
 ---
 
-<section class={`relative py-20 md:py-32 lg:py-16 ${className}`}>
+<section class={cn('relative py-20 md:py-32 lg:py-16', className)}>
   <div class="container mx-auto px-4">
     <div class="flex flex-col items-center gap-2 md:gap-2.5">
       <!-- Japanese text label -->
-      <div class="tape-container relative" data-animation="tape-label" data-animation-delay="0">
+      <div
+        class="tape-container relative"
+        data-animation="tape-label"
+        data-animation-delay="0"
+      >
         <Image
           src={sealImage1}
           alt="きみがいるから、行き先がふえていく"
@@ -26,7 +31,11 @@ const { class: className = '' } = Astro.props;
       </div>
 
       <!-- English text label -->
-      <div class="tape-container relative" data-animation="tape-label" data-animation-delay="200">
+      <div
+        class="tape-container relative"
+        data-animation="tape-label"
+        data-animation-delay="200"
+      >
         <Image
           src={sealImage2}
           alt="A heart beat, echoing into the wild."
@@ -107,47 +116,53 @@ const { class: className = '' } = Astro.props;
   const observerOptions = {
     threshold: 0.2,
     rootMargin: '0px 0px -100px 0px',
-  };
+  }
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        const element = entry.target as HTMLElement;
-        const tape = element.querySelector('.tape') as HTMLElement;
-        const delay = parseInt(element.dataset.animationDelay || '0');
+        const element = entry.target as HTMLElement
+        const tape = element.querySelector('.tape') as HTMLElement
+        const delay = parseInt(element.dataset.animationDelay || '0')
 
         if (tape) {
           setTimeout(() => {
-            tape.classList.add('animating');
+            tape.classList.add('animating')
             // Add stuck class after animation completes
             setTimeout(() => {
-              tape.classList.add('stuck');
-            }, 800 + delay);
-          }, delay);
+              tape.classList.add('stuck')
+            }, 800 + delay)
+          }, delay)
         }
 
-        observer.unobserve(element);
+        observer.unobserve(element)
       }
-    });
-  }, observerOptions);
+    })
+  }, observerOptions)
 
   // Observe all tape labels
   document.addEventListener('DOMContentLoaded', () => {
-    const tapeLabels = document.querySelectorAll('[data-animation="tape-label"]');
+    const tapeLabels = document.querySelectorAll(
+      '[data-animation="tape-label"]'
+    )
     tapeLabels.forEach((label) => {
-      observer.observe(label);
-    });
-  });
+      observer.observe(label)
+    })
+  })
 
   // Respect prefers-reduced-motion
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  )
 
   if (prefersReducedMotion.matches) {
-    document.querySelectorAll('[data-animation="tape-label"] .tape').forEach((tape) => {
-      (tape as HTMLElement).style.opacity = '1';
-      (tape as HTMLElement).style.clipPath = 'none';
-      (tape as HTMLElement).style.transform = 'none';
-      (tape as HTMLElement).classList.add('stuck');
-    });
+    document
+      .querySelectorAll('[data-animation="tape-label"] .tape')
+      .forEach((tape) => {
+        ;(tape as HTMLElement).style.opacity = '1'
+        ;(tape as HTMLElement).style.clipPath = 'none'
+        ;(tape as HTMLElement).style.transform = 'none'
+        ;(tape as HTMLElement).classList.add('stuck')
+      })
   }
 </script>

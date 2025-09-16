@@ -11,6 +11,7 @@
   --color-muted: oklch(0.55 0.01 0); /* #8A8A8A */
   --color-tape-orange: oklch(0.75 0.12 55); /* Orange for tape */
   --color-tape-navy: oklch(0.35 0.15 250); /* Navy for tape */
+  --color-dark-navy: oklch(0.15 0.08 240);
   --color-gold: oklch(0.65 0.15 85); /* #be6e00 */
 
   --font-sans: 'Lexend', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
