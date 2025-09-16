@@ -10,9 +10,9 @@ interface Props {
 const { class: className = '' } = Astro.props;
 ---
 
-<section class={`relative py-20 md:py-32 lg:py-40 ${className}`}>
+<section class={`relative py-20 md:py-32 lg:py-16 ${className}`}>
   <div class="container mx-auto px-4">
-    <div class="flex flex-col items-center gap-8 md:gap-12">
+    <div class="flex flex-col items-center gap-2 md:gap-2.5">
       <!-- Japanese text label -->
       <div class="tape-container relative" data-animation="tape-label" data-animation-delay="0">
         <Image
@@ -21,7 +21,7 @@ const { class: className = '' } = Astro.props;
           width={800}
           height={200}
           loading="lazy"
-          class="tape h-auto w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px]"
+          class="tape h-auto w-full max-w-[580px] xl:max-w-[40vw]"
         />
       </div>
 
@@ -33,7 +33,7 @@ const { class: className = '' } = Astro.props;
           width={800}
           height={200}
           loading="lazy"
-          class="tape h-auto w-full max-w-[600px] md:max-w-[700px] lg:max-w-[800px]"
+          class="tape h-auto w-full max-w-[600px] xl:max-w-[32vw]"
         />
       </div>
     </div>
@@ -49,7 +49,7 @@ const { class: className = '' } = Astro.props;
   .tape {
     position: relative;
     transform-origin: center center;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
   }
 
   @keyframes tape-peel {
@@ -94,7 +94,7 @@ const { class: className = '' } = Astro.props;
   }
 
   [data-animation='tape-label'] .tape.stuck {
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
 
   [data-animation-delay='200'] .tape {
