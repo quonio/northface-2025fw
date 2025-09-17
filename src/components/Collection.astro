@@ -100,8 +100,8 @@ const carouselRows = productInfos.map((info, index) => ({
 }))
 ---
 
-<section class={cn('py-16 lg:py-20 overflow-hidden', className)}>
-  <div class="container mx-auto mb-12 px-4 md:mb-16">
+<section class={cn('overflow-hidden', className)}>
+  <div class="container mx-auto mb-20 mt-24 px-4 md:mb-16">
     <!-- Section Title -->
     <h2
       class="font-display text-center text-3xl font-medium md:text-4xl lg:text-[3.819vw]"
@@ -176,18 +176,30 @@ const carouselRows = productInfos.map((info, index) => ({
   </div>
 
   <!-- New Product Grid Section -->
-  <div class="container mx-auto px-4 py-16 md:py-20">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div class="container mx-auto px-4 py-24 flex justify-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-[85vw]">
       <!-- Product 1 -->
       <ProductShowcase
         image={collection7}
         imageAlt="CR Utility Pants"
-        headline="UNISEX"
-        modelNumber="NBM82510"
-        title="CR Utility Pants"
-        copy="機能性とデザイン性を両立した多機能パンツ"
-        price="¥28,600 (Tax incl.)"
-        link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82510"
+        products={[
+          {
+            headline: 'UNISEX',
+            modelNumber: 'NBM82510',
+            title: 'CR Utility Pants',
+            copy: '機能性とデザイン性を両立した多機能パンツ',
+            price: '¥28,600 (Tax incl.)',
+            link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82510',
+          },
+          {
+            headline: 'UNISEX',
+            modelNumber: 'NBM82511',
+            title: 'CR Utility Shorts',
+            copy: '暖かい季節に最適な多機能ショートパンツ',
+            price: '¥22,000 (Tax incl.)',
+            link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82511',
+          },
+        ]}
         size="sm"
       />
 
