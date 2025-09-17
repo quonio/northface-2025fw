@@ -1,20 +1,21 @@
 ---
-import ProductCarousel from './ProductCarousel.astro';
-import type { ProductInfo, CarouselItem } from './ProductCarousel.astro';
+import ProductCarousel from './ProductCarousel.astro'
+import { cn } from '@/utils/cn'
+import type { ProductInfo, CarouselItem } from './ProductCarousel.astro'
 // Import style images
-import style01 from '@/assets/images/img-style-01.jpg';
-import style02 from '@/assets/images/img-style-02.jpg';
-import style03 from '@/assets/images/img-style-03.jpg';
-import style04 from '@/assets/images/img-style-04.jpg';
-import style05 from '@/assets/images/img-style-05.jpg';
-import style06 from '@/assets/images/img-style-06.jpg';
-import placeholderImage from '@/assets/images/main-kv.jpg';
+import style01 from '@/assets/images/img-style-01.jpg'
+import style02 from '@/assets/images/img-style-02.jpg'
+import style03 from '@/assets/images/img-style-03.jpg'
+import style04 from '@/assets/images/img-style-04.jpg'
+import style05 from '@/assets/images/img-style-05.jpg'
+import style06 from '@/assets/images/img-style-06.jpg'
+import placeholderImage from '@/assets/images/main-kv.jpg'
 
 interface Props {
-  class?: string;
+  class?: string
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props
 
 // Create carousel data for each row
 const productInfos: ProductInfo[] = [
@@ -55,32 +56,34 @@ const productInfos: ProductInfo[] = [
     sizes: ['S', 'L'],
     price: '¥8,800 (税込)',
   },
-];
+]
 
 // Create items for carousels using style images
 const createCarouselItems = (startIndex: number): CarouselItem[] => {
-  const images = [style01, style02, style03, style04, style05, style06];
+  const images = [style01, style02, style03, style04, style05, style06]
   return Array.from({ length: 7 }, (_, i) => ({
     id: `item-${startIndex}-${i}`,
     image: images[i % images.length] || placeholderImage,
     alt: `THE NORTH FACE MATERNITY+ Style ${(i % images.length) + 1}`,
-  }));
-};
+  }))
+}
 
 const carouselRows = productInfos.map((info, index) => ({
   id: `carousel-${index + 1}`,
   productInfo: info,
   items: createCarouselItems(index),
-}));
+}))
 ---
 
-<section class={`py-16 md:py-24 lg:py-32 overflow-hidden ${className}`}>
+<section class={cn('py-16 lg:py-20 overflow-hidden', className)}>
   <div class="container mx-auto mb-12 px-4 md:mb-16">
     <!-- Section Title -->
-    <h2 class="font-display text-center text-3xl font-medium md:text-4xl lg:text-5xl">
-      <span class="text-terra">MATERNITY+</span>
-      <br class="md:hidden" />
-      <span class="text-navy">2025FW COLLECTION</span>
+    <h2
+      class="font-display text-center text-3xl font-medium md:text-4xl lg:text-[3.819vw]"
+    >
+      <span class="text-brown">MATERNITY+</span>
+      <br class="md:hidden lg:block" />
+      <span class="text-tape-navy-dark">2025FW COLLECTION</span>
     </h2>
   </div>
 
