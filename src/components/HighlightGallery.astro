@@ -22,8 +22,7 @@ const { class: className = '' } = Astro.props
       class="mb-16 grid grid-cols-1 gap-4 md:mb-20 md:grid-cols-3 md:gap-6 lg:gap-8"
     >
       <div
-        class="gallery-item aspect-[3/4] overflow-hidden"
-        style="border: 1px solid var(--color-dark-navy)"
+        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
       >
         <Image
           src={style01}
@@ -31,12 +30,11 @@ const { class: className = '' } = Astro.props
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+          class="h-full w-full object-cover"
         />
       </div>
       <div
-        class="gallery-item aspect-[3/4] overflow-hidden"
-        style="border: 1px solid var(--color-dark-navy)"
+        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
       >
         <Image
           src={style02}
@@ -44,12 +42,11 @@ const { class: className = '' } = Astro.props
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+          class="h-full w-full object-cover"
         />
       </div>
       <div
-        class="gallery-item aspect-[3/4] overflow-hidden"
-        style="border: 1px solid var(--color-dark-navy)"
+        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
       >
         <Image
           src={style03}
@@ -57,7 +54,7 @@ const { class: className = '' } = Astro.props
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+          class="h-full w-full object-cover"
         />
       </div>
     </div>
@@ -76,8 +73,7 @@ const { class: className = '' } = Astro.props
       class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8"
     >
       <div
-        class="gallery-item aspect-[3/4] overflow-hidden"
-        style="border: 1px solid var(--color-dark-navy)"
+        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
       >
         <Image
           src={style04}
@@ -85,12 +81,11 @@ const { class: className = '' } = Astro.props
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+          class="h-full w-full object-cover transition-transform"
         />
       </div>
       <div
-        class="gallery-item aspect-[3/4] overflow-hidden"
-        style="border: 1px solid var(--color-dark-navy)"
+        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
       >
         <Image
           src={style05}
@@ -98,12 +93,11 @@ const { class: className = '' } = Astro.props
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+          class="h-full w-full object-cover"
         />
       </div>
       <div
-        class="gallery-item aspect-[3/4] overflow-hidden"
-        style="border: 1px solid var(--color-dark-navy)"
+        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
       >
         <Image
           src={style06}
@@ -111,7 +105,7 @@ const { class: className = '' } = Astro.props
           widths={[390, 500, 600]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+          class="h-full w-full object-cover"
         />
       </div>
     </div>
@@ -149,7 +143,7 @@ const { class: className = '' } = Astro.props
     allGalleryItems.forEach((item, index) => {
       gsap.set(item, {
         x: index % 2 === 0 ? -200 : 200,
-        opacity: 0,
+        opacity: 1,
         scale: 0.8,
       })
     })
@@ -170,9 +164,9 @@ const { class: className = '' } = Astro.props
             x: 0,
             opacity: 1,
             scale: 1,
-            duration: 1.2,
+            duration: 0.8,
             stagger: 0.15,
-            ease: 'power3.out',
+            ease: 'steps(3, end)',
           })
         },
         onLeave: () => console.log('📍 First Gallery ScrollTrigger: onLeave'),
@@ -214,9 +208,9 @@ const { class: className = '' } = Astro.props
             x: 0,
             opacity: 1,
             scale: 1,
-            duration: 1.2,
+            duration: 0.8,
             stagger: 0.15,
-            ease: 'power3.out',
+            ease: 'steps(3, end)',
           })
         },
         onLeave: () => console.log('📍 Second Gallery ScrollTrigger: onLeave'),
