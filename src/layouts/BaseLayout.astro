@@ -1,13 +1,15 @@
 ---
-import KomorebiGrid from '@components/KomorebiGrid.astro';
+import KomorebiGrid from '@components/KomorebiGrid.astro'
 
 export interface Props {
-  title: string;
-  description?: string;
+  title: string
+  description?: string
 }
 
-const { title, description = 'THE NORTH FACE Maternity+ 2025 Fall/Winter Collection' } =
-  Astro.props;
+const {
+  title,
+  description = 'THE NORTH FACE Maternity+ 2025 Fall/Winter Collection',
+} = Astro.props
 ---
 
 <!doctype html>
@@ -16,7 +18,11 @@ const { title, description = 'THE NORTH FACE Maternity+ 2025 Fall/Winter Collect
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="https://www.thenorthface.jp/static/full/tnf/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://www.thenorthface.jp/static/full/tnf/images/favicon.ico"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
 
@@ -24,7 +30,7 @@ const { title, description = 'THE NORTH FACE Maternity+ 2025 Fall/Winter Collect
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Lexend:wght@100;200;300;500;600&family=Klee+One:wght@600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&family=Lexend:wght@300;500;600&family=Klee+One:wght@600&display=swap"
       rel="stylesheet"
     />
 
