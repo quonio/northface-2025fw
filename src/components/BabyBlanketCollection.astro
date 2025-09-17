@@ -1,103 +1,113 @@
 ---
-import { Image } from 'astro:assets';
-import ProductCard from './ProductCard.astro';
-import { cn } from '@/utils/cn';
+import { Image } from 'astro:assets'
+import ProductCard from './ProductCard.astro'
+import { cn } from '@/utils/cn'
 // Import style images for gallery
-import style01 from '@/assets/images/img-style-01.jpg';
-import style02 from '@/assets/images/img-style-02.jpg';
-import style03 from '@/assets/images/img-style-03.jpg';
-import style04 from '@/assets/images/img-style-04.jpg';
-import style05 from '@/assets/images/img-style-05.jpg';
-import style06 from '@/assets/images/img-style-06.jpg';
-import placeholderImage from '@/assets/images/main-kv.jpg';
+import style01 from '@/assets/images/img-style-01.jpg'
+import style02 from '@/assets/images/img-style-02.jpg'
+import style03 from '@/assets/images/img-style-03.jpg'
+import style04 from '@/assets/images/img-style-04.jpg'
+import style05 from '@/assets/images/img-style-05.jpg'
+import style06 from '@/assets/images/img-style-06.jpg'
+import placeholderImage from '@/assets/images/main-kv.jpg'
+import blanket01 from '@/assets/images/img-blanket-1.jpg'
+import blanket02 from '@/assets/images/img-blanket-2.jpg'
+import blanket03 from '@/assets/images/img-blanket-3.jpg'
+import { mode } from '@yamada-ui/react'
+import { link } from 'fs'
 
 interface Props {
-  class?: string;
+  class?: string
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props
 
 // Gallery images with rotation values
 const galleryImages = [
-  { image: style01, rotation: -3, alt: "Baby Blanket Style 1" },
-  { image: style02, rotation: 2, alt: "Baby Blanket Style 2" },
-  { image: style03, rotation: -2, alt: "Baby Blanket Style 3" },
-  { image: style04, rotation: 3, alt: "Baby Blanket Style 4" },
-  { image: style05, rotation: -1, alt: "Baby Blanket Style 5" },
-  { image: style06, rotation: 1, alt: "Baby Blanket Style 6" },
-  { image: placeholderImage, rotation: -2, alt: "Baby Blanket Style 7" },
-  { image: placeholderImage, rotation: 2, alt: "Baby Blanket Style 8" },
-];
+  { image: style01, rotation: -3, alt: 'Baby Blanket Style 1' },
+  { image: style02, rotation: 2, alt: 'Baby Blanket Style 2' },
+  { image: style03, rotation: -2, alt: 'Baby Blanket Style 3' },
+  { image: style04, rotation: 3, alt: 'Baby Blanket Style 4' },
+  { image: style05, rotation: -1, alt: 'Baby Blanket Style 5' },
+  { image: style06, rotation: 1, alt: 'Baby Blanket Style 6' },
+  { image: placeholderImage, rotation: -2, alt: 'Baby Blanket Style 7' },
+  { image: placeholderImage, rotation: 2, alt: 'Baby Blanket Style 8' },
+]
 
 // Product cards data
 const products = [
   {
     id: 'blanket-1',
-    image: style01,
-    title: 'Organic Cotton Baby Blanket',
-    description: 'オーガニックコットン100%のベビーブランケット',
-    colors: ['#f3f4f6', '#fbbf24', '#60a5fa'],
-    sizes: ['S', 'M'],
-    price: '¥8,800 (税込)',
+    image: blanket01,
+    modelNumber: 'NNB72501',
+    title: 'Baby Shell Blanket',
+    copy: '軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース',
+    price: '¥14,300 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NNB72501',
   },
   {
     id: 'blanket-2',
-    image: style02,
-    title: 'Fleece Wrap Blanket',
-    badge: 'NEW',
-    description: '防寒性に優れたフリース素材のおくるみ',
-    colors: ['#dc2626', '#10b981', '#1e40af'],
-    sizes: ['ONE SIZE'],
-    price: '¥12,100 (税込)',
+    image: blanket02,
+    modelNumber: 'NNB72501',
+    title: 'Baby Fleece Lining Blanket',
+    copy: '軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース',
+    price: '¥14,300 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NNB72501',
   },
   {
     id: 'blanket-3',
-    image: style03,
-    title: 'Multi-use Baby Mat',
-    description: 'お出かけにも使える多機能ベビーマット',
-    colors: ['#6b7280', '#f59e0b', '#ec4899'],
-    sizes: ['ONE SIZE'],
-    price: '¥15,400 (税込)',
+    image: blanket03,
+    modelNumber: 'NNB72501',
+    title: 'Baby Fleece Lining Blanket',
+    copy: '軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース',
+    price: '¥14,300 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NNB72501',
   },
-];
+]
 ---
 
-<section class={cn('py-16 md:py-24 lg:py-32 bg-navy', className)}>
+<section class={cn('py-16 md:py-24 lg:py-32 bg-navy-dark', className)}>
   <div class="container mx-auto px-4">
     <!-- Section Title -->
-    <h2 class="text-center font-display text-3xl md:text-4xl lg:text-5xl font-medium text-paper mb-12 md:mb-16">
-      Baby Blanket<br>
+    <h2
+      class="text-center font-display text-3xl md:text-4xl lg:text-5xl font-medium text-paper mb-12 md:mb-16"
+    >
+      Baby Blanket<br />
       Collection
     </h2>
 
     <!-- Gallery Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-16 md:mb-24">
-      {galleryImages.map((item, index) => (
-        <div 
-          class="relative overflow-hidden"
-          style={`transform: rotate(${item.rotation}deg);`}
-        >
-          <div class="bg-white p-2 md:p-3 shadow-lg">
-            <div class="aspect-square overflow-hidden">
-              <Image
-                src={item.image}
-                alt={item.alt}
-                widths={[300, 400, 500]}
-                sizes="(max-width: 768px) 50vw, 25vw"
-                loading="lazy"
-                class="h-full w-full object-cover"
-              />
+    <div
+      class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-16 md:mb-24"
+    >
+      {
+        galleryImages.map((item, index) => (
+          <div
+            class="relative overflow-hidden"
+            style={`transform: rotate(${item.rotation}deg);`}
+          >
+            <div class="bg-white p-2 md:p-3 shadow-lg">
+              <div class="aspect-square overflow-hidden">
+                <Image
+                  src={item.image}
+                  alt={item.alt}
+                  widths={[300, 400, 500]}
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  loading="lazy"
+                  class="h-full w-full object-cover"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
 
     <!-- Product Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 max-w-6xl mx-auto">
-      {products.map((product) => (
-        <ProductCard {...product} />
-      ))}
+    <div
+      class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 max-w-6xl mx-auto"
+    >
+      {products.map((product) => <ProductCard {...product} />)}
     </div>
   </div>
 </section>
@@ -107,7 +117,7 @@ const products = [
   .grid > div {
     transition: transform 0.3s ease;
   }
-  
+
   .grid > div:hover {
     transform: rotate(0deg) scale(1.05);
   }

@@ -3,6 +3,7 @@
 /* Tailwind v4 カスタムテーマ */
 @theme {
   --color-navy: oklch(0.2 0.08 240); /* #001F3F */
+  --color-navy-dark: oklch(0.2659 0.0443 248.66); /* #13273a */
   --color-beige: oklch(0.92 0.03 68); /* #F5F1E9 */
   --color-paper: oklch(0.87 0.04 75); /* #FAF7F0 */
   --color-cream: oklch(0.9678 0.0249 89.21); /* #FBF4E2 */
