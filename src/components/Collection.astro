@@ -119,41 +119,41 @@ const carouselRows = productInfos.map((info, index) => ({
   </div>
 
   <!-- Unit Images Section -->
-  <div class="container mx-auto px-24 py-16 md:py-20">
+  <div class="container mx-auto px-24 py-16 md:py-20" id="unit-images-section">
     <div class="grid grid-cols-5 gap-2">
-      <div class="relative">
+      <div class="relative unit-image-wrapper">
         <img
           src={unit01.src}
           alt="Collection Unit 1"
-          class="w-full h-full object-cover"
+          class="unit-image w-full h-full object-cover"
         />
       </div>
-      <div class="relative">
+      <div class="relative unit-image-wrapper">
         <img
           src={unit02.src}
           alt="Collection Unit 2"
-          class="w-full h-full object-cover"
+          class="unit-image w-full h-full object-cover"
         />
       </div>
-      <div class="relative">
+      <div class="relative unit-image-wrapper">
         <img
           src={unit03.src}
           alt="Collection Unit 3"
-          class="w-full h-full object-cover"
+          class="unit-image w-full h-full object-cover"
         />
       </div>
-      <div class="relative">
+      <div class="relative unit-image-wrapper">
         <img
           src={unit04.src}
           alt="Collection Unit 4"
-          class="w-full h-full object-cover"
+          class="unit-image w-full h-full object-cover"
         />
       </div>
-      <div class="relative">
+      <div class="relative unit-image-wrapper">
         <img
           src={unit05.src}
           alt="Collection Unit 5"
-          class="w-full h-full object-cover"
+          class="unit-image w-full h-full object-cover"
         />
       </div>
     </div>
@@ -170,3 +170,100 @@ const carouselRows = productInfos.map((info, index) => ({
     }
   </div>
 </section>
+
+<style>
+  .unit-image-wrapper {
+    perspective: 1000px;
+  }
+
+  .unit-image {
+    transform-origin: top center;
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .unit-image.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .unit-image.shake-active {
+    animation: shake 1200ms;
+  }
+
+  @keyframes shake {
+    0% {
+      transform: rotateZ(0);
+    }
+    10% {
+      transform: rotateZ(-15deg);
+    }
+    20% {
+      transform: rotateZ(7.5deg);
+    }
+    30% {
+      transform: rotateZ(-5deg);
+    }
+    40% {
+      transform: rotateZ(3.75deg);
+    }
+    50% {
+      transform: rotateZ(-3deg);
+    }
+    60% {
+      transform: rotateZ(2.5deg);
+    }
+    70% {
+      transform: rotateZ(-2.14deg);
+    }
+    80% {
+      transform: rotateZ(1.88deg);
+    }
+    90% {
+      transform: rotateZ(-1.67deg);
+    }
+    100% {
+      transform: rotateZ(0);
+    }
+  }
+</style>
+
+<script>
+  // Unit Images Shake Animation on Intersection
+  document.addEventListener('DOMContentLoaded', () => {
+    const unitImages = document.querySelectorAll('.unit-image')
+    const imageSection = document.getElementById('unit-images-section')
+
+    if (imageSection && unitImages.length > 0) {
+      const observerOptions = {
+        root: null,
+        rootMargin: '-10% 0px',
+        threshold: 0.5,
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Add fade-in and shake animation simultaneously
+            unitImages.forEach((img, index) => {
+              setTimeout(() => {
+                // Add both classes at the same time
+                img.classList.add('visible', 'shake-active')
+                // Remove only the shake class after animation completes
+                setTimeout(() => {
+                  img.classList.remove('shake-active')
+                }, 1200)
+              }, index * 100) // Stagger the animations
+            })
+
+            // Disconnect observer after triggering once
+            observer.disconnect()
+          }
+        })
+      }, observerOptions)
+
+      observer.observe(imageSection)
+    }
+  })
+</script>

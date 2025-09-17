@@ -16,7 +16,7 @@ const { href, class: className = '' } = Astro.props
     className,
   ]}
 >
-  <span class="relative z-10 inline-block">BUY</span>
+  <span class="buy-text relative z-10 inline-block">BUY</span>
   <svg
     class="buy-link-svg absolute left-1/2 -translate-x-1/2 -bottom-1 w-[150%] h-5 stroke-brown"
     viewBox="0 0 92 12"
@@ -41,9 +41,19 @@ const { href, class: className = '' } = Astro.props
       opacity 0.1s ease-in-out;
   }
 
+  /* BUYテキストのシェイクアニメーション */
+  .buy-text {
+    transform-origin: center bottom;
+    transition: transform 0.3s ease;
+  }
+
   /* ホバー時のアニメーション */
   .buy-link:hover .buy-link-path {
     animation: drawLine 1.2s ease-in-out;
+  }
+
+  .buy-link:hover .buy-text {
+    animation: textShake 1.2s ease-in-out;
   }
 
   @keyframes drawLine {
@@ -66,6 +76,42 @@ const { href, class: className = '' } = Astro.props
     100% {
       stroke-dashoffset: 0;
       opacity: 1;
+    }
+  }
+
+  @keyframes textShake {
+    0% {
+      transform: rotateZ(0);
+    }
+    10% {
+      transform: rotateZ(-8deg);
+    }
+    20% {
+      transform: rotateZ(4deg);
+    }
+    30% {
+      transform: rotateZ(-2.67deg);
+    }
+    40% {
+      transform: rotateZ(2deg);
+    }
+    50% {
+      transform: rotateZ(-1.6deg);
+    }
+    60% {
+      transform: rotateZ(1.33deg);
+    }
+    70% {
+      transform: rotateZ(-1.14deg);
+    }
+    80% {
+      transform: rotateZ(1deg);
+    }
+    90% {
+      transform: rotateZ(-0.89deg);
+    }
+    100% {
+      transform: rotateZ(0);
     }
   }
 </style>
