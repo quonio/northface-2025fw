@@ -7,6 +7,7 @@
   --color-paper: oklch(0.87 0.04 75); /* #FAF7F0 */
   --color-cream: oklch(0.9678 0.0249 89.21); /* #FBF4E2 */
   --color-cream-light: oklch(0.97 0.06 85); /* #f9dfc6 */
+  --color-cream-dark: oklch(0.9063 0.0487 69.16); /* #f6dbbe */
   --color-terra: oklch(0.55 0.08 45); /* #A67C52 */
   --color-brown: oklch(0.4442 0.0961 63.33); /* #78460a */
   --color-tnf-blue: oklch(0.55 0.15 250); /* #0055FF */
@@ -15,10 +16,12 @@
   --color-tape-navy: oklch(0.35 0.15 250); /* #0040AA */
   --color-tape-navy-dark: oklch(0.3974 0.0922 260.06); /* #284678 */
   --color-dark-navy: oklch(0.15 0.08 240); /* #001530 */
+  --color-light-navy: oklch(0.2933 0.1073 257.73); /* #002960 */
   --color-gold: oklch(0.65 0.15 85); /* #be6e00 */
 
   --font-sans: 'Lexend', 'Noto Sans JP', system-ui, -apple-system, sans-serif;
   --font-display: 'Lexend', system-ui, -apple-system, sans-serif;
+  --font-sans-jp: 'Noto Sans JP', system-ui, -apple-system, sans-serif;
   --font-handwriting: 'Klee One', 'Noto Sans JP', cursive;
 
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);

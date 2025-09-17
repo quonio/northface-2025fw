@@ -4,12 +4,13 @@ import ImageCard from './ImageCard.astro'
 import type { ImageMetadata } from 'astro'
 
 export interface ProductInfo {
+  headline?: string
+  modelNumber?: string
   title: string
-  badge?: string
+  copy?: string
   description?: string
-  colors?: string[]
-  sizes?: string[]
   price?: string
+  link?: string
 }
 
 export interface CarouselItem {

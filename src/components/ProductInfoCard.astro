@@ -1,76 +1,100 @@
 ---
+import headlineFrame from '../assets/images/decorations/headline-frame.svg'
+import { cn } from '@/utils/cn'
+
 interface Props {
+  headline?: string
+  modelNumber?: string
   title: string
-  badge?: string
+  copy?: string
   description?: string
   colors?: string[]
   sizes?: string[]
   price?: string
+  link?: string
   totalPages: number
   carouselId: string
 }
 
 const {
+  headline,
+  modelNumber,
   title,
-  badge,
+  copy,
   description,
   colors = [],
   sizes = [],
   price,
+  link,
   totalPages,
   carouselId,
 } = Astro.props
+
+// ®記号を上付きのspanタグに変換する関数
+const formatRegisteredMark = (text: string | undefined) => {
+  if (!text) return ''
+  return text.replace(/®/g, '<span class="text-[0.9em] align-top">®</span>')
+}
 ---
 
 <article
-  class="product-info-card bg-paper rounded-lg p-6 h-full flex flex-col justify-between"
+  class="bg-cream-dark p-6 h-full flex flex-col justify-between min-h-full border border-light-navy"
 >
   <div>
     {
-      badge && (
-        <span class="inline-block bg-red-500 text-white text-xs px-2 py-1 rounded mb-4">
-          {badge}
-        </span>
+      headline && (
+        <div class="inline-block mb-4">
+          <span
+            class="inline-block bg-no-repeat bg-center p-[0.5em] text-[0.694vw] lg:text-[10px] font-light uppercase tracking-[0.1em] text-brown whitespace-nowrap min-w-[62px] min-h-[20px] leading-none"
+            style={`background-image: url(${headlineFrame.src}); background-size: 100% 100%;`}
+          >
+            {headline}
+          </span>
+        </div>
       )
     }
 
-    <h3 class="font-sans text-lg font-medium text-navy mb-3">
+    {
+      modelNumber && (
+        <p class="text-xs text-tape-navy-dark font-light mb-2">{modelNumber}</p>
+      )
+    }
+
+    <h3
+      class="font-sans text-[2.2vw] font-medium text-tape-navy-dark mb-3 tracking-tight"
+    >
       {title}
     </h3>
 
+    {price && <p class="text-[0.972vw] font-medium text-brown mb-6">{price}</p>}
+
+    {
+      copy && (
+        <p class="text-[1.25vw] font-bold text-tape-navy-dark mb-4">{copy}</p>
+      )
+    }
+
     {
       description && (
-        <p class="text-sm text-muted mb-4 leading-relaxed">{description}</p>
+        <p
+          class="text-[1.1vw] text-tape-navy-dark mb-4 leading-[1.75] font-normal font-sans-jp"
+          set:html={formatRegisteredMark(description)}
+        />
       )
     }
 
     {
-      colors.length > 0 && (
-        <div class="flex gap-2 mb-4">
-          {colors.map((color) => (
-            <span
-              class="w-6 h-6 rounded-full border border-gray-300 shadow-sm"
-              style={`background-color: ${color}`}
-              aria-label={`Color: ${color}`}
-            />
-          ))}
-        </div>
+      link && (
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-block text-[2.2vw] text-brown hover:no-underline transition-all font-extralight"
+        >
+          BUY
+        </a>
       )
     }
-
-    {
-      sizes.length > 0 && (
-        <div class="flex flex-wrap gap-2 mb-4">
-          {sizes.map((size) => (
-            <span class="text-xs px-3 py-1 border border-gray-300 rounded">
-              {size}
-            </span>
-          ))}
-        </div>
-      )
-    }
-
-    {price && <p class="text-base font-medium text-navy mb-6">{price}</p>}
   </div>
 
   <!-- Pagination -->
@@ -78,7 +102,12 @@ const {
     {
       Array.from({ length: totalPages }, (_, i) => (
         <button
-          class="pagination-btn px-3 py-2 text-sm bg-white border border-gray-300 hover:bg-gray-50 transition-colors first:rounded-l last:rounded-r -ml-px first:ml-0"
+          class={cn(
+            'relative z-[1] px-3 py-2 text-sm bg-white border border-gray-300',
+            'hover:bg-gray-50 transition-colors',
+            'first:rounded-l last:rounded-r -ml-px first:ml-0',
+            '[&.is-active]:bg-navy [&.is-active]:text-white [&.is-active]:border-navy [&.is-active]:z-[2]'
+          )}
           data-page={i}
           aria-label={`Go to page ${i + 1}`}
         >
@@ -88,22 +117,3 @@ const {
     }
   </div>
 </article>
-
-<style>
-  .pagination-btn {
-    position: relative;
-    z-index: 1;
-  }
-
-  .pagination-btn.is-active {
-    background-color: var(--color-navy);
-    color: white;
-    border-color: var(--color-navy);
-    z-index: 2;
-  }
-
-  .product-info-card {
-    min-height: 100%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-</style>

@@ -10,7 +10,7 @@ interface Props {
 const { image, alt } = Astro.props
 ---
 
-<div class="image-card relative aspect-[3/4] overflow-hidden">
+<div class="relative aspect-[3/4] overflow-hidden border border-light-navy">
   <Image
     src={image}
     alt={alt}
@@ -20,9 +20,3 @@ const { image, alt } = Astro.props
     class="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
   />
 </div>
-
-<style>
-  .image-card {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  }
-</style>
