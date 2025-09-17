@@ -103,9 +103,9 @@ const carouselRows = productInfos.map((info, index) => ({
   <!-- Carousel Rows -->
   <div class="space-y-12 md:space-y-16">
     {
-      carouselRows.map((row) => (
+      carouselRows.map((row, index) => (
         <div class="relative px-0">
-          <ProductCarousel {...row} />
+          <ProductCarousel {...row} rowIndex={index + 1} />
         </div>
       ))
     }

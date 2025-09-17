@@ -23,43 +23,121 @@ interface Props {
   productInfo: ProductInfo
   items: CarouselItem[]
   id: string
+  rowIndex?: number
 }
 
-const { productInfo, items, id } = Astro.props
+const { productInfo, items, id, rowIndex = 1 } = Astro.props
 ---
 
-<div class="product-carousel relative" data-carousel={id}>
-  <div class="overflow-visible lg:overflow-hidden relative">
-    <div
-      class="flex gap-4 md:gap-6 transition-transform duration-500 ease-out"
-      data-carousel-track
-    >
-      <!-- Product Info Card -->
-      <div
-        class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[34vw]"
-        data-carousel-item
-      >
-        <ProductInfoCard
-          {...productInfo}
-          totalPages={items.length}
-          carouselId={id}
-        />
-      </div>
-
-      <!-- Image Cards -->
+<div
+  class="product-carousel relative"
+  data-carousel={id}
+  data-row-index={rowIndex}
+>
+  <!-- Desktop: Fixed 4 positions layout -->
+  <div class="hidden lg:flex gap-6 relative -ml-[20vw]">
+    <!-- Position 1 -->
+    <div class="relative w-[34vw] flex-shrink-0 aspect-[3/4]">
       {
-        items.map((item) => (
-          <div class="flex-shrink-0 w-[280px] lg:w-[34vw]" data-carousel-item>
+        items.map((item, index) => (
+          <div
+            class:list={[
+              'absolute inset-0 transition-opacity duration-500',
+              {
+                'opacity-100': index === items.length - 1,
+                'opacity-0': index !== items.length - 1,
+              },
+            ]}
+            data-carousel-item
+            data-position="1"
+            data-item-index={index}
+          >
             <ImageCard image={item.image} alt={item.alt} />
           </div>
         ))
       }
+    </div>
 
-      <!-- Clone first few items for seamless loop -->
-      <div
-        class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[34vw]"
-        data-carousel-clone
-      >
+    <!-- Position 2 (or ProductInfoCard for row 2) -->
+    <div class="relative w-[34vw] flex-shrink-0 aspect-[3/4]">
+      {
+        rowIndex % 2 === 0 ? (
+          <ProductInfoCard
+            {...productInfo}
+            totalPages={items.length}
+            carouselId={id}
+          />
+        ) : (
+          items.map((item, index) => (
+            <div
+              class:list={[
+                'absolute inset-0 transition-opacity duration-500',
+                { 'opacity-100': index === 0, 'opacity-0': index !== 0 },
+              ]}
+              data-carousel-item
+              data-position="2"
+              data-item-index={index}
+            >
+              <ImageCard image={item.image} alt={item.alt} />
+            </div>
+          ))
+        )
+      }
+    </div>
+
+    <!-- Position 3 (or ProductInfoCard for row 1) -->
+    <div class="relative w-[34vw] flex-shrink-0 aspect-[3/4]">
+      {
+        rowIndex % 2 === 1 ? (
+          <ProductInfoCard
+            {...productInfo}
+            totalPages={items.length}
+            carouselId={id}
+          />
+        ) : (
+          items.map((item, index) => (
+            <div
+              class:list={[
+                'absolute inset-0 transition-opacity duration-500',
+                { 'opacity-100': index === 1, 'opacity-0': index !== 1 },
+              ]}
+              data-carousel-item
+              data-position="3"
+              data-item-index={index}
+            >
+              <ImageCard image={item.image} alt={item.alt} />
+            </div>
+          ))
+        )
+      }
+    </div>
+
+    <!-- Position 4 (half visible) -->
+    <div class="relative w-[17vw] flex-shrink-0 overflow-hidden aspect-[3/4]">
+      {
+        items.map((item, index) => (
+          <div
+            class:list={[
+              'absolute inset-0 transition-opacity duration-500',
+              { 'opacity-100': index === 2, 'opacity-0': index !== 2 },
+            ]}
+            data-carousel-item
+            data-position="4"
+            data-item-index={index}
+          >
+            <div class="w-[34vw]">
+              <ImageCard image={item.image} alt={item.alt} />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Mobile: Traditional scroll -->
+  <div class="lg:hidden overflow-x-auto">
+    <div class="flex gap-4 md:gap-6" data-carousel-track>
+      <div class="flex-shrink-0 w-[280px] md:w-[320px]">
         <ProductInfoCard
           {...productInfo}
           totalPages={items.length}
@@ -67,11 +145,8 @@ const { productInfo, items, id } = Astro.props
         />
       </div>
       {
-        items.slice(0, 3).map((item) => (
-          <div
-            class="flex-shrink-0 w-[280px] md:w-[320px] lg:w-[34vw]"
-            data-carousel-clone
-          >
+        items.map((item) => (
+          <div class="flex-shrink-0 w-[280px]">
             <ImageCard image={item.image} alt={item.alt} />
           </div>
         ))
@@ -119,99 +194,102 @@ const { productInfo, items, id } = Astro.props
   </button>
 </div>
 
-<script define:vars={{}}>
+<script is:inline>
   function initCarousels() {
     const carousels = document.querySelectorAll('[data-carousel]')
 
     carousels.forEach((carousel) => {
-      const track = carousel.querySelector('[data-carousel-track]')
       const prevBtn = carousel.querySelector('[data-carousel-prev]')
       const nextBtn = carousel.querySelector('[data-carousel-next]')
       const carouselId = carousel.getAttribute('data-carousel')
+      const rowIndex = parseInt(carousel.getAttribute('data-row-index') || '1')
       const pagination = document.querySelector(
         `[data-carousel-pagination="${carouselId}"]`
       )
 
-      if (!track || !prevBtn || !nextBtn) return
+      if (!prevBtn || !nextBtn) return
 
       let currentIndex = 0
       let autoScrollInterval
       let isTransitioning = false
+      const isDesktop = window.innerWidth >= 1024
 
-      const originalItems = track.querySelectorAll('[data-carousel-item]')
-      const totalOriginalItems = originalItems.length
-      if (totalOriginalItems === 0) return
+      // Get all carousel items and group by position
+      const positions = isDesktop
+        ? {
+            1: carousel.querySelectorAll('[data-position="1"]'),
+            2: carousel.querySelectorAll('[data-position="2"]'),
+            3: carousel.querySelectorAll('[data-position="3"]'),
+            4: carousel.querySelectorAll('[data-position="4"]'),
+          }
+        : null
 
-      const updateCarousel = (skipTransition = false) => {
-        const itemWidth = track.children[0].offsetWidth
-        const gap = window.innerWidth >= 768 ? 24 : 16
+      // For mobile, get track
+      const track = carousel.querySelector('[data-carousel-track]')
 
-        // 初期位置を半分の幅分左にずらして4枚表示
-        const initialOffset = window.innerWidth >= 1024 ? itemWidth / 2 : 0
-        const offset = currentIndex * (itemWidth + gap) - initialOffset
+      // Total items count
+      const totalItems =
+        isDesktop && positions[1]
+          ? positions[1].length
+          : track
+            ? track.children.length - 1
+            : 0 // -1 for info card
 
-        if (skipTransition) {
-          track.style.transition = 'none'
-        } else {
-          track.style.transition = 'transform 500ms ease-out'
+      if (totalItems === 0) return
+
+      const updateCarousel = () => {
+        if (isDesktop && positions) {
+          // Desktop: Update each position
+          Object.entries(positions).forEach(([pos, items]) => {
+            items.forEach((item) => {
+              const itemIndex = parseInt(item.getAttribute('data-item-index'))
+              const targetIndex =
+                (currentIndex + parseInt(pos) - 1) % totalItems
+
+              if (itemIndex === targetIndex) {
+                item.classList.add('opacity-100')
+                item.classList.remove('opacity-0')
+              } else {
+                item.classList.remove('opacity-100')
+                item.classList.add('opacity-0')
+              }
+            })
+          })
+        } else if (track) {
+          // Mobile: Traditional scroll
+          const itemWidth = track.children[0].offsetWidth
+          const gap = 16
+          const offset = currentIndex * (itemWidth + gap)
+          track.style.transform = `translateX(-${offset}px)`
         }
-
-        track.style.transform = `translateX(-${offset}px)`
 
         // Update pagination
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
-          const actualIndex = currentIndex % totalOriginalItems
           paginationBtns.forEach((btn, index) => {
-            // If we're on the info card (index 0), no pagination button is active
-            // Otherwise, the active button corresponds to the image index
-            const isActive = actualIndex > 0 && index === actualIndex - 1
-            btn.classList.toggle('is-active', isActive)
+            btn.classList.toggle('is-active', index === currentIndex)
           })
         }
-
-        // Force reflow if we removed transition
-        if (skipTransition) {
-          track.offsetHeight // Force reflow
-          track.style.transition = 'transform 500ms ease-out'
-        }
       }
-
-      const handleTransitionEnd = () => {
-        isTransitioning = false
-
-        // If we've reached the cloned items, jump back to the original
-        if (currentIndex >= totalOriginalItems) {
-          currentIndex = currentIndex % totalOriginalItems
-          updateCarousel(true)
-        }
-      }
-
-      track.addEventListener('transitionend', handleTransitionEnd)
 
       const moveNext = () => {
         if (isTransitioning) return
         isTransitioning = true
-        currentIndex++
+        currentIndex = (currentIndex + 1) % totalItems
         updateCarousel()
+        setTimeout(() => {
+          isTransitioning = false
+        }, 500)
       }
 
       const movePrev = () => {
         if (isTransitioning) return
         isTransitioning = true
-
-        if (currentIndex === 0) {
-          // Jump to the last real item
-          currentIndex = totalOriginalItems
-          updateCarousel(true)
-          setTimeout(() => {
-            currentIndex--
-            updateCarousel()
-          }, 50)
-        } else {
-          currentIndex--
-          updateCarousel()
-        }
+        currentIndex = currentIndex === 0 ? totalItems - 1 : currentIndex - 1
+        updateCarousel()
+        setTimeout(() => {
+          isTransitioning = false
+        }, 500)
       }
 
       const startAutoScroll = () => {
@@ -237,8 +315,7 @@ const { productInfo, items, id } = Astro.props
             e.preventDefault()
             if (isTransitioning) return
             stopAutoScroll()
-            // Pagination index 0 corresponds to carousel index 1 (skip info card)
-            currentIndex = index + 1
+            currentIndex = index
             updateCarousel()
           })
         })
@@ -256,20 +333,9 @@ const { productInfo, items, id } = Astro.props
         moveNext()
       })
 
-      // Handle resize
-      let resizeTimeout
-      window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout)
-        resizeTimeout = setTimeout(() => {
-          updateCarousel(true)
-        }, 150)
-      })
-
       // Initial update and start auto scroll
-      setTimeout(() => {
-        updateCarousel(true)
-        startAutoScroll()
-      }, 100)
+      updateCarousel()
+      startAutoScroll()
 
       // Clean up on page unload
       window.addEventListener('beforeunload', stopAutoScroll)
