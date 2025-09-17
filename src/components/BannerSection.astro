@@ -33,12 +33,12 @@ const banners = [
 <section class={`py-16 md:py-24 lg:py-32 ${className}`}>
   <div class="container mx-auto px-4">
     <!-- White border line -->
-    <div class="w-full h-px bg-gray-200 mb-8 md:mb-12"></div>
-    
+    <div class="w-full h-1 bg-gray-200 mb-8 md:mb-12"></div>
+
     <!-- Banner Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
       {banners.map((banner) => (
-        <a 
+        <a
           href={banner.href}
           class="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
         >
