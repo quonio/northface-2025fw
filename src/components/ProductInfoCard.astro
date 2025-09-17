@@ -39,7 +39,7 @@ const formatRegisteredMark = (text: string | undefined) => {
 ---
 
 <article
-  class="bg-cream-dark p-[2.24vw] h-full flex flex-col justify-between min-h-full border border-light-navy"
+  class="bg-cream-dark p-[2.24vw] h-full flex flex-col justify-between min-h-full border border-light-navy relative"
 >
   <div>
     {
@@ -83,9 +83,13 @@ const formatRegisteredMark = (text: string | undefined) => {
         />
       )
     }
-
-    {link && <BuyLink href={link} />}
   </div>
+  
+  {link && (
+    <div class="absolute right-[2.24vw] bottom-[calc(2.24vw+4.5vw+1rem)]">
+      <BuyLink href={link} />
+    </div>
+  )}
 
   <!-- Pagination -->
   <div
