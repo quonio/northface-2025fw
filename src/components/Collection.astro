@@ -74,10 +74,10 @@ const productInfos: ProductInfo[] = [
 // Create items for carousels using style images
 const createCarouselItems = (startIndex: number): CarouselItem[] => {
   const images = [style01, style02, style03, style04, style05, style06]
-  return Array.from({ length: 7 }, (_, i) => ({
+  return Array.from({ length: 6 }, (_, i) => ({
     id: `item-${startIndex}-${i}`,
-    image: images[i % images.length] || placeholderImage,
-    alt: `THE NORTH FACE MATERNITY+ Style ${(i % images.length) + 1}`,
+    image: images[i],
+    alt: `THE NORTH FACE MATERNITY+ Style ${i + 1}`,
   }))
 }
 

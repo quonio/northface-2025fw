@@ -17,6 +17,7 @@
   --color-tape-navy-dark: oklch(0.3974 0.0922 260.06); /* #284678 */
   --color-dark-navy: oklch(0.15 0.08 240); /* #001530 */
   --color-light-navy: oklch(0.2933 0.1073 257.73); /* #002960 */
+  --color-light-navy-2: oklch(0.2706 0.0457 249.85); /* #14283c */
   --color-gold: oklch(0.65 0.15 85); /* #be6e00 */
 
   --font-sans: 'Lexend', 'Noto Sans JP', system-ui, -apple-system, sans-serif;

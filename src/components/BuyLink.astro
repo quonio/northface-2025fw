@@ -1,0 +1,71 @@
+---
+interface Props {
+  href: string
+  class?: string
+}
+
+const { href, class: className = '' } = Astro.props
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[
+    'buy-link inline-block text-[2.2vw] text-brown hover:no-underline transition-all font-extralight relative',
+    className,
+  ]}
+>
+  <span class="relative z-10 inline-block">BUY</span>
+  <svg
+    class="buy-link-svg absolute left-1/2 -translate-x-1/2 -bottom-1 w-[150%] h-5 stroke-brown"
+    viewBox="0 0 92 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      class="buy-link-path"
+      d="M0.23999 11.4C7.38999 7.54997 15.36 5.20997 23.46 4.58997C24.96 4.47997 26.7 4.51997 27.64 5.69997C28.21 6.41997 28.33 7.38997 28.72 8.21997C29.55 9.95997 31.56 10.88 33.49 10.95C35.42 11.02 37.29 10.4 39.11 9.78997C42.61 8.61997 46.1 7.43997 49.6 6.26997C50.67 5.90997 51.77 5.54997 52.89 5.61997C54.01 5.68997 55.18 6.28997 55.57 7.34997C55.85 8.10997 55.7 8.97997 55.99 9.73997C56.39 10.78 57.55 11.37 58.67 11.43C59.79 11.48 60.87 11.11 61.93 10.74C71.66 7.31997 81.39 3.88997 91.11 0.469971"
+      stroke="currentColor"
+      stroke-miterlimit="10"
+      stroke-dasharray="200"
+      stroke-dashoffset="0"></path>
+  </svg>
+</a>
+
+<style>
+  /* 初期状態：線が表示されている */
+  .buy-link-path {
+    transition:
+      stroke-dashoffset 0.8s ease-in-out,
+      opacity 0.1s ease-in-out;
+  }
+
+  /* ホバー時のアニメーション */
+  .buy-link:hover .buy-link-path {
+    animation: drawLine 1.2s ease-in-out;
+  }
+
+  @keyframes drawLine {
+    0% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+    30% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+    40% {
+      stroke-dashoffset: 200;
+      opacity: 0;
+    }
+    50% {
+      stroke-dashoffset: 200;
+      opacity: 1;
+    }
+    100% {
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+  }
+</style>

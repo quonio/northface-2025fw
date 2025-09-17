@@ -1,6 +1,7 @@
 ---
 import headlineFrame from '../assets/images/decorations/headline-frame.svg'
 import { cn } from '@/utils/cn'
+import BuyLink from './BuyLink.astro'
 
 interface Props {
   headline?: string
@@ -38,7 +39,7 @@ const formatRegisteredMark = (text: string | undefined) => {
 ---
 
 <article
-  class="bg-cream-dark p-6 h-full flex flex-col justify-between min-h-full border border-light-navy"
+  class="bg-cream-dark p-[2.24vw] h-full flex flex-col justify-between min-h-full border border-light-navy"
 >
   <div>
     {
@@ -83,30 +84,23 @@ const formatRegisteredMark = (text: string | undefined) => {
       )
     }
 
-    {
-      link && (
-        <a
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-block text-[2.2vw] text-brown hover:no-underline transition-all font-extralight"
-        >
-          BUY
-        </a>
-      )
-    }
+    {link && <BuyLink href={link} />}
   </div>
 
   <!-- Pagination -->
-  <div class="pager flex gap-0" data-carousel-pagination={carouselId}>
+  <div
+    class="pager flex gap-0 -mx-[2.24vw] -mb-[2.24vw] mt-auto"
+    style="width: calc(100% + 4.48vw);"
+    data-carousel-pagination={carouselId}
+  >
     {
       Array.from({ length: totalPages }, (_, i) => (
         <button
           class={cn(
-            'relative z-[1] px-3 py-2 text-sm bg-white border border-gray-300',
-            'hover:bg-gray-50 transition-colors',
-            'first:rounded-l last:rounded-r -ml-px first:ml-0',
-            '[&.is-active]:bg-navy [&.is-active]:text-white [&.is-active]:border-navy [&.is-active]:z-[2]'
+            'relative z-[1] flex-1 py-2 text-[4.5vw] bg-transparent border-t border-r border-light-navy-2 font-thin leading-none text-light-navy-2',
+            'hover:bg-light-navy-2/10 transition-colors',
+            'last:border-r-0',
+            '[&.is-active]:bg-light-navy-2 [&.is-active]:text-white [&.is-active]:border-light-navy-2 [&.is-active]:z-[2]'
           )}
           data-page={i}
           aria-label={`Go to page ${i + 1}`}
