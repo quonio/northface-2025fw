@@ -11,6 +11,13 @@ import style05 from '@/assets/images/img-style-05.jpg'
 import style06 from '@/assets/images/img-style-06.jpg'
 import placeholderImage from '@/assets/images/main-kv.jpg'
 
+// Import unit images
+import unit01 from '@/assets/images/img-collection-unit-01.png'
+import unit02 from '@/assets/images/img-collection-unit-02.png'
+import unit03 from '@/assets/images/img-collection-unit-03.png'
+import unit04 from '@/assets/images/img-collection-unit-04.png'
+import unit05 from '@/assets/images/img-collection-unit-05.png'
+
 interface Props {
   class?: string
 }
@@ -100,12 +107,64 @@ const carouselRows = productInfos.map((info, index) => ({
     </h2>
   </div>
 
-  <!-- Carousel Rows -->
+  <!-- First 3 Carousel Rows -->
   <div class="space-y-12 md:space-y-16">
     {
-      carouselRows.map((row, index) => (
+      carouselRows.slice(0, 3).map((row, index) => (
         <div class="relative px-0">
           <ProductCarousel {...row} rowIndex={index + 1} />
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Unit Images Section -->
+  <div class="container mx-auto px-24 py-16 md:py-20">
+    <div class="grid grid-cols-5 gap-2">
+      <div class="relative">
+        <img
+          src={unit01.src}
+          alt="Collection Unit 1"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="relative">
+        <img
+          src={unit02.src}
+          alt="Collection Unit 2"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="relative">
+        <img
+          src={unit03.src}
+          alt="Collection Unit 3"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="relative">
+        <img
+          src={unit04.src}
+          alt="Collection Unit 4"
+          class="w-full h-full object-cover"
+        />
+      </div>
+      <div class="relative">
+        <img
+          src={unit05.src}
+          alt="Collection Unit 5"
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Last 2 Carousel Rows -->
+  <div class="space-y-12 md:space-y-16">
+    {
+      carouselRows.slice(3).map((row, index) => (
+        <div class="relative px-0">
+          <ProductCarousel {...row} rowIndex={index + 4} />
         </div>
       ))
     }
