@@ -139,15 +139,10 @@ const { class: className = '' } = Astro.props
 
 <script>
   import { gsap } from 'gsap'
-  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import { createManagedScrollTrigger } from '@/utils/gsap-manager'
 
-  // Register ScrollTrigger plugin
-  gsap.registerPlugin(ScrollTrigger)
-
-  function initBasicGSAPTest() {
-    console.log('🚀 GSAP Test Starting')
-    console.log('GSAP version:', gsap.version)
-    console.log('ScrollTrigger available:', !!ScrollTrigger)
+  function initHighlightGalleryAnimations() {
+    console.log('🚀 HighlightGallery: Starting animations')
 
     // 全てのギャラリーアイテムの初期状態を設定
     const allGalleryItems = document.querySelectorAll('.gallery-item')
@@ -162,14 +157,13 @@ const { class: className = '' } = Astro.props
     // 最初の3つの画像用のScrollTrigger
     const firstGallerySection = document.querySelectorAll('.grid')[0]
     if (firstGallerySection) {
-      ScrollTrigger.create({
+      createManagedScrollTrigger('highlight-gallery-first', {
         trigger: firstGallerySection,
         start: 'top 80%',
         end: 'bottom 20%',
-        markers: true, // デバッグマーカー
+        markers: true, // 本番環境では false
         onEnter: () => {
           console.log('📍 First Gallery ScrollTrigger: onEnter')
-          // 最初の3つの画像をアニメーション
           const firstThreeItems =
             firstGallerySection.querySelectorAll('.gallery-item')
           gsap.to(firstThreeItems, {
@@ -189,12 +183,10 @@ const { class: className = '' } = Astro.props
       })
     }
 
-    // タイトルのアニメーション
+    // タイトルのアニメーション（ScrollTriggerなし）
     const testElement = document.querySelector('.text-center h2')
     if (testElement) {
       console.log('✅ Test element found:', testElement)
-
-      // シンプルなアニメーション
       gsap.from(testElement, {
         duration: 2,
         y: 50,
@@ -209,14 +201,13 @@ const { class: className = '' } = Astro.props
     // 2番目の3つの画像用のScrollTrigger
     const secondGallerySection = document.querySelectorAll('.grid')[1]
     if (secondGallerySection) {
-      ScrollTrigger.create({
+      createManagedScrollTrigger('highlight-gallery-second', {
         trigger: secondGallerySection,
         start: 'top 80%',
         end: 'bottom 20%',
-        markers: true, // デバッグマーカー
+        markers: true, // 本番環境では false
         onEnter: () => {
           console.log('📍 Second Gallery ScrollTrigger: onEnter')
-          // 2番目の3つの画像をアニメーション
           const secondThreeItems =
             secondGallerySection.querySelectorAll('.gallery-item')
           gsap.to(secondThreeItems, {
@@ -233,38 +224,38 @@ const { class: className = '' } = Astro.props
           console.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
         onLeaveBack: () =>
           console.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
-        onUpdate: (self) =>
-          console.log('📊 ScrollTrigger progress:', self.progress.toFixed(2)),
       })
     }
 
-    // メモリ使用量を表示（Chrome限定）
-    const memoryInfo = (performance as any).memory
-    if (memoryInfo) {
-      console.log('💾 Memory usage:', {
-        used: Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB',
-        total: Math.round(memoryInfo.totalJSHeapSize / 1024 / 1024) + ' MB',
-        limit: Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024) + ' MB',
-      })
-    } else {
-      console.log('💾 Memory API not available (Chrome only)')
+    // デバッグ情報を表示
+    if (import.meta.env.DEV) {
+      const memoryInfo = (performance as any).memory
+      if (memoryInfo) {
+        console.log('💾 Memory usage:', {
+          used: Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB',
+          total: Math.round(memoryInfo.totalJSHeapSize / 1024 / 1024) + ' MB',
+          limit: Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024) + ' MB',
+        })
+      }
     }
   }
 
   // 初期化
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('📄 DOM loaded, starting GSAP test in 500ms...')
-      setTimeout(initBasicGSAPTest, 500)
+      console.log('📄 DOM loaded, starting HighlightGallery animations...')
+      setTimeout(initHighlightGalleryAnimations, 100)
     })
   } else {
-    console.log('📄 DOM ready, starting GSAP test in 500ms...')
-    setTimeout(initBasicGSAPTest, 500)
+    console.log('📄 DOM ready, starting HighlightGallery animations...')
+    setTimeout(initHighlightGalleryAnimations, 100)
   }
 
   // Astro page transitions
   document.addEventListener('astro:page-load', () => {
-    console.log('🔄 Astro page loaded, restarting GSAP test...')
-    setTimeout(initBasicGSAPTest, 500)
+    console.log(
+      '🔄 Astro page loaded, restarting HighlightGallery animations...'
+    )
+    setTimeout(initHighlightGalleryAnimations, 100)
   })
 </script>

@@ -1,23 +1,122 @@
 ---
-import { Image } from 'astro:assets';
-import footerCoverImage from '@/assets/images/img-footer-cover.jpg';
+import { Image } from 'astro:assets'
+import { cn } from '@/utils/cn'
+import footerCoverImage01 from '@/assets/images/img-footer-cover-01.jpg'
+import footerCoverImage02 from '@/assets/images/img-footer-cover-02.jpg'
 
 interface Props {
-  class?: string;
+  class?: string
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className } = Astro.props
 ---
 
-<section class={`relative w-full ${className}`}>
-  <div class="relative h-[60vh] md:h-[70vh] lg:h-[80vh] w-full">
+<section class={cn('family-photo-section relative w-full', className)}>
+  <div class="relative h-[60vh] md:h-[70vh] lg:h-[80vh] w-full overflow-hidden">
     <Image
-      src={footerCoverImage}
+      src={footerCoverImage01}
       alt="THE NORTH FACE MATERNITY+ Family"
       widths={[390, 768, 1280, 1920, 2560]}
       sizes="100vw"
       loading="lazy"
-      class="absolute inset-0 h-full w-full object-cover object-center"
+      class="family-photo-image family-photo-1 absolute inset-0 h-full w-full object-cover object-center"
+      data-image="1"
+    />
+    <Image
+      src={footerCoverImage02}
+      alt="THE NORTH FACE MATERNITY+ Family"
+      widths={[390, 768, 1280, 1920, 2560]}
+      sizes="100vw"
+      loading="lazy"
+      class="family-photo-image family-photo-2 absolute inset-0 h-full w-full object-cover object-center"
+      data-image="2"
     />
   </div>
 </section>
+
+<script>
+  import { gsap } from 'gsap'
+  import { createManagedScrollTrigger } from '@/utils/gsap-manager'
+
+  function initFamilyPhotoAnimation() {
+    console.log('🎯 FamilyPhoto: Initializing animation')
+
+    const section = document.querySelector('.family-photo-section')
+    const image1 = document.querySelector('.family-photo-1') as HTMLElement
+    const image2 = document.querySelector('.family-photo-2') as HTMLElement
+
+    if (!section || !image1 || !image2) {
+      console.warn('⚠️ FamilyPhoto: Required elements not found')
+      return
+    }
+
+    console.log('✅ FamilyPhoto: Elements found', { section, image1, image2 })
+
+    // 初期状態を設定
+    // image2を下から上にスライドさせるため、clipPathを使用
+    gsap.set(image1, {
+      opacity: 1,
+      zIndex: 1,
+      scale: 1,
+      transformOrigin: 'center center',
+    })
+    gsap.set(image2, {
+      opacity: 1,
+      zIndex: 2,
+      scale: 1.05, // 初期状態で少し大きめ
+      transformOrigin: 'center center',
+      clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', // 初期状態：完全に隠れている
+    })
+
+    // 管理されたScrollTriggerを作成（ピン留め効果付き）
+    const scrollTrigger = createManagedScrollTrigger('family-photo', {
+      trigger: section,
+      start: 'top top', // セクションの上部が画面上部に到達したらピン留め開始
+      end: '+=200%', // セクションの高さの2倍分スクロールしたら終了
+      pin: true, // セクションを固定
+      pinSpacing: true, // ピン留め時のスペースを確保
+      scrub: 1,
+      markers: false, // 本番環境では false
+      onUpdate: (self) => {
+        const progress = self.progress
+        console.log('📊 FamilyPhoto Progress:', progress.toFixed(2))
+
+        // 下から上にスライドするようにclipPathをアニメーション
+        const revealHeight = progress * 100
+        gsap.to(image2, {
+          clipPath: `polygon(0 ${100 - revealHeight}%, 100% ${100 - revealHeight}%, 100% 100%, 0 100%)`,
+          duration: 0,
+          immediateRender: false,
+        })
+
+        // 固定中のわずかなズーム効果（オプション）
+        const scale = 1 + progress * 0.05 // 最大5%拡大
+        gsap.to(image1, {
+          scale: scale,
+          duration: 0,
+          immediateRender: false,
+        })
+
+        gsap.to(image2, {
+          scale: 1 + (1 - progress) * 0.05, // image2は逆方向にスケール
+          duration: 0,
+          immediateRender: false,
+        })
+      },
+    })
+
+    if (scrollTrigger) {
+      console.log('🚀 FamilyPhoto: ScrollTrigger created successfully')
+    }
+  }
+
+  // 初期化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFamilyPhotoAnimation)
+  } else {
+    initFamilyPhotoAnimation()
+  }
+
+  // Astro page transitions対応
+  document.addEventListener('astro:page-load', initFamilyPhotoAnimation)
+</script>
