@@ -9,6 +9,7 @@
   --color-cream-light: oklch(0.97 0.06 85); /* #f9dfc6 */
   --color-cream-dark: oklch(0.9063 0.0487 69.16); /* #f6dbbe */
   --color-terra: oklch(0.55 0.08 45); /* #A67C52 */
+  --color-terra-dark: oklch(0.492 0.1063 59.63); /* #8c5014 */
   --color-brown: oklch(0.4442 0.0961 63.33); /* #78460a */
   --color-tnf-blue: oklch(0.55 0.15 250); /* #0055FF */
   --color-muted: oklch(0.55 0.01 0); /* #8A8A8A */

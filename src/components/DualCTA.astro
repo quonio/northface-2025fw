@@ -1,48 +1,66 @@
 ---
+import { cn } from '@/utils/cn'
+import upArrowIcon from '@/assets/images/decorations/icon-up-arrow.svg'
+
 interface Props {
-  class?: string;
+  class?: string
 }
 
-const { class: className = '' } = Astro.props;
+const { class: className = '' } = Astro.props
 ---
 
-<section class={`py-16 md:py-24 lg:py-32 ${className}`}>
-  <div class="container mx-auto px-4">
-    <div class="flex max-w-4xl mx-auto">
-      <a
-        href="#all-items"
-        class="flex-1 bg-navy text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-lg md:text-xl lg:text-2xl font-medium hover:bg-opacity-90 transition-all duration-300 border-r border-paper/20"
-      >
-        ALL ITEMS
-      </a>
-      <a
-        href="#staff-styling"
-        class="flex-1 bg-terra text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-lg md:text-xl lg:text-2xl font-medium hover:bg-opacity-90 transition-all duration-300"
-      >
-        STAFF STYLING
-      </a>
-    </div>
+<section class={cn('pt-16 md:pt-24 lg:pt-32', className)}>
+  <div class="flex w-full">
+    <a
+      href="#all-items"
+      class="cta-button w-1/2 text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-lg md:text-xl lg:text-[3.194vw] font-extralight transition-all duration-300 border-r border-paper/20 flex items-center justify-center gap-3"
+    >
+      <span>ALL ITEMS</span>
+      <img
+        src={upArrowIcon.src}
+        alt=""
+        class="w-5 h-5 md:w-6 md:h-6 lg:w-[2.639vw] lg:h-[2.639vw]"
+      />
+    </a>
+    <a
+      href="#staff-styling"
+      class="cta-button w-1/2 text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-lg md:text-xl lg:text-[3.194vw] font-extralight transition-all duration-300 flex items-center justify-center gap-3"
+    >
+      <span>STAFF STYLING</span>
+      <img
+        src={upArrowIcon.src}
+        alt=""
+        class="w-5 h-5 md:w-6 md:h-6 lg:w-[2.639vw] lg:h-[2.639vw]"
+      />
+    </a>
   </div>
 </section>
 
 <style>
-  a {
+  .cta-button {
     position: relative;
     overflow: hidden;
+    background-color: var(--color-terra-dark);
   }
-  
-  a::before {
+
+  .cta-button::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 0;
     height: 100%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.15);
     transition: width 0.3s ease;
+    z-index: 1;
   }
-  
-  a:hover::before {
+
+  .cta-button > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-button:hover::before {
     width: 100%;
   }
 </style>
