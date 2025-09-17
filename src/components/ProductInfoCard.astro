@@ -13,8 +13,9 @@ interface Props {
   sizes?: string[]
   price?: string
   link?: string
-  totalPages: number
-  carouselId: string
+  totalPages?: number
+  carouselId?: string
+  size?: 'sm' | 'md' | 'lg'
 }
 
 const {
@@ -27,8 +28,9 @@ const {
   sizes = [],
   price,
   link,
-  totalPages,
-  carouselId,
+  totalPages = 0,
+  carouselId = '',
+  size = 'lg',
 } = Astro.props
 
 // ®記号を上付きのspanタグに変換する関数
@@ -36,17 +38,65 @@ const formatRegisteredMark = (text: string | undefined) => {
   if (!text) return ''
   return text.replace(/®/g, '<span class="text-[0.9em] align-top">®</span>')
 }
+
+// サイズに応じたクラスを定義
+const sizeClasses = {
+  sm: {
+    container: 'p-4',
+    headline: 'text-[8px] lg:text-[9px]',
+    modelNumber: 'text-[10px]',
+    title: 'text-lg md:text-xl',
+    price: 'text-sm',
+    copy: 'text-sm',
+    description: 'text-xs',
+    buyLink: 'right-4 bottom-[calc(1rem+3rem+1rem)]',
+    pager: '-mx-4 -mb-4',
+    pagerButton: 'text-2xl',
+  },
+  md: {
+    container: 'p-6',
+    headline: 'text-[9px] lg:text-[10px]',
+    modelNumber: 'text-xs',
+    title: 'text-xl md:text-2xl',
+    price: 'text-base',
+    copy: 'text-base',
+    description: 'text-sm',
+    buyLink: 'right-6 bottom-[calc(1.5rem+3.5rem+1rem)]',
+    pager: '-mx-6 -mb-6',
+    pagerButton: 'text-3xl',
+  },
+  lg: {
+    container: 'p-[2.24vw]',
+    headline: 'text-[0.694vw] lg:text-[10px]',
+    modelNumber: 'text-xs',
+    title: 'text-[2.2vw]',
+    price: 'text-[0.972vw]',
+    copy: 'text-[1.25vw]',
+    description: 'text-[1.1vw]',
+    buyLink: 'right-[2.24vw] bottom-[calc(2.24vw+4.5vw+1rem)]',
+    pager: '-mx-[2.24vw] -mb-[2.24vw]',
+    pagerButton: 'text-[4.5vw]',
+  },
+}
+
+const currentSize = sizeClasses[size]
 ---
 
 <article
-  class="bg-cream-dark p-[2.24vw] h-full flex flex-col justify-between min-h-full border border-light-navy relative"
+  class={cn(
+    'bg-cream-dark h-full flex flex-col justify-between min-h-full border border-light-navy relative',
+    currentSize.container
+  )}
 >
   <div>
     {
       headline && (
         <div class="inline-block mb-4">
           <span
-            class="inline-block bg-no-repeat bg-center p-[0.5em] text-[0.694vw] lg:text-[10px] font-light uppercase tracking-[0.1em] text-brown whitespace-nowrap min-w-[62px] min-h-[20px] leading-none"
+            class={cn(
+              'inline-block bg-no-repeat bg-center p-[0.5em] font-light uppercase tracking-[0.1em] text-brown whitespace-nowrap min-w-[62px] min-h-[20px] leading-none text-center',
+              currentSize.headline
+            )}
             style={`background-image: url(${headlineFrame.src}); background-size: 100% 100%;`}
           >
             {headline}
@@ -57,61 +107,99 @@ const formatRegisteredMark = (text: string | undefined) => {
 
     {
       modelNumber && (
-        <p class="text-xs text-tape-navy-dark font-light mb-2">{modelNumber}</p>
+        <p
+          class={cn(
+            'text-tape-navy-dark font-light mb-2',
+            currentSize.modelNumber
+          )}
+        >
+          {modelNumber}
+        </p>
       )
     }
 
     <h3
-      class="font-sans text-[2.2vw] font-medium text-tape-navy-dark mb-3 tracking-tight"
+      class={cn(
+        'font-sans font-medium text-tape-navy-dark mb-3 tracking-tight',
+        currentSize.title
+      )}
     >
       {title}
     </h3>
 
-    {price && <p class="text-[0.972vw] font-medium text-brown mb-6">{price}</p>}
+    {
+      price && (
+        <p class={cn('font-medium text-brown mb-6', currentSize.price)}>
+          {price}
+        </p>
+      )
+    }
 
     {
       copy && (
-        <p class="text-[1.25vw] font-bold text-tape-navy-dark mb-4">{copy}</p>
+        <p class={cn('font-bold text-tape-navy-dark mb-4', currentSize.copy)}>
+          {copy}
+        </p>
       )
     }
 
     {
       description && (
         <p
-          class="text-[1.1vw] text-tape-navy-dark mb-4 leading-[1.75] font-normal font-sans-jp"
+          class={cn(
+            'text-tape-navy-dark mb-4 leading-[1.75] font-normal font-sans-jp',
+            currentSize.description
+          )}
           set:html={formatRegisteredMark(description)}
         />
       )
     }
   </div>
-  
-  {link && (
-    <div class="absolute right-[2.24vw] bottom-[calc(2.24vw+4.5vw+1rem)]">
-      <BuyLink href={link} />
-    </div>
-  )}
+
+  {
+    link && size !== 'sm' && (
+      <div class={cn('absolute', currentSize.buyLink)}>
+        <BuyLink href={link} size={size} />
+      </div>
+    )
+  }
+
+  {
+    link && size === 'sm' && (
+      <div class="mt-0 pr-4 flex justify-end">
+        <BuyLink href={link} size="sm" />
+      </div>
+    )
+  }
 
   <!-- Pagination -->
-  <div
-    class="pager flex gap-0 -mx-[2.24vw] -mb-[2.24vw] mt-auto"
-    style="width: calc(100% + 4.48vw);"
-    data-carousel-pagination={carouselId}
-  >
-    {
-      Array.from({ length: totalPages }, (_, i) => (
-        <button
-          class={cn(
-            'relative z-[1] flex-1 py-2 text-[4.5vw] bg-transparent border-t border-r border-light-navy-2 font-thin leading-none text-light-navy-2',
-            'hover:bg-light-navy-2/10 transition-colors',
-            'last:border-r-0',
-            '[&.is-active]:bg-light-navy-2 [&.is-active]:text-white [&.is-active]:border-light-navy-2 [&.is-active]:z-[2]'
-          )}
-          data-page={i}
-          aria-label={`Go to page ${i + 1}`}
-        >
-          {i + 1}
-        </button>
-      ))
-    }
-  </div>
+  {
+    totalPages > 0 && carouselId && (
+      <div
+        class={cn('pager flex gap-0 mt-auto', currentSize.pager)}
+        style={
+          size === 'lg'
+            ? 'width: calc(100% + 4.48vw);'
+            : 'width: calc(100% + 3rem);'
+        }
+        data-carousel-pagination={carouselId}
+      >
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            class={cn(
+              'relative z-[1] flex-1 py-2 bg-transparent border-t border-r border-light-navy-2 font-thin leading-none text-light-navy-2',
+              'hover:bg-light-navy-2/10 transition-colors',
+              'last:border-r-0',
+              '[&.is-active]:bg-light-navy-2 [&.is-active]:text-white [&.is-active]:border-light-navy-2 [&.is-active]:z-[2]',
+              currentSize.pagerButton
+            )}
+            data-page={i}
+            aria-label={`Go to page ${i + 1}`}
+          >
+            {i + 1}
+          </button>
+        ))}
+      </div>
+    )
+  }
 </article>

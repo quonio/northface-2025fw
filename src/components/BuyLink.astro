@@ -2,9 +2,23 @@
 interface Props {
   href: string
   class?: string
+  size?: 'sm' | 'md' | 'lg'
 }
 
-const { href, class: className = '' } = Astro.props
+const { href, class: className = '', size = 'lg' } = Astro.props
+
+// サイズに応じたクラスを定義
+const sizeClasses = {
+  sm: 'text-[1.25vw]',
+  md: 'text-lg',
+  lg: 'text-[2.2vw]',
+}
+
+const svgSizeClasses = {
+  sm: 'h-2.5 w-[150%]',
+  md: 'h-4 w-[140%]',
+  lg: 'h-5 w-[150%]',
+}
 ---
 
 <a
@@ -12,13 +26,17 @@ const { href, class: className = '' } = Astro.props
   target="_blank"
   rel="noopener noreferrer"
   class:list={[
-    'buy-link inline-block text-[2.2vw] text-brown hover:no-underline transition-all font-extralight relative',
+    'buy-link inline-block text-brown hover:no-underline transition-all font-extralight relative',
+    sizeClasses[size],
     className,
   ]}
 >
   <span class="buy-text relative z-10 inline-block">BUY</span>
   <svg
-    class="buy-link-svg absolute left-1/2 -translate-x-1/2 -bottom-1 w-[150%] h-5 stroke-brown"
+    class:list={[
+      'buy-link-svg absolute left-1/2 -translate-x-1/2 -bottom-1 stroke-brown',
+      svgSizeClasses[size],
+    ]}
     viewBox="0 0 92 12"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,6 @@
 ---
 import ProductCarousel from './ProductCarousel.astro'
+import ProductShowcase from './ProductShowcase.astro'
 import { cn } from '@/utils/cn'
 import type { ProductInfo, CarouselItem } from './ProductCarousel.astro'
 // Import style images
@@ -17,6 +18,10 @@ import unit02 from '@/assets/images/img-collection-unit-02.png'
 import unit03 from '@/assets/images/img-collection-unit-03.png'
 import unit04 from '@/assets/images/img-collection-unit-04.png'
 import unit05 from '@/assets/images/img-collection-unit-05.png'
+
+// Import new collection images
+import collection7 from '@/assets/images/img-collection-7-1.jpg'
+import collection8 from '@/assets/images/img-collection-8-1.jpg'
 
 interface Props {
   class?: string
@@ -169,6 +174,37 @@ const carouselRows = productInfos.map((info, index) => ({
       ))
     }
   </div>
+
+  <!-- New Product Grid Section -->
+  <div class="container mx-auto px-4 py-16 md:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Product 1 -->
+      <ProductShowcase
+        image={collection7}
+        imageAlt="CR Utility Pants"
+        headline="UNISEX"
+        modelNumber="NBM82510"
+        title="CR Utility Pants"
+        copy="機能性とデザイン性を両立した多機能パンツ"
+        price="¥28,600 (Tax incl.)"
+        link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82510"
+        size="sm"
+      />
+
+      <!-- Product 2 -->
+      <ProductShowcase
+        image={collection8}
+        imageAlt="Maternity Fleece Jacket"
+        headline="WOMENS"
+        modelNumber="NAM82510"
+        title="Maternity Fleece Jacket"
+        copy="妊娠中から産後まで長く着用できるフリースジャケット"
+        price="¥22,000 (Tax incl.)"
+        link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NAM82510"
+        size="sm"
+      />
+    </div>
+  </div>
 </section>
 
 <style>
@@ -180,7 +216,9 @@ const carouselRows = productInfos.map((info, index) => ({
     transform-origin: top center;
     opacity: 0;
     transform: scale(1.05);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
   }
 
   .unit-image.visible {

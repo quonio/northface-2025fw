@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets'
+import ProductInfoCard from './ProductInfoCard.astro'
+import { cn } from '@/utils/cn'
+
+interface Props {
+  image: ImageMetadata
+  imageAlt: string
+  headline?: string
+  modelNumber?: string
+  title: string
+  copy?: string
+  description?: string
+  price?: string
+  link?: string
+  reverse?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+}
+
+const {
+  image,
+  imageAlt,
+  headline,
+  modelNumber,
+  title,
+  copy,
+  description,
+  price,
+  link,
+  reverse = false,
+  size = 'sm',
+  class: className = '',
+} = Astro.props
+---
+
+<div
+  class={cn(
+    'flex flex-col items-start',
+    reverse ? 'md:flex-row-reverse' : 'md:flex-row',
+    className
+  )}
+>
+  <div class="w-full md:w-1/2">
+    <Image
+      src={image}
+      alt={imageAlt}
+      class="w-full h-auto object-cover border border-light-navy"
+    />
+  </div>
+  <div class="w-full md:w-1/2 -ml-px">
+    <ProductInfoCard
+      headline={headline}
+      modelNumber={modelNumber}
+      title={title}
+      copy={copy}
+      description={description}
+      price={price}
+      link={link}
+      size={size}
+    />
+  </div>
+</div>
