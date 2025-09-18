@@ -18,6 +18,10 @@ export interface StickerAnimationConfig {
   perspective?: number
   /** Intersection Observer options */
   observerOptions?: IntersectionObserverInit
+  /** Enable automatic animation on scroll */
+  autoAnimate?: boolean
+  /** Delay before auto animation starts */
+  autoAnimationDelay?: number
 }
 
 /**
@@ -114,6 +118,8 @@ const DEFAULT_CONFIG: Required<StickerAnimationConfig> = {
     threshold: 0.2,
     rootMargin: '0px 0px -100px 0px',
   },
+  autoAnimate: false,
+  autoAnimationDelay: 0,
 }
 
 /**
@@ -207,6 +213,124 @@ export function useStickerAnimation(
   let currentDirection: Direction = finalConfig.direction
   let savePos: ReturnType<typeof calculatePeelValues> | null = null
   let elementPos: { x: number; y: number } | null = null
+
+  // Auto animation function
+  const runAutoAnimation = () => {
+    let startTime: number | null = null
+    let animationId: number | null = null
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / finalConfig.duration, 1)
+
+      // Apply easing (cubic-bezier approximation)
+      const easedProgress = cubicBezierEase(progress)
+
+      // Calculate animation from peeled (0) to stuck (1)
+      const peelProgress = 1 - easedProgress
+
+      // Calculate peel values based on progress
+      const values = calculateAutoAnimationPeelValues(
+        elementSize,
+        currentDirection,
+        peelProgress
+      )
+
+      applyPeelStyles(stickerDOM, values, 'all 0s')
+
+      if (progress < 1) {
+        animationId = requestAnimationFrame(animate)
+      } else {
+        // Animation complete - add drop shadow
+        stickerDOM.container.style.filter =
+          'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+        animationState.phase = 'stuck'
+        animationState.progress = 1
+      }
+    }
+
+    // Start animation after delay
+    const startAnimation = () => {
+      animationState.phase = 'peeling'
+      animationState.startTime = Date.now()
+      animationId = requestAnimationFrame(animate)
+    }
+
+    if (finalConfig.autoAnimationDelay > 0) {
+      setTimeout(startAnimation, finalConfig.autoAnimationDelay)
+    } else {
+      startAnimation()
+    }
+
+    // Return cleanup function
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId)
+      }
+    }
+  }
+
+  // Helper function for cubic-bezier easing
+  const cubicBezierEase = (t: number): number => {
+    // Approximate cubic-bezier(0.23, 1, 0.32, 1)
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+  }
+
+  // Calculate peel values for auto animation
+  const calculateAutoAnimationPeelValues = (
+    size: { width: number; height: number },
+    dir: Direction,
+    progress: number // 0 = fully stuck, 1 = fully peeled
+  ) => {
+    const peelAmount = progress
+
+    if (dir === 'left') {
+      return {
+        bmx: -size.width + size.width * peelAmount,
+        bmy: 0,
+        bx: -size.width,
+        by: 0,
+        sx: -1,
+        sy: 1,
+        bs: 'shadowL',
+        bsw: size.width * peelAmount,
+        bsh: size.height,
+        bsx: size.width * (1 - peelAmount),
+        bsy: 0,
+        cw: size.width - size.width * peelAmount * 0.5,
+        ch: size.height,
+        cx: size.width * peelAmount * 0.5,
+        cy: 0,
+        dw: size.width * peelAmount * 0.5,
+        dh: size.height,
+        dx: peelAmount > 0.1 ? size.width * peelAmount * 0.4 : -10000,
+        dy: 0,
+      }
+    }
+    // Add other directions as needed
+    return {
+      bmx: 0,
+      bmy: 0,
+      bx: 0,
+      by: 0,
+      sx: 1,
+      sy: 1,
+      bs: 'shadowL',
+      bsw: 0,
+      bsh: 0,
+      bsx: 0,
+      bsy: 0,
+      cw: size.width,
+      ch: size.height,
+      cx: 0,
+      cy: 0,
+      dw: 0,
+      dh: 0,
+      dx: -10000,
+      dy: -10000,
+    }
+  }
 
   // Event handlers
   const handleMouseEnter = (e: MouseEvent) => {
@@ -328,35 +452,67 @@ export function useStickerAnimation(
     animationState.progress = 1 - currentDistance / maxDistance
   }
 
-  // Setup event handlers
-  const cleanupEvents = setupEventHandlers(
-    stickerDOM,
-    handleMouseEnter,
-    handleMouseLeave,
-    handleMouseMove
-  )
+  // Setup event handlers only if not auto animating
+  if (!finalConfig.autoAnimate) {
+    const cleanupEvents = setupEventHandlers(
+      stickerDOM,
+      handleMouseEnter,
+      handleMouseLeave,
+      handleMouseMove
+    )
 
-  // Add event cleanup to cleanup functions
-  cleanupFunctions.push(cleanupEvents)
+    // Add event cleanup to cleanup functions
+    cleanupFunctions.push(cleanupEvents)
+  }
 
-  // Setup Intersection Observer for scroll trigger (optional visibility)
+  // Setup Intersection Observer for scroll trigger
   if (finalConfig.observerOptions && 'IntersectionObserver' in window) {
     let hasTriggered = false
+    let animationCleanup: (() => void) | null = null
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting && !hasTriggered) {
           hasTriggered = true
 
-          // Apply delay if configured
-          const showElement = () => {
-            stickerDOM.container.style.opacity = '1'
-            observer.unobserve(stickerDOM.container)
-          }
+          if (finalConfig.autoAnimate) {
+            // Set initial peeled state for auto animation
+            const initialPeeledValues = calculateAutoAnimationPeelValues(
+              elementSize,
+              currentDirection,
+              1 // Start fully peeled
+            )
+            applyPeelStyles(stickerDOM, initialPeeledValues, 'all 0s')
 
-          if (finalConfig.delay > 0) {
-            setTimeout(showElement, finalConfig.delay)
+            // Update shadow classes
+            const shadowClass = `sticker-shadow ${initialPeeledValues.bs}`
+            stickerDOM.backShadow.className = shadowClass
+            stickerDOM.depth.className = shadowClass
+
+            // Start auto animation after delay
+            const startAutoAnimation = () => {
+              stickerDOM.container.style.opacity = '1'
+              animationCleanup = runAutoAnimation()
+              observer.unobserve(stickerDOM.container)
+            }
+
+            if (finalConfig.delay > 0) {
+              setTimeout(startAutoAnimation, finalConfig.delay)
+            } else {
+              startAutoAnimation()
+            }
           } else {
-            showElement()
+            // Original behavior - just show the element
+            const showElement = () => {
+              stickerDOM.container.style.opacity = '1'
+              observer.unobserve(stickerDOM.container)
+            }
+
+            if (finalConfig.delay > 0) {
+              setTimeout(showElement, finalConfig.delay)
+            } else {
+              showElement()
+            }
           }
         }
       })
@@ -365,13 +521,18 @@ export function useStickerAnimation(
     // Start observing
     observer.observe(stickerDOM.container)
 
-    // Initially hide the sticker
-    stickerDOM.container.style.opacity = '0'
+    // Initially hide the sticker if auto animating
+    if (finalConfig.autoAnimate) {
+      stickerDOM.container.style.opacity = '0'
+    }
     stickerDOM.container.style.transition = `opacity ${finalConfig.duration}ms ${finalConfig.easing}`
 
     // Add observer cleanup
     cleanupFunctions.push(() => {
       observer.disconnect()
+      if (animationCleanup) {
+        animationCleanup()
+      }
     })
   }
 

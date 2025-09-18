@@ -57,13 +57,15 @@ const { class: className = '' } = Astro.props
       )
 
       if (target) {
-        // Create sticker animation with mouse interaction
+        // Create sticker animation with auto animation on scroll
         const animation = useStickerAnimation(target, {
           direction: 'left',
           delay: delay,
-          duration: 600,
+          duration: 1000,
           easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
           shadowIntensity: 0.5,
+          autoAnimate: true,
+          autoAnimationDelay: 200,
           observerOptions: {
             threshold: 0.2,
             rootMargin: '0px 0px -100px 0px',
