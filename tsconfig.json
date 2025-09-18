@@ -7,6 +7,9 @@
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@styles/*": ["src/styles/*"]
-    }
-  }
+    },
+    "types": ["astro/client"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src/**/*", ".astro/types.d.ts"]
 }
