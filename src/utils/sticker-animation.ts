@@ -307,6 +307,29 @@ export function useStickerAnimation(
         dx: peelAmount > 0.1 ? size.width * peelAmount * 0.4 : -10000,
         dy: 0,
       }
+    } else if (dir === 'right') {
+      // Right direction - peels from left side
+      return {
+        bmx: size.width * peelAmount,
+        bmy: 0,
+        bx: size.width,
+        by: 0,
+        sx: -1,
+        sy: 1,
+        bs: 'shadowR',
+        bsw: size.width * peelAmount,
+        bsh: size.height,
+        bsx: 0,
+        bsy: 0,
+        cw: size.width - size.width * peelAmount * 0.5,
+        ch: size.height,
+        cx: 0,
+        cy: 0,
+        dw: size.width * peelAmount * 0.5,
+        dh: size.height,
+        dx: peelAmount > 0.1 ? size.width - size.width * peelAmount * 0.6 : -10000,
+        dy: 0,
+      }
     }
     // Add other directions as needed
     return {
