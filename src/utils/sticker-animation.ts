@@ -78,16 +78,29 @@ export interface ShadowState {
 }
 
 // Import DOM utilities
-import { createStickerDOM, getElementSize, insertStickerDOM, type DOMStructure } from './sticker-animation-dom'
+import {
+  createStickerDOM,
+  getElementSize,
+  insertStickerDOM,
+  type DOMStructure,
+} from './sticker-animation-dom'
 
 // Re-export DOMStructure type
 export type { DOMStructure } from './sticker-animation-dom'
 
 // Import event utilities
-import { setupEventHandlers, getDirection, calculatePeelValues, applyPeelStyles } from './sticker-animation-events'
+import {
+  setupEventHandlers,
+  getDirection,
+  calculatePeelValues,
+  applyPeelStyles,
+} from './sticker-animation-events'
 
 // Import style utilities
-import { injectGlobalStyles, updateCSSVariables } from './sticker-animation-styles'
+import {
+  injectGlobalStyles,
+  updateCSSVariables,
+} from './sticker-animation-styles'
 
 // Default configuration values
 const DEFAULT_CONFIG: Required<StickerAnimationConfig> = {
@@ -125,16 +138,22 @@ export function useStickerAnimation(
 
   // Validate configuration
   if (!targetElement || !(targetElement instanceof HTMLElement)) {
-    throw new Error('useStickerAnimation: targetElement must be a valid HTMLElement')
+    throw new Error(
+      'useStickerAnimation: targetElement must be a valid HTMLElement'
+    )
   }
 
   if (finalConfig.duration <= 0) {
-    console.warn('useStickerAnimation: duration must be positive, using default')
+    console.warn(
+      'useStickerAnimation: duration must be positive, using default'
+    )
     finalConfig.duration = DEFAULT_CONFIG.duration
   }
 
   if (finalConfig.shadowIntensity < 0 || finalConfig.shadowIntensity > 1) {
-    console.warn('useStickerAnimation: shadowIntensity must be between 0 and 1, using default')
+    console.warn(
+      'useStickerAnimation: shadowIntensity must be between 0 and 1, using default'
+    )
     finalConfig.shadowIntensity = DEFAULT_CONFIG.shadowIntensity
   }
 
@@ -156,7 +175,7 @@ export function useStickerAnimation(
 
   // Track cleanup functions
   const cleanupFunctions: (() => void)[] = []
-  
+
   // Inject global styles
   const cleanupStyles = injectGlobalStyles()
   cleanupFunctions.push(cleanupStyles)
@@ -165,21 +184,25 @@ export function useStickerAnimation(
   const wrapperElement = document.createElement('div')
   wrapperElement.style.position = 'relative'
   wrapperElement.style.display = 'inline-block'
-  
+
   // Wrap the target element
   targetElement.parentNode?.insertBefore(wrapperElement, targetElement)
   wrapperElement.appendChild(targetElement)
 
   // Get element size and create DOM structure
   const elementSize = getElementSize(targetElement)
-  const domStructure = createStickerDOM(targetElement, elementSize.width, elementSize.height)
-  
+  const domStructure = createStickerDOM(
+    targetElement,
+    elementSize.width,
+    elementSize.height
+  )
+
   // Insert the sticker DOM structure
   insertStickerDOM(wrapperElement, domStructure, targetElement)
-  
+
   // Store DOM references for later use
   let stickerDOM: DOMStructure = domStructure
-  
+
   // Tracking variables
   let currentDirection: Direction = finalConfig.direction
   let savePos: ReturnType<typeof calculatePeelValues> | null = null
@@ -192,27 +215,27 @@ export function useStickerAnimation(
       x: rect.left + window.pageXOffset,
       y: rect.top + window.pageYOffset,
     }
-    
+
     // Get direction and initial peel values
     const sizeQ = Math.min(elementSize.width, elementSize.height) / 4
     currentDirection = getDirection(e, elementPos, sizeQ)
     savePos = calculatePeelValues(e, elementPos, elementSize, currentDirection)
-    
+
     // Update shadow classes
     const shadowClass = `sticker-shadow ${savePos.bs}`
     stickerDOM.backShadow.className = shadowClass
     stickerDOM.depth.className = shadowClass
-    
+
     // Update CSS variables for dynamic styling
     updateCSSVariables(stickerDOM.container, {
       'shadow-intensity': finalConfig.shadowIntensity.toString(),
-      'perspective': finalConfig.perspective.toString(),
-      'duration': finalConfig.duration.toString(),
+      perspective: finalConfig.perspective.toString(),
+      duration: finalConfig.duration.toString(),
     })
-    
+
     // Apply initial styles without transition
     applyPeelStyles(stickerDOM, savePos, 'all 0s')
-    
+
     // Update state
     animationState.phase = 'peeling'
     animationState.direction = currentDirection
@@ -221,39 +244,59 @@ export function useStickerAnimation(
 
   const handleMouseLeave = (e: MouseEvent) => {
     if (!savePos) return
-    
+
     // Apply transition for smooth return
     const transition = `all ${finalConfig.duration}ms ${finalConfig.easing}`
-    
+
     // Reset to initial position
-    const resetValues = calculatePeelValues(e, elementPos!, elementSize, currentDirection)
-    applyPeelStyles(stickerDOM, {
-      ...resetValues,
-      bmx: currentDirection === 'left' ? -elementSize.width : currentDirection === 'right' ? elementSize.width : 0,
-      bmy: currentDirection === 'top' ? -elementSize.height : currentDirection === 'bottom' ? elementSize.height : 0,
-      cw: elementSize.width,
-      ch: elementSize.height,
-      cx: 0,
-      cy: 0,
-      dx: -10000,
-      dy: -10000,
-    }, transition)
-    
+    const resetValues = calculatePeelValues(
+      e,
+      elementPos!,
+      elementSize,
+      currentDirection
+    )
+    applyPeelStyles(
+      stickerDOM,
+      {
+        ...resetValues,
+        bmx:
+          currentDirection === 'left'
+            ? -elementSize.width
+            : currentDirection === 'right'
+              ? elementSize.width
+              : 0,
+        bmy:
+          currentDirection === 'top'
+            ? -elementSize.height
+            : currentDirection === 'bottom'
+              ? elementSize.height
+              : 0,
+        cw: elementSize.width,
+        ch: elementSize.height,
+        cx: 0,
+        cy: 0,
+        dx: -10000,
+        dy: -10000,
+      },
+      transition
+    )
+
     // Update state
     animationState.phase = 'stuck'
     animationState.progress = 1
     savePos = null
-    
+
     // Add drop shadow effect after animation
     setTimeout(() => {
-      stickerDOM.container.style.filter = 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+      stickerDOM.container.style.filter =
+        'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
     }, finalConfig.duration)
   }
 
   const handleMouseMove = (e: MouseEvent) => {
     if (!savePos || !elementPos) {
       handleMouseEnter(e)
-      
+
       // Setup document mouseup listener for touch-like behavior
       const handleMouseUp = () => {
         document.removeEventListener('mouseup', handleMouseUp)
@@ -261,19 +304,28 @@ export function useStickerAnimation(
       }
       document.addEventListener('mouseup', handleMouseUp)
     }
-    
+
     if (!elementPos) return
-    
+
     // Calculate new peel values based on mouse position
-    const newValues = calculatePeelValues(e, elementPos, elementSize, currentDirection)
+    const newValues = calculatePeelValues(
+      e,
+      elementPos,
+      elementSize,
+      currentDirection
+    )
     applyPeelStyles(stickerDOM, newValues, 'all 0s')
-    
+
     // Update progress
-    const maxDistance = currentDirection === 'left' || currentDirection === 'right' ? elementSize.width : elementSize.height
-    const currentDistance = currentDirection === 'left' || currentDirection === 'right' 
-      ? Math.abs(newValues.bmx) 
-      : Math.abs(newValues.bmy)
-    animationState.progress = 1 - (currentDistance / maxDistance)
+    const maxDistance =
+      currentDirection === 'left' || currentDirection === 'right'
+        ? elementSize.width
+        : elementSize.height
+    const currentDistance =
+      currentDirection === 'left' || currentDirection === 'right'
+        ? Math.abs(newValues.bmx)
+        : Math.abs(newValues.bmy)
+    animationState.progress = 1 - currentDistance / maxDistance
   }
 
   // Setup event handlers
@@ -283,43 +335,40 @@ export function useStickerAnimation(
     handleMouseLeave,
     handleMouseMove
   )
-  
+
   // Add event cleanup to cleanup functions
   cleanupFunctions.push(cleanupEvents)
-  
+
   // Setup Intersection Observer for scroll trigger (optional visibility)
   if (finalConfig.observerOptions && 'IntersectionObserver' in window) {
     let hasTriggered = false
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasTriggered) {
-            hasTriggered = true
-            
-            // Apply delay if configured
-            const showElement = () => {
-              stickerDOM.container.style.opacity = '1'
-              observer.unobserve(stickerDOM.container)
-            }
-            
-            if (finalConfig.delay > 0) {
-              setTimeout(showElement, finalConfig.delay)
-            } else {
-              showElement()
-            }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !hasTriggered) {
+          hasTriggered = true
+
+          // Apply delay if configured
+          const showElement = () => {
+            stickerDOM.container.style.opacity = '1'
+            observer.unobserve(stickerDOM.container)
           }
-        })
-      },
-      finalConfig.observerOptions
-    )
-    
+
+          if (finalConfig.delay > 0) {
+            setTimeout(showElement, finalConfig.delay)
+          } else {
+            showElement()
+          }
+        }
+      })
+    }, finalConfig.observerOptions)
+
     // Start observing
     observer.observe(stickerDOM.container)
-    
+
     // Initially hide the sticker
     stickerDOM.container.style.opacity = '0'
     stickerDOM.container.style.transition = `opacity ${finalConfig.duration}ms ${finalConfig.easing}`
-    
+
     // Add observer cleanup
     cleanupFunctions.push(() => {
       observer.disconnect()
@@ -329,16 +378,19 @@ export function useStickerAnimation(
   // Control methods
   const destroy = () => {
     // Run all cleanup functions
-    cleanupFunctions.forEach(cleanup => cleanup())
-    
+    cleanupFunctions.forEach((cleanup) => cleanup())
+
     // Remove sticker DOM
     stickerDOM.container.remove()
-    
+
     // Restore original element
     targetElement.style.display = ''
-    
+
     // Restore original DOM structure
-    if (wrapperElement.parentNode && targetElement.parentNode === wrapperElement) {
+    if (
+      wrapperElement.parentNode &&
+      targetElement.parentNode === wrapperElement
+    ) {
       wrapperElement.parentNode.insertBefore(targetElement, wrapperElement)
       wrapperElement.remove()
     }
