@@ -13,8 +13,6 @@ import placeholderImage from '@/assets/images/main-kv.jpg'
 import blanket01 from '@/assets/images/img-blanket-1.jpg'
 import blanket02 from '@/assets/images/img-blanket-2.jpg'
 import blanket03 from '@/assets/images/img-blanket-3.jpg'
-import { mode } from '@yamada-ui/react'
-import { link } from 'fs'
 
 interface Props {
   class?: string
@@ -24,14 +22,14 @@ const { class: className = '' } = Astro.props
 
 // Gallery images with rotation values
 const galleryImages = [
-  { image: style01, rotation: -3, alt: 'Baby Blanket Style 1' },
-  { image: style02, rotation: 2, alt: 'Baby Blanket Style 2' },
-  { image: style03, rotation: -2, alt: 'Baby Blanket Style 3' },
-  { image: style04, rotation: 3, alt: 'Baby Blanket Style 4' },
-  { image: style05, rotation: -1, alt: 'Baby Blanket Style 5' },
-  { image: style06, rotation: 1, alt: 'Baby Blanket Style 6' },
-  { image: placeholderImage, rotation: -2, alt: 'Baby Blanket Style 7' },
-  { image: placeholderImage, rotation: 2, alt: 'Baby Blanket Style 8' },
+  { image: style01, rotation: -12, alt: 'Baby Blanket Style 1' },
+  { image: style02, rotation: 8, alt: 'Baby Blanket Style 2' },
+  { image: style03, rotation: -10, alt: 'Baby Blanket Style 3' },
+  { image: style04, rotation: 15, alt: 'Baby Blanket Style 4' },
+  { image: style05, rotation: -7, alt: 'Baby Blanket Style 5' },
+  { image: style06, rotation: 9, alt: 'Baby Blanket Style 6' },
+  { image: placeholderImage, rotation: -11, alt: 'Baby Blanket Style 7' },
+  { image: placeholderImage, rotation: 6, alt: 'Baby Blanket Style 8' },
 ]
 
 // Product cards data
@@ -70,7 +68,7 @@ const products = [
   <div class="container mx-auto px-4">
     <!-- Section Title -->
     <h2
-      class="text-center font-display font-medium text-cream mb-12 md:mb-16 leading-tight text-[3.819vw]"
+      class="text-center font-display font-medium text-cream mb-36 leading-tight text-[3.819vw]"
     >
       Baby Blanket<br />
       <span class="text-brown">Collection</span>
@@ -78,15 +76,27 @@ const products = [
 
     <!-- Gallery Grid -->
     <div
-      class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 lg:gap-8 mb-16 md:mb-24"
+      class="gallery-container grid grid-cols-2 md:grid-cols-4 gap-0 mb-16 md:mb-24 relative"
     >
       {
         galleryImages.map((item, index) => (
           <div
-            class="relative overflow-hidden"
-            style={`transform: rotate(${item.rotation}deg);`}
+            class={cn(
+              'gallery-image relative overflow-visible',
+              index % 2 === 1 && '-ml-4 md:-ml-6 lg:-ml-8',
+              index >= 2 && '-mt-4 md:-mt-6 lg:-mt-8',
+              index === 0 && 'z-10',
+              index === 1 && 'z-20',
+              index === 2 && 'z-30',
+              index === 3 && 'z-40',
+              index === 4 && 'z-50',
+              index === 5 && 'z-60',
+              index === 6 && 'z-70',
+              index === 7 && 'z-80'
+            )}
+            data-rotation={item.rotation}
           >
-            <div class="bg-white p-2 md:p-3 shadow-lg">
+            <div class="bg-white p-2 md:p-3 shadow-2xl">
               <div class="aspect-square overflow-hidden">
                 <Image
                   src={item.image}
@@ -114,11 +124,160 @@ const products = [
 
 <style>
   /* Add hover effect to gallery images */
-  .grid > div {
-    transition: transform 0.3s ease;
+  .gallery-image:hover {
+    z-index: 100 !important;
   }
 
-  .grid > div:hover {
-    transform: rotate(0deg) scale(1.05);
+  /* Z-index classes for stacking order */
+  .z-10 {
+    z-index: 10;
   }
+  .z-20 {
+    z-index: 20;
+  }
+  .z-30 {
+    z-index: 30;
+  }
+  .z-40 {
+    z-index: 40;
+  }
+  .z-50 {
+    z-index: 50;
+  }
+  .z-60 {
+    z-index: 60;
+  }
+  .z-70 {
+    z-index: 70;
+  }
+  .z-80 {
+    z-index: 80;
+  }
+
+  /* Images will be hidden via JavaScript */
 </style>
+
+<script>
+  import { gsap } from 'gsap'
+  import { ScrollTrigger } from 'gsap/ScrollTrigger'
+  import { createManagedScrollTrigger } from '@/utils/gsap-manager'
+
+  // Register ScrollTrigger plugin
+  gsap.registerPlugin(ScrollTrigger)
+
+  function initBabyBlanketAnimation() {
+    const galleryContainer = document.querySelector('.gallery-container')
+    const galleryImages = document.querySelectorAll('.gallery-image')
+
+    if (!galleryContainer || galleryImages.length === 0) return
+
+    // Store initial rotation values for each image
+    const initialRotations: number[] = []
+
+    // Check if ScrollTrigger already passed this section
+    const containerRect = galleryContainer.getBoundingClientRect()
+    const windowHeight = window.innerHeight
+    const hasAlreadyPassed = containerRect.top < windowHeight * 0.2
+    console.log(
+      '🚀 BabyBlanketCollection: hasAlreadyPassed =',
+      hasAlreadyPassed
+    )
+
+    // Set initial positions for each image
+    galleryImages.forEach((image, index) => {
+      const angle = (index / galleryImages.length) * 360
+      const radius = 150 // Distance from center in viewport units
+
+      // Calculate initial position based on circular distribution
+      const x = Math.cos((angle * Math.PI) / 180) * radius
+      const y = Math.sin((angle * Math.PI) / 180) * radius
+      const initialRotation = gsap.utils.random(-180, 180)
+      initialRotations[index] = initialRotation
+
+      const finalRotation =
+        (image as HTMLElement).getAttribute('data-rotation') || '0'
+
+      // If already scrolled past, show in final position
+      if (hasAlreadyPassed) {
+        gsap.set(image, {
+          xPercent: 0,
+          yPercent: 0,
+          rotation: parseFloat(finalRotation),
+          scale: 1,
+          opacity: 1,
+        })
+      } else {
+        // Set initial state for animation
+        gsap.set(image, {
+          xPercent: x,
+          yPercent: y,
+          rotation: initialRotation,
+          scale: 0.5,
+          opacity: 0,
+        })
+      }
+    })
+
+    // Only create ScrollTrigger if not already passed
+    if (!hasAlreadyPassed) {
+      // Create timeline for animations
+      const tl = gsap.timeline({
+        paused: true // Timeline will be controlled by ScrollTrigger
+      })
+
+      // Set up animations for all images
+      galleryImages.forEach((image, index) => {
+        const element = image as HTMLElement
+        const finalRotation = parseFloat(
+          element.getAttribute('data-rotation') || '0'
+        )
+
+        // Add animation to timeline
+        tl.to(
+          element,
+          {
+            xPercent: 0,
+            yPercent: 0,
+            rotation: finalRotation,
+            scale: 1,
+            opacity: 1,
+            duration: 1,
+            ease: 'steps(12)',
+          },
+          index * 0.05
+        ) // Stagger
+      })
+
+      // Create managed ScrollTrigger
+      const scrollTrigger = createManagedScrollTrigger('baby-blanket-gallery', {
+        trigger: galleryContainer,
+        start: 'top 80%',
+        end: 'center center',
+        markers: true, // Set to true for debugging
+        scrub: 1,
+        onUpdate: (self) => {
+          const progress = self.progress
+          console.log('🚀 ScrollTrigger progress:', progress)
+          // Manually control timeline progress based on scroll
+          tl.progress(progress)
+        },
+      })
+
+      if (scrollTrigger) {
+        console.log('🚀 ScrollTrigger created successfully')
+      } else {
+        console.error('❌ Failed to create ScrollTrigger')
+      }
+    }
+  }
+
+  // 初期化
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBabyBlanketAnimation)
+  } else {
+    initBabyBlanketAnimation()
+  }
+
+  // Astro page transitions対応
+  document.addEventListener('astro:page-load', initBabyBlanketAnimation)
+</script>
