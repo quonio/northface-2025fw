@@ -18,7 +18,9 @@
       "mcp__puppeteer__puppeteer_screenshot",
       "Bash(xargs kill:*)",
       "Bash(ls:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(pnpm run dev:*)",
+      "Bash(pnpm run:*)"
     ],
     "deny": []
   }

@@ -123,10 +123,7 @@ const products = [
 </section>
 
 <style>
-  /* Add hover effect to gallery images */
-  .gallery-image:hover {
-    z-index: 100 !important;
-  }
+  /* Remove hover effect */
 
   /* Z-index classes for stacking order */
   .z-10 {
@@ -203,7 +200,6 @@ const products = [
           xPercent: 0,
           yPercent: 0,
           rotation: parseFloat(finalRotation),
-          scale: 1,
           opacity: 1,
         })
       } else {
@@ -212,7 +208,6 @@ const products = [
           xPercent: x,
           yPercent: y,
           rotation: initialRotation,
-          scale: 0.5,
           opacity: 0,
         })
       }
@@ -239,7 +234,6 @@ const products = [
             xPercent: 0,
             yPercent: 0,
             rotation: finalRotation,
-            scale: 1,
             opacity: 1,
             duration: 1,
             ease: 'steps(12)',

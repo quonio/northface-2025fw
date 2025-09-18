@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets'
 import sealImage1 from '@/assets/images/img-seal-01.png'
 import sealImage2 from '@/assets/images/img-seal-02.png'
 import { cn } from '@/utils/cn'
@@ -15,154 +14,72 @@ const { class: className = '' } = Astro.props
   <div class="container mx-auto px-4">
     <div class="flex flex-col items-center gap-2 md:gap-2.5">
       <!-- Japanese text label -->
-      <div
-        class="tape-container relative"
-        data-animation="tape-label"
-        data-animation-delay="0"
-      >
-        <Image
-          src={sealImage1}
+      <div class="relative inline-block" data-sticker-delay="0">
+        <img
+          src={sealImage1.src}
           alt="きみがいるから、行き先がふえていく"
-          width={800}
-          height={200}
+          width={562}
+          height={80}
           loading="lazy"
-          class="tape h-auto w-full max-w-[580px] xl:max-w-[40vw]"
+          class="sticker-target block w-[39.03vw] max-w-[562px] h-auto max-[767px]:w-[80vw] max-[767px]:max-w-[300px]"
         />
       </div>
 
       <!-- English text label -->
-      <div
-        class="tape-container relative"
-        data-animation="tape-label"
-        data-animation-delay="200"
-      >
-        <Image
-          src={sealImage2}
+      <div class="relative inline-block" data-sticker-delay="200">
+        <img
+          src={sealImage2.src}
           alt="A heart beat, echoing into the wild."
-          width={800}
-          height={200}
+          width={464}
+          height={52}
           loading="lazy"
-          class="tape h-auto w-full max-w-[600px] xl:max-w-[32vw]"
+          class="sticker-target block w-[32.22vw] max-w-[464px] h-auto max-[767px]:w-[70vw] max-[767px]:max-w-[250px]"
         />
       </div>
     </div>
   </div>
 </section>
 
-<style>
-  .tape-container {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .tape {
-    position: relative;
-    transform-origin: center center;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-  }
-
-  @keyframes tape-peel {
-    0% {
-      clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-      transform: perspective(800px) rotateY(-60deg) scaleX(0.8);
-      opacity: 0.8;
-    }
-    20% {
-      clip-path: polygon(0 0, 30% 0, 25% 100%, 0 100%);
-      transform: perspective(800px) rotateY(-45deg) scaleX(0.85);
-      opacity: 0.9;
-    }
-    40% {
-      clip-path: polygon(0 0, 60% 0, 55% 100%, 0 100%);
-      transform: perspective(800px) rotateY(-25deg) scaleX(0.92);
-      opacity: 1;
-    }
-    60% {
-      clip-path: polygon(0 0, 80% 0, 78% 100%, 0 100%);
-      transform: perspective(800px) rotateY(-10deg) scaleX(0.97);
-    }
-    80% {
-      clip-path: polygon(0 0, 95% 0, 94% 100%, 0 100%);
-      transform: perspective(800px) rotateY(-2deg) scaleX(0.99);
-    }
-    100% {
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-      transform: perspective(800px) rotateY(0deg) scaleX(1);
-    }
-  }
-
-  [data-animation='tape-label'] .tape {
-    opacity: 0;
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-    transform: perspective(800px) rotateY(-60deg) scaleX(0.8);
-  }
-
-  [data-animation='tape-label'] .tape.animating {
-    animation: tape-peel 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    opacity: 0.8;
-  }
-
-  [data-animation='tape-label'] .tape.stuck {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-  }
-
-  [data-animation-delay='200'] .tape {
-    animation-delay: 200ms;
-  }
-</style>
-
 <script>
-  // Intersection Observer for scroll-triggered animations
-  const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -100px 0px',
-  }
+  import { useStickerAnimation } from '@/utils/sticker-animation'
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const element = entry.target as HTMLElement
-        const tape = element.querySelector('.tape') as HTMLElement
-        const delay = parseInt(element.dataset.animationDelay || '0')
+  // Store animation instances for cleanup
+  const animationInstances: ReturnType<typeof useStickerAnimation>[] = []
 
-        if (tape) {
-          setTimeout(() => {
-            tape.classList.add('animating')
-            // Add stuck class after animation completes
-            setTimeout(() => {
-              tape.classList.add('stuck')
-            }, 800 + delay)
-          }, delay)
-        }
+  // Initialize sticker animations
+  function initStickerAnimations() {
+    const stickerWrappers = document.querySelectorAll('[data-sticker-delay]')
 
-        observer.unobserve(element)
+    stickerWrappers.forEach((wrapper) => {
+      const target = wrapper.querySelector('.sticker-target') as HTMLElement
+      const delay = parseInt(
+        (wrapper as HTMLElement).dataset.stickerDelay || '0'
+      )
+
+      if (target) {
+        // Create sticker animation with mouse interaction
+        const animation = useStickerAnimation(target, {
+          direction: 'left',
+          delay: delay,
+          duration: 600,
+          easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
+          shadowIntensity: 0.5,
+          observerOptions: {
+            threshold: 0.2,
+            rootMargin: '0px 0px -100px 0px',
+          },
+        })
+
+        animationInstances.push(animation)
       }
     })
-  }, observerOptions)
-
-  // Observe all tape labels
-  document.addEventListener('DOMContentLoaded', () => {
-    const tapeLabels = document.querySelectorAll(
-      '[data-animation="tape-label"]'
-    )
-    tapeLabels.forEach((label) => {
-      observer.observe(label)
-    })
-  })
-
-  // Respect prefers-reduced-motion
-  const prefersReducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  )
-
-  if (prefersReducedMotion.matches) {
-    document
-      .querySelectorAll('[data-animation="tape-label"] .tape')
-      .forEach((tape) => {
-        ;(tape as HTMLElement).style.opacity = '1'
-        ;(tape as HTMLElement).style.clipPath = 'none'
-        ;(tape as HTMLElement).style.transform = 'none'
-        ;(tape as HTMLElement).classList.add('stuck')
-      })
   }
+
+  // Initialize on DOM ready
+  document.addEventListener('DOMContentLoaded', initStickerAnimations)
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    animationInstances.forEach((instance) => instance.destroy())
+  })
 </script>
