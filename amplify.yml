@@ -1,33 +1,21 @@
 version: 1
-applications:
-  - appRoot: .
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - nvm use 20
-            - npm install -g pnpm@latest
-            - pnpm config set store-dir .pnpm-store
-            - pnpm install
-            - echo "Node version:" && node --version
-            - echo "Memory:" && node -e "console.log(process.memoryUsage())"
-        build:
-          commands:
-            - nvm use 20
-            - export NODE_OPTIONS="--max-old-space-size=4096"
-            - pnpm exec astro check
-            - pnpm exec astro build --verbose
-      artifacts:
-        baseDirectory: dist
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - .pnpm-store/**/*
-      buildSpec:
-        version: 1.0
-    framework: 'Custom'
-    platform:
-      name: 'WEB_COMPUTE'
-      buildCommand: 'pnpm run build'
-      buildTimeout: 30
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - nvm install 20
+        - nvm use 20
+        - node --version
+        - npm install -g pnpm
+        - pnpm install
+    build:
+      commands:
+        - node --version
+        - NODE_OPTIONS=--max-old-space-size=4096 pnpm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
