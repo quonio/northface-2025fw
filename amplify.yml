@@ -6,9 +6,13 @@ frontend:
         - npm install -g pnpm@latest
         - pnpm config set store-dir .pnpm-store
         - pnpm install
+        - echo "Node version:" && node --version
+        - echo "Memory:" && node -e "console.log(process.memoryUsage())"
     build:
       commands:
-        - pnpm run build
+        - export NODE_OPTIONS="--max-old-space-size=4096"
+        - pnpm astro check
+        - pnpm astro build
   artifacts:
     baseDirectory: dist
     files:
