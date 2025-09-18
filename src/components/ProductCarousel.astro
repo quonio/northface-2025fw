@@ -267,7 +267,9 @@ const { productInfo, items, id, rowIndex = 1 } = Astro.props
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
           paginationBtns.forEach((btn, index) => {
-            btn.classList.toggle('is-active', index === currentIndex)
+            // 左から2番目の画像のインデックスを計算
+            const secondPositionIndex = (currentIndex + 1) % totalItems
+            btn.classList.toggle('is-active', index === secondPositionIndex)
           })
         }
       }
@@ -315,7 +317,8 @@ const { productInfo, items, id, rowIndex = 1 } = Astro.props
             e.preventDefault()
             if (isTransitioning) return
             stopAutoScroll()
-            currentIndex = index
+            // クリックされた番号を左から2番目に表示するため、currentIndexを調整
+            currentIndex = (index - 1 + totalItems) % totalItems
             updateCarousel()
           })
         })

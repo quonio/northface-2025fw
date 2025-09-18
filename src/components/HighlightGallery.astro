@@ -141,10 +141,38 @@ const { class: className = '' } = Astro.props
     // 全てのギャラリーアイテムの初期状態を設定
     const allGalleryItems = document.querySelectorAll('.gallery-item')
     allGalleryItems.forEach((item, index) => {
+      // より細かい初期位置の設定
+      let initialX = 0
+      let initialY = 0
+      let initialRotation = 0
+
+      // 最初の3枚と2番目の3枚で同じパターンを適用
+      const positionIndex = index % 3
+
+      switch (positionIndex) {
+        case 0: // 左の画像：左下から、左に傾ける
+          initialX = -600
+          initialY = 300
+          initialRotation = -15
+          break
+        case 1: // 真ん中の画像：真ん中やや右下から、少し右に傾ける
+          initialX = 200
+          initialY = 250
+          initialRotation = 5
+          break
+        case 2: // 右の画像：さらに右寄りの右下から、右に傾ける
+          initialX = 700
+          initialY = 350
+          initialRotation = 20
+          break
+      }
+
       gsap.set(item, {
-        x: index % 2 === 0 ? -200 : 200,
+        x: initialX,
+        y: initialY,
+        rotation: initialRotation,
         opacity: 1,
-        scale: 0.8,
+        scale: 1,
       })
     })
 
@@ -162,6 +190,8 @@ const { class: className = '' } = Astro.props
             firstGallerySection.querySelectorAll('.gallery-item')
           gsap.to(firstThreeItems, {
             x: 0,
+            y: 0,
+            rotation: 0,
             opacity: 1,
             scale: 1,
             duration: 0.8,
@@ -206,6 +236,8 @@ const { class: className = '' } = Astro.props
             secondGallerySection.querySelectorAll('.gallery-item')
           gsap.to(secondThreeItems, {
             x: 0,
+            y: 0,
+            rotation: 0,
             opacity: 1,
             scale: 1,
             duration: 0.8,
