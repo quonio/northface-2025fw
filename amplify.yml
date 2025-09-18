@@ -7,7 +7,7 @@ frontend:
         - nvm use 20
         - node --version
         - npm install -g pnpm@latest
-        - dnf install -y gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel
+        - sudo dnf install -y gcc-c++ cairo-devel pango-devel libjpeg-turbo-devel giflib-devel
         - pnpm install
     build:
       commands:
