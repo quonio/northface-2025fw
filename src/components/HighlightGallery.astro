@@ -154,11 +154,12 @@ const { class: className = '' } = Astro.props
 <script>
   import { gsap } from 'gsap'
   import { createManagedScrollTrigger } from '@/utils/gsap-manager'
+  import { logger } from '@/utils/logger'
 
   const isDevelopment = import.meta.env.DEV
 
   function initHighlightGalleryAnimations() {
-    console.log('🚀 HighlightGallery: Starting animations')
+    logger.log('🚀 HighlightGallery: Starting animations')
 
     // 全てのギャラリーアイテムの初期状態を設定
     const allGalleryItems = document.querySelectorAll('.gallery-item')
@@ -207,7 +208,7 @@ const { class: className = '' } = Astro.props
         end: 'bottom 20%',
         markers: isDevelopment,
         onEnter: () => {
-          console.log('📍 First Gallery ScrollTrigger: onEnter')
+          logger.log('📍 First Gallery ScrollTrigger: onEnter')
           const firstThreeItems =
             firstGallerySection.querySelectorAll('.gallery-item')
           gsap.to(firstThreeItems, {
@@ -239,25 +240,25 @@ const { class: className = '' } = Astro.props
             },
           })
         },
-        onLeave: () => console.log('📍 First Gallery ScrollTrigger: onLeave'),
+        onLeave: () => logger.log('📍 First Gallery ScrollTrigger: onLeave'),
         onEnterBack: () =>
-          console.log('📍 First Gallery ScrollTrigger: onEnterBack'),
+          logger.log('📍 First Gallery ScrollTrigger: onEnterBack'),
         onLeaveBack: () =>
-          console.log('📍 First Gallery ScrollTrigger: onLeaveBack'),
+          logger.log('📍 First Gallery ScrollTrigger: onLeaveBack'),
       })
     }
 
     // タイトルのアニメーション（ScrollTriggerなし）
     const testElement = document.querySelector('.text-center h2')
     if (testElement) {
-      console.log('✅ Test element found:', testElement)
+      logger.log('✅ Test element found:', testElement)
       gsap.from(testElement, {
         duration: 2,
         y: 50,
         opacity: 0,
         ease: 'bounce.out',
         onComplete: () => {
-          console.log('🎉 Basic animation completed!')
+          logger.log('🎉 Basic animation completed!')
         },
       })
     }
@@ -271,7 +272,7 @@ const { class: className = '' } = Astro.props
         end: 'bottom 20%',
         markers: isDevelopment,
         onEnter: () => {
-          console.log('📍 Second Gallery ScrollTrigger: onEnter')
+          logger.log('📍 Second Gallery ScrollTrigger: onEnter')
           const secondThreeItems =
             secondGallerySection.querySelectorAll('.gallery-item')
           gsap.to(secondThreeItems, {
@@ -303,11 +304,11 @@ const { class: className = '' } = Astro.props
             },
           })
         },
-        onLeave: () => console.log('📍 Second Gallery ScrollTrigger: onLeave'),
+        onLeave: () => logger.log('📍 Second Gallery ScrollTrigger: onLeave'),
         onEnterBack: () =>
-          console.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
+          logger.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
         onLeaveBack: () =>
-          console.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
+          logger.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
       })
     }
 
@@ -315,7 +316,7 @@ const { class: className = '' } = Astro.props
     if (import.meta.env.DEV) {
       const memoryInfo = (performance as any).memory
       if (memoryInfo) {
-        console.log('💾 Memory usage:', {
+        logger.log('💾 Memory usage:', {
           used: Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB',
           total: Math.round(memoryInfo.totalJSHeapSize / 1024 / 1024) + ' MB',
           limit: Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024) + ' MB',
@@ -327,17 +328,17 @@ const { class: className = '' } = Astro.props
   // 初期化
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('📄 DOM loaded, starting HighlightGallery animations...')
+      logger.log('📄 DOM loaded, starting HighlightGallery animations...')
       setTimeout(initHighlightGalleryAnimations, 100)
     })
   } else {
-    console.log('📄 DOM ready, starting HighlightGallery animations...')
+    logger.log('📄 DOM ready, starting HighlightGallery animations...')
     setTimeout(initHighlightGalleryAnimations, 100)
   }
 
   // Astro page transitions
   document.addEventListener('astro:page-load', () => {
-    console.log(
+    logger.log(
       '🔄 Astro page loaded, restarting HighlightGallery animations...'
     )
     setTimeout(initHighlightGalleryAnimations, 100)

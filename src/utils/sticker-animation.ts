@@ -89,6 +89,9 @@ import {
   type DOMStructure,
 } from './sticker-animation-dom'
 
+// Import logger
+import { logger } from './logger'
+
 // Re-export DOMStructure type
 export type { DOMStructure } from './sticker-animation-dom'
 
@@ -150,14 +153,14 @@ export function useStickerAnimation(
   }
 
   if (finalConfig.duration <= 0) {
-    console.warn(
+    logger.warn(
       'useStickerAnimation: duration must be positive, using default'
     )
     finalConfig.duration = DEFAULT_CONFIG.duration
   }
 
   if (finalConfig.shadowIntensity < 0 || finalConfig.shadowIntensity > 1) {
-    console.warn(
+    logger.warn(
       'useStickerAnimation: shadowIntensity must be between 0 and 1, using default'
     )
     finalConfig.shadowIntensity = DEFAULT_CONFIG.shadowIntensity

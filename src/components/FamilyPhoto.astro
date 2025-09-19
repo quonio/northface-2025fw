@@ -37,20 +37,21 @@ const { class: className } = Astro.props
 <script>
   import { gsap } from 'gsap'
   import { createManagedScrollTrigger } from '@/utils/gsap-manager'
+  import { logger } from '@/utils/logger'
 
   function initFamilyPhotoAnimation() {
-    console.log('🎯 FamilyPhoto: Initializing animation')
+    logger.log('🎯 FamilyPhoto: Initializing animation')
 
     const section = document.querySelector('.family-photo-section')
     const image1 = document.querySelector('.family-photo-1') as HTMLElement
     const image2 = document.querySelector('.family-photo-2') as HTMLElement
 
     if (!section || !image1 || !image2) {
-      console.warn('⚠️ FamilyPhoto: Required elements not found')
+      logger.warn('⚠️ FamilyPhoto: Required elements not found')
       return
     }
 
-    console.log('✅ FamilyPhoto: Elements found', { section, image1, image2 })
+    logger.log('✅ FamilyPhoto: Elements found', { section, image1, image2 })
 
     // 初期状態を設定
     // image2を下から上にスライドさせるため、clipPathを使用
@@ -79,7 +80,7 @@ const { class: className } = Astro.props
       markers: false, // 本番環境では false
       onUpdate: (self) => {
         const progress = self.progress
-        console.log('📊 FamilyPhoto Progress:', progress.toFixed(2))
+        logger.log('📊 FamilyPhoto Progress:', progress.toFixed(2))
 
         // 下から上にスライドするようにclipPathをアニメーション
         const revealHeight = progress * 100
@@ -106,7 +107,7 @@ const { class: className } = Astro.props
     })
 
     if (scrollTrigger) {
-      console.log('🚀 FamilyPhoto: ScrollTrigger created successfully')
+      logger.log('🚀 FamilyPhoto: ScrollTrigger created successfully')
     }
   }
 

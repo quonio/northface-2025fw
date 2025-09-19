@@ -4,6 +4,7 @@
 
 import type { DOMStructure, Direction } from './sticker-animation'
 import { applyPeelStyles } from './sticker-animation-events'
+import { logger } from './logger'
 
 interface AutoAnimationConfig {
   duration: number
@@ -20,7 +21,7 @@ export function createAutoAnimation(
   size: number,
   config: AutoAnimationConfig
 ): () => void {
-  console.log('Starting auto animation with:', { size, config })
+  logger.log('Starting auto animation with:', { size, config })
   let animationFrame: number | null = null
   let startTime: number | null = null
   let isAnimating = false

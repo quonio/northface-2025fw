@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { logger } from './logger'
 
 // GSAPプラグインの登録（一度だけ）
 gsap.registerPlugin(ScrollTrigger)
@@ -37,7 +38,7 @@ export function createManagedScrollTrigger(
     scrollTriggers.set(id, trigger)
     return trigger
   } catch (error) {
-    console.error(`Failed to create ScrollTrigger for ${id}:`, error)
+    logger.error(`Failed to create ScrollTrigger for ${id}:`, error)
     return null
   }
 }
@@ -72,9 +73,9 @@ export function refreshScrollTriggers(): void {
  * デバッグ情報を出力
  */
 export function debugScrollTriggers(): void {
-  console.log('Active ScrollTriggers:', scrollTriggers.size)
+  logger.log('Active ScrollTriggers:', scrollTriggers.size)
   scrollTriggers.forEach((trigger, id) => {
-    console.log(`- ${id}:`, trigger)
+    logger.log(`- ${id}:`, trigger)
   })
 }
 
