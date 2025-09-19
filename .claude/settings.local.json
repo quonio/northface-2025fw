@@ -22,7 +22,8 @@
       "Bash(pnpm run dev:*)",
       "Bash(pnpm run:*)",
       "Bash(pnpm astro:*)",
-      "WebFetch(domain:docs.astro.build)"
+      "WebFetch(domain:docs.astro.build)",
+      "Bash(cp:*)"
     ],
     "deny": []
   }

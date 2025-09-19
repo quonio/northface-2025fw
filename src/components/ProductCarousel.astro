@@ -16,13 +16,13 @@ const { productInfo, items, id, rowIndex = 1 } = Astro.props
 // rowIndexに基づいてテープSVGパスを決定する関数
 const getTapeSvgPath = (rowIdx: number): string => {
   const tapeMapping: Record<number, string> = {
-    1: '/src/assets/images/decorations/tape-9.svg',
-    2: '/src/assets/images/decorations/tape-8.svg',
-    3: '/src/assets/images/decorations/tape-1.svg',
-    4: '/src/assets/images/decorations/tape-2.svg',
-    5: '/src/assets/images/decorations/tape-3.svg',
+    1: '/images/decorations/tape-9.svg',
+    2: '/images/decorations/tape-8.svg',
+    3: '/images/decorations/tape-1.svg',
+    4: '/images/decorations/tape-2.svg',
+    5: '/images/decorations/tape-3.svg',
   }
-  return tapeMapping[rowIdx] || '/src/assets/images/decorations/tape-8.svg'
+  return tapeMapping[rowIdx] || '/images/decorations/tape-8.svg'
 }
 
 // rowIndexに基づいてテープSVGの幅（vw）を決定する関数
