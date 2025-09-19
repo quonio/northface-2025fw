@@ -131,13 +131,48 @@ const productInfos: ProductInfo[] = [
 // Create items for carousels using collection images
 const createCarouselItems = (productIndex: number): CarouselItem[] => {
   const collectionImages = [
-    [cl__item01_01, cl__item01_02, cl__item01_03, cl__item01_04, cl__item01_05, cl__item01_06],
-    [cl__item02_01, cl__item02_02, cl__item02_03, cl__item02_04, cl__item02_05, cl__item02_06],
-    [cl__item03_01, cl__item03_02, cl__item03_03, cl__item03_04, cl__item03_05, cl__item03_06],
-    [cl__item04_01, cl__item04_02, cl__item04_03, cl__item04_04, cl__item04_05, cl__item04_06],
-    [cl__item05_01, cl__item05_02, cl__item05_03, cl__item05_04, cl__item05_05, cl__item05_06],
+    [
+      cl__item01_01,
+      cl__item01_02,
+      cl__item01_03,
+      cl__item01_04,
+      cl__item01_05,
+      cl__item01_06,
+    ],
+    [
+      cl__item02_01,
+      cl__item02_02,
+      cl__item02_03,
+      cl__item02_04,
+      cl__item02_05,
+      cl__item02_06,
+    ],
+    [
+      cl__item03_01,
+      cl__item03_02,
+      cl__item03_03,
+      cl__item03_04,
+      cl__item03_05,
+      cl__item03_06,
+    ],
+    [
+      cl__item04_01,
+      cl__item04_02,
+      cl__item04_03,
+      cl__item04_04,
+      cl__item04_05,
+      cl__item04_06,
+    ],
+    [
+      cl__item05_01,
+      cl__item05_02,
+      cl__item05_03,
+      cl__item05_04,
+      cl__item05_05,
+      cl__item05_06,
+    ],
   ]
-  
+
   const images = collectionImages[productIndex] || collectionImages[0]
   return Array.from({ length: 6 }, (_, i) => ({
     id: `item-${productIndex + 1}-${i}`,
@@ -166,7 +201,7 @@ const carouselRows = productInfos.map((info, index) => ({
   </div>
 
   <!-- First 3 Carousel Rows -->
-  <div class="space-y-12 md:space-y-16">
+  <div class="space-y-12 md:space-y-24">
     {
       carouselRows.slice(0, 3).map((row, index) => (
         <div class="relative px-0">
