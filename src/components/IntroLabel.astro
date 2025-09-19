@@ -10,9 +10,9 @@ interface Props {
 const { class: className = '' } = Astro.props
 ---
 
-<section class={cn('relative py-20 md:py-32 lg:py-16', className)}>
+<section class={cn('relative py-[10.67vw] md:py-32 lg:py-16', className)}>
   <div class="container mx-auto px-4">
-    <div class="flex flex-col items-center gap-2 md:gap-2.5">
+    <div class="flex flex-col items-center gap-0.5 md:gap-2.5">
       <!-- Japanese text label -->
       <div class="relative inline-block" data-sticker-delay="0">
         <img
@@ -21,7 +21,7 @@ const { class: className = '' } = Astro.props
           width={562}
           height={80}
           loading="lazy"
-          class="sticker-target block w-[39.03vw] max-w-[562px] h-auto max-[767px]:w-[80vw] max-[767px]:max-w-[300px]"
+          class="sticker-target block w-[92.8vw] max-w-[92.8vw] h-auto md:w-[39.03vw] md:max-w-[562px]"
         />
       </div>
 
@@ -33,7 +33,7 @@ const { class: className = '' } = Astro.props
           width={464}
           height={52}
           loading="lazy"
-          class="sticker-target block w-[32.22vw] max-w-[464px] h-auto max-[767px]:w-[70vw] max-[767px]:max-w-[250px]"
+          class="sticker-target block w-[76.53vw] max-w-[76.53vw] h-auto md:w-[32.22vw] md:max-w-[464px]"
         />
       </div>
     </div>
