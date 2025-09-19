@@ -2,6 +2,7 @@
 import headlineFrame from '../assets/images/decorations/headline-frame.svg'
 import { cn } from '@/utils/cn'
 import BuyLink from './BuyLink.astro'
+import NumberPagination from './NumberPagination.astro'
 
 interface Props {
   headline?: string
@@ -181,34 +182,14 @@ const currentSize = sizeClasses[size]
   <!-- Pagination -->
   {
     totalPages > 0 && carouselId && (
-      <div
-        class={cn('pager flex gap-0 mt-auto', currentSize.pager)}
-        style={
-          size === 'lg'
-            ? 'width: calc(100% + 4.48vw); max-height: 6vw;'
-            : size === 'sm'
-              ? 'width: calc(3.61vw * 4); max-height: 3.61vw;'
-              : 'width: calc(100% + 3rem);'
-        }
-        data-carousel-pagination={carouselId}
-      >
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            class={cn(
-              'pagination-btn relative z-[1] bg-transparent border-t border-r border-light-navy-2 font-thin text-light-navy-2 no-underline flex items-center justify-center leading-none',
-              size === 'sm' ? 'w-[3.61vw] h-[3.61vw]' : 'flex-1 aspect-square',
-              'hover:bg-light-navy-2/10 transition-colors',
-              size !== 'sm' && 'last:border-r-0',
-              '[&.is-active]:bg-light-navy-2 [&.is-active]:text-white [&.is-active]:border-light-navy-2 [&.is-active]:z-[2]',
-              currentSize.pagerButton
-            )}
-            data-page={i}
-            aria-label={`Go to page ${i + 1}`}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
+      <NumberPagination
+        totalPages={totalPages}
+        carouselId={carouselId}
+        size={size}
+        hideFirstLeftBorder
+        hideLastRightBorder
+        class="hidden md:flex"
+      />
     )
   }
 </article>

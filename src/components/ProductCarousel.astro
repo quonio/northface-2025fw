@@ -1,6 +1,7 @@
 ---
 import ProductInfoCard from './ProductInfoCard.astro'
 import ImageCard from './ImageCard.astro'
+import NumberPagination from './NumberPagination.astro'
 import type { ProductInfo, CarouselItem } from '@/types/product'
 
 interface Props {
@@ -262,19 +263,12 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       </div>
 
       <!-- Pagination (ページネーション) -->
-      <div class="flex justify-center gap-2 mt-4" data-carousel-pagination={id}>
-        {
-          items.map((_, index) => (
-            <button
-              class={`pagination-btn w-2 h-2 rounded-full transition-colors ${
-                index === 0 ? 'bg-navy' : 'bg-navy/30'
-              }`}
-              aria-label={`Go to item ${index + 1}`}
-              data-page={index}
-            />
-          ))
-        }
-      </div>
+      <NumberPagination
+        totalPages={items.length}
+        carouselId={id}
+        size="lg"
+        class="md:hidden -mx-[0] -mt-[4.27vw] border-light-navy-2 border-b border-t-0"
+      />
     </div>
   </div>
 

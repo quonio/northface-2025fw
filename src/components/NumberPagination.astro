@@ -1,0 +1,71 @@
+---
+import { cn } from '@/utils/cn'
+
+interface Props {
+  totalPages: number
+  carouselId: string
+  currentIndex?: number
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+  hideFirstLeftBorder?: boolean
+  hideLastRightBorder?: boolean
+}
+
+const {
+  totalPages,
+  carouselId,
+  currentIndex = 0,
+  size = 'lg',
+  class: className,
+  hideFirstLeftBorder = false,
+  hideLastRightBorder = false,
+} = Astro.props
+
+// サイズに応じたクラスを定義
+const sizeClasses = {
+  sm: {
+    pager: 'md:w-[calc(100%+1.5rem)] md:max-h-[4vw]',
+    pagerButton: 'text-[2.78vw]',
+    itemSize: 'w-[9.6vw] h-[9.6vw]',
+  },
+  md: {
+    pager: '-mx-6 -mb-6 md:w-[calc(100%+3rem)] md:max-h-[5vw]',
+    pagerButton: 'text-3xl',
+    itemSize: 'flex-1 aspect-square',
+  },
+  lg: {
+    pager: '-mx-[2.24vw] -mb-[2.24vw] md:w-[calc(100%+4.48vw)] md:max-h-[6vw]',
+    pagerButton: 'text-[12vw] md:text-[4.5vw]',
+    itemSize: 'flex-1 aspect-square',
+  },
+}
+
+const currentSize = sizeClasses[size]
+---
+
+<div
+  class={cn('pager flex gap-0 mt-auto', currentSize.pager, className)}
+  data-carousel-pagination={carouselId}
+>
+  {
+    Array.from({ length: totalPages }, (_, i) => (
+      <button
+        class={cn(
+          'pagination-btn relative z-[1] bg-transparent border-t border-r border-light-navy-2 font-thin text-light-navy-2 no-underline flex items-center justify-center leading-none',
+          currentSize.itemSize,
+          'hover:bg-light-navy-2/10 transition-colors',
+          '[&.is-active]:bg-light-navy-2 [&.is-active]:text-white [&.is-active]:border-light-navy-2 [&.is-active]:z-[2]',
+          currentSize.pagerButton,
+          {
+            'border-l': i === 0 && !hideFirstLeftBorder,
+            'border-r-0': i === totalPages - 1 && hideLastRightBorder,
+          }
+        )}
+        data-page={i}
+        aria-label={`Go to page ${i + 1}`}
+      >
+        {i + 1}
+      </button>
+    ))
+  }
+</div>

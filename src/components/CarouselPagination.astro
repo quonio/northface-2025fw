@@ -1,0 +1,27 @@
+---
+interface Props {
+  totalPages: number
+  carouselId: string
+  currentIndex?: number
+  isMobile?: boolean
+}
+
+const { totalPages, carouselId, currentIndex = 0, isMobile = false } = Astro.props
+---
+
+<div 
+  class="flex justify-center gap-2 mt-4 md:hidden" 
+  data-carousel-pagination={carouselId}
+>
+  {
+    Array.from({ length: totalPages }, (_, index) => (
+      <button
+        class={`pagination-btn w-2 h-2 rounded-full transition-colors ${
+          index === currentIndex ? 'bg-navy' : 'bg-navy/30'
+        }`}
+        aria-label={`Go to item ${index + 1}`}
+        data-page={index}
+      />
+    ))
+  }
+</div>
