@@ -7,6 +7,8 @@ import style03 from '@/assets/images/hg__sub-03.jpg'
 import style04 from '@/assets/images/hg__sub-04.jpg'
 import style05 from '@/assets/images/hg__sub-05.jpg'
 import style06 from '@/assets/images/hg__sub-06.jpg'
+import tape2 from '@/assets/images/decorations/tape-2.svg?url'
+import tape6 from '@/assets/images/decorations/tape-6.svg?url'
 
 const isDevelopment = import.meta.env.DEV
 
@@ -35,9 +37,7 @@ const { class: className = '' } = Astro.props
           class="h-full w-full object-cover"
         />
       </div>
-      <div
-        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
-      >
+      <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style02}
           alt="THE NORTH FACE MATERNITY+ Style 2"
@@ -45,6 +45,12 @@ const { class: className = '' } = Astro.props
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
           class="h-full w-full object-cover"
+        />
+        <!-- Tape decoration on image -->
+        <img
+          src={tape2}
+          alt="Decorative tape"
+          class="tape-image absolute -bottom-[1.8vw] left-1/2 translate-x-[-50%] w-[14.8vw] max-w-[213px] h-auto opacity-0 z-10"
         />
       </div>
       <div
@@ -86,9 +92,7 @@ const { class: className = '' } = Astro.props
           class="h-full w-full object-cover transition-transform"
         />
       </div>
-      <div
-        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
-      >
+      <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style05}
           alt="THE NORTH FACE MATERNITY+ Style 5"
@@ -96,6 +100,12 @@ const { class: className = '' } = Astro.props
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
           class="h-full w-full object-cover"
+        />
+        <!-- Tape decoration on image -->
+        <img
+          src={tape6}
+          alt="Decorative tape"
+          class="tape-image-2 absolute -top-[1.8vw] left-1/2 translate-x-[-50%] w-[9.4vw] h-auto opacity-0 z-10"
         />
       </div>
       <div
@@ -201,6 +211,24 @@ const { class: className = '' } = Astro.props
             duration: 0.8,
             stagger: 0.15,
             ease: 'steps(3, end)',
+            onComplete: () => {
+              // 最初のギャラリーのアニメーション完了後にテープを表示
+              const tapeImages =
+                firstGallerySection.querySelectorAll('.tape-image')
+              tapeImages.forEach((tape) => {
+                // 初期状態を設定
+                gsap.set(tape, {
+                  rotation: -5,
+                })
+                // アニメーション
+                gsap.to(tape, {
+                  opacity: 1,
+                  rotation: 0,
+                  duration: 0.3,
+                  ease: 'power2.out',
+                })
+              })
+            },
           })
         },
         onLeave: () => console.log('📍 First Gallery ScrollTrigger: onLeave'),
@@ -247,6 +275,24 @@ const { class: className = '' } = Astro.props
             duration: 0.8,
             stagger: 0.15,
             ease: 'steps(3, end)',
+            onComplete: () => {
+              // 2番目のギャラリーのアニメーション完了後にテープを表示
+              const tapeImages2 =
+                secondGallerySection.querySelectorAll('.tape-image-2')
+              tapeImages2.forEach((tape) => {
+                // 初期状態を設定
+                gsap.set(tape, {
+                  rotation: -5,
+                })
+                // アニメーション
+                gsap.to(tape, {
+                  opacity: 1,
+                  rotation: 0,
+                  duration: 0.3,
+                  ease: 'power2.out',
+                })
+              })
+            },
           })
         },
         onLeave: () => console.log('📍 Second Gallery ScrollTrigger: onLeave'),
