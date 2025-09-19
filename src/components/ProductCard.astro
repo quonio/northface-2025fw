@@ -41,7 +41,7 @@ const { image, modelNumber, title, copy, price, link, id } = Astro.props
 
     {
       price && (
-        <p class="text-[0.833vw] font-medium text-brown mb-[1.111vw]">
+        <p class="text-[0.833vw] font-medium text-beige-dark mb-[1.111vw]">
           {price}
         </p>
       )
@@ -58,7 +58,7 @@ const { image, modelNumber, title, copy, price, link, id } = Astro.props
     {
       link && (
         <div class="mt-auto">
-          <BuyLink href={link} size="sm" />
+          <BuyLink href={link} size="sm" color="beige-dark" />
         </div>
       )
     }
