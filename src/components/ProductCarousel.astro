@@ -58,7 +58,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
   data-row-index={rowIndex}
 >
   <!-- Desktop: Fixed 4 positions layout -->
-  <div class="hidden lg:flex gap-6 relative -ml-[20vw]">
+  <div class="hidden md:flex gap-6 relative -ml-[20vw]">
     <!-- Position 1 -->
     <div class="relative w-[34vw] flex-shrink-0 aspect-[3/4]">
       {
@@ -174,7 +174,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
   </div>
 
   <!-- Mobile: Vertical layout -->
-  <div class="lg:hidden" data-mobile-carousel={id}>
+  <div class="md:hidden" data-mobile-carousel={id}>
     <div class="flex flex-col gap-[4.27vw] md:gap-6">
       <!-- First image position -->
       <div
@@ -274,7 +274,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
 
   <!-- Navigation buttons -->
   <button
-    class="carousel-prev hidden lg:block absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+    class="carousel-prev hidden md:block absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
     aria-label="Previous items"
     data-carousel-prev
   >
@@ -293,7 +293,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
   </button>
 
   <button
-    class="carousel-next hidden lg:block absolute -right-8 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+    class="carousel-next hidden md:block absolute -right-8 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
     aria-label="Next items"
     data-carousel-next
   >
@@ -323,23 +323,22 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       const rowIndex = parseInt(carousel.getAttribute('data-row-index') || '1')
       const isDesktop = window.innerWidth >= 768
 
-      // デスクトップとモバイルで異なるページネーションを取得
-      const allPaginations = document.querySelectorAll(
-        `[data-carousel-pagination="${carouselId}"]`
-      )
+      // カルーセル内のページネーションを探す（カルーセルのスコープ内のみ）
       let pagination = null
-
-      // モバイルとデスクトップで正しいページネーションを選択
-      allPaginations.forEach((p, idx) => {
-        const hasMdHidden = Array.from(p.classList).some((cls) =>
-          cls.includes('md:hidden')
-        )
-        if (isDesktop && !hasMdHidden) {
-          pagination = p
-        } else if (!isDesktop && hasMdHidden) {
-          pagination = p
-        }
-      })
+      
+      if (isDesktop) {
+        // デスクトップ: カルーセル内のarticle要素内を探す
+        pagination = carousel.querySelector(`article [data-carousel-pagination="${carouselId}"]`)
+      } else {
+        // モバイル: md:hiddenクラスを持つページネーションを探す
+        pagination = carousel.querySelector(`[data-carousel-pagination="${carouselId}"].md\\:hidden`)
+      }
+      
+      console.log('Carousel:', carouselId, 'row:', rowIndex, 'found pagination:', !!pagination)
+      
+      if (!pagination) {
+        console.warn('No pagination found for carousel:', carouselId, 'isDesktop:', isDesktop)
+      }
 
       let currentIndex = 0
       let autoScrollInterval
@@ -467,16 +466,27 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         // Update pagination
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
+          console.log('Updating pagination buttons:', paginationBtns.length, 'currentIndex:', currentIndex)
           paginationBtns.forEach((btn, index) => {
             if (isDesktop) {
               // Desktop: Active is second position
               const secondPositionIndex = (currentIndex + 1) % totalItems
-              btn.classList.toggle('is-active', index === secondPositionIndex)
+              const isActive = index === secondPositionIndex
+              btn.classList.toggle('is-active', isActive)
+              if (isActive) {
+                console.log('Setting active button:', index, 'for desktop')
+              }
             } else {
               // Mobile: Active is current index (NumberPagination component)
-              btn.classList.toggle('is-active', index === currentIndex)
+              const isActive = index === currentIndex
+              btn.classList.toggle('is-active', isActive)
+              if (isActive) {
+                console.log('Setting active button:', index, 'for mobile')
+              }
             }
           })
+        } else {
+          console.warn('No pagination to update')
         }
       }
 
@@ -530,14 +540,17 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         paginationBtns.forEach((btn, index) => {
           btn.addEventListener('click', (e) => {
             e.preventDefault()
+            console.log('Pagination clicked:', index, 'carousel:', carouselId, 'isDesktop:', isDesktop)
             if (isTransitioning) return
             stopAutoScroll()
             if (isDesktop) {
               // Desktop: クリックされた番号を左から2番目に表示するため、currentIndexを調整
               currentIndex = (index - 1 + totalItems) % totalItems
+              console.log('Desktop: Set currentIndex to', currentIndex)
             } else {
               // Mobile: クリックされた番号をそのまま使用
               currentIndex = index
+              console.log('Mobile: Set currentIndex to', currentIndex)
             }
             updateCarousel()
             setTimeout(() => {
@@ -600,6 +613,15 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       // Initial update and start auto scroll
       updateCarousel()
       startAutoScroll()
+      
+      // Debug: Check initial state
+      if (pagination) {
+        const activeBtns = pagination.querySelectorAll('.pagination-btn.is-active')
+        console.log('Initial active buttons:', activeBtns.length, 'for carousel:', carouselId)
+        activeBtns.forEach(btn => {
+          console.log('Active button:', btn.textContent, btn.className)
+        })
+      }
 
       // Show tape animation for first row carousel
       if (rowIndex === 1) {
