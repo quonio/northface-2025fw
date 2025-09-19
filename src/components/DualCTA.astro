@@ -10,27 +10,27 @@ const { class: className = '' } = Astro.props
 ---
 
 <section class={cn('p-0', className)}>
-  <div class="flex w-full">
+  <div class="flex w-full flex-col md:flex-row">
     <a
       href="#all-items"
-      class="cta-button w-1/2 text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-lg md:text-xl lg:text-[3.194vw] font-extralight transition-all duration-300 border-r border-paper/20 flex items-center justify-center gap-3"
+      class="cta-button w-full md:w-1/2 text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-[7.73vw] md:text-xl lg:text-[3.194vw] font-extralight transition-all duration-300 border-b md:border-r border-paper/20 flex items-center justify-center gap-3"
     >
       <span>ALL ITEMS</span>
       <img
         src={upArrowIcon.src}
         alt=""
-        class="w-5 h-5 md:w-6 md:h-6 lg:w-[2.639vw] lg:h-[2.639vw]"
+        class="w-[6.13vw] h-[6.13vw] md:w-6 md:h-6 lg:w-[2.639vw] lg:h-[2.639vw]"
       />
     </a>
     <a
       href="#staff-styling"
-      class="cta-button w-1/2 text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-lg md:text-xl lg:text-[3.194vw] font-extralight transition-all duration-300 flex items-center justify-center gap-3"
+      class="cta-button w-full md:w-1/2 text-paper py-6 md:py-8 lg:py-10 px-4 text-center font-display text-[7.73vw] md:text-xl lg:text-[3.194vw] font-extralight transition-all duration-300 flex items-center justify-center gap-3"
     >
       <span>STAFF STYLING</span>
       <img
         src={upArrowIcon.src}
         alt=""
-        class="w-5 h-5 md:w-6 md:h-6 lg:w-[2.639vw] lg:h-[2.639vw]"
+        class="w-[6.13vw] h-[6.13vw] md:w-6 md:h-6 lg:w-[2.639vw] lg:h-[2.639vw]"
       />
     </a>
   </div>

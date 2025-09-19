@@ -45,10 +45,10 @@ const sizeClasses = {
   sm: {
     container: 'p-4',
     headline: 'text-[8px] lg:text-[9px]',
-    modelNumber: 'text-[10px]',
-    title: 'text-lg md:text-xl',
-    price: 'text-sm',
-    copy: 'text-sm',
+    modelNumber: 'text-[2.13vw] md:text-[10px] mb-[0.5vw]',
+    title: 'text-[4vw] md:text-xl leading-tight',
+    price: 'text-[2.13vw] md:text-sm mb-4',
+    copy: 'text-[2.67vw] md:text-sm',
     description: 'text-xs',
     buyLink: 'right-4 bottom-[calc(1rem+3.61vw+1rem)]',
     pager: '-mx-4 -mb-4',
@@ -93,7 +93,7 @@ const currentSize = sizeClasses[size]
   <div>
     {
       headline && (
-        <div class="inline-block mb-6">
+        <div class="inline-block mb-[3.2vw] md:mb-6">
           <span
             class={cn(
               'inline-block bg-no-repeat bg-center p-[0.5em] font-light uppercase tracking-[0.1em] text-brown whitespace-nowrap min-w-[62px] min-h-[20px] leading-none text-center',

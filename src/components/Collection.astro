@@ -245,7 +245,9 @@ const carouselRows = productInfos.map((info, index) => ({
           class="unit-image w-full h-full object-cover"
         />
       </div>
-      <div class="relative unit-image-wrapper col-span-2 md:col-span-1 mx-auto w-1/2 md:w-full">
+      <div
+        class="relative unit-image-wrapper col-span-2 md:col-span-1 mx-auto w-1/2 md:w-full"
+      >
         <img
           src={unit05.src}
           alt="Collection Unit 5"
@@ -258,23 +260,29 @@ const carouselRows = productInfos.map((info, index) => ({
   <!-- Last 2 Carousel Rows -->
   <div class="space-y-12 md:space-y-16">
     {
-      carouselRows.slice(3).map((row, index) => (
-        <div class="relative px-0">
-          <ProductCarousel {...row} rowIndex={index + 4} />
-        </div>
-      ))
+      carouselRows.slice(3).map((row, index) => {
+        return (
+          <div class="relative px-0">
+            <ProductCarousel {...row} rowIndex={index + 4} />
+          </div>
+        )
+      })
     }
   </div>
 
   <!-- New Product Grid Section -->
-  <div class="container mx-auto px-4 py-24 flex justify-center">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-[85vw]">
+  <div
+    class="container mx-auto px-0 py-[24vw] md:px-4 md:py-24 flex justify-center"
+  >
+    <div
+      class="grid grid-cols-2 gap-[3.2vw] md:grid-cols-2 md:gap-6 w-full md:max-w-[85vw]"
+    >
       <!-- Product 1 -->
       <div class="relative">
         <img
           src="/src/assets/images/decorations/tape-4.svg"
           alt=""
-          class="absolute -top-[2.39vw] -left-[1.4vw] z-10 w-[5.28vw] opacity-95"
+          class="absolute -top-[8.39vw] -left-[3.4vw] md:-top-[2.39vw] md:-left-[1.4vw] z-10 w-[12vw] md:w-[5.28vw] opacity-95"
         />
         <ProductShowcaseCarousel
           images={[cl__item06_01, cl__item06_02, cl__item06_03, cl__item06_04]}
@@ -319,7 +327,7 @@ const carouselRows = productInfos.map((info, index) => ({
         <img
           src="/src/assets/images/decorations/tape-5.svg"
           alt=""
-          class="absolute bottom-[12vw] -right-[1.11vw] z-10 w-[4.86vw] opacity-95"
+          class="absolute bottom-[40vw] -right-[1.42vw] w-[11.2vw] md:bottom-[12vw] md:-right-[1.11vw] z-10 md:w-[4.86vw] opacity-95"
         />
       </div>
     </div>
