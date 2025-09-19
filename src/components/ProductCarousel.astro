@@ -36,6 +36,19 @@ const getTapeWidth = (rowIdx: number): string => {
   }
   return widthMapping[rowIdx] || '20vw'
 }
+
+// モバイル用のテープ幅を決定する関数
+const getTapeWidthMobile = (rowIdx: number): string => {
+  // 375pxを基準にvwに変換（PC版の約40%サイズ）
+  const widthMapping: Record<number, string> = {
+    1: `${(187 / 375) * 100}vw`, // 35.73vw
+    2: `${(140 / 375) * 100}vw`, // 23.47vw
+    3: `${(197 / 375) * 100}vw`, // 35.73vw
+    4: `${(187 / 375) * 100}vw`, // 29.33vw
+    5: `${(115 / 375) * 100}vw`, // 17.60vw
+  }
+  return widthMapping[rowIdx] || '30vw'
+}
 ---
 
 <div
@@ -51,7 +64,7 @@ const getTapeWidth = (rowIdx: number): string => {
         items.map((item, index) => (
           <div
             class:list={[
-              'absolute inset-0 transition-opacity duration-500',
+              'absolute inset-0 transition-opacity duration-700',
               {
                 'opacity-100': index === items.length - 1,
                 'opacity-0': index !== items.length - 1,
@@ -75,7 +88,7 @@ const getTapeWidth = (rowIdx: number): string => {
             <img
               src={getTapeSvgPath(rowIndex)}
               alt=""
-              class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+              class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 opacity-95"
               style={`width: ${getTapeWidth(rowIndex)}`}
             />
             <ProductInfoCard
@@ -88,7 +101,7 @@ const getTapeWidth = (rowIdx: number): string => {
           items.map((item, index) => (
             <div
               class:list={[
-                'absolute inset-0 transition-opacity duration-500',
+                'absolute inset-0 transition-opacity duration-700',
                 { 'opacity-100': index === 0, 'opacity-0': index !== 0 },
               ]}
               data-carousel-item
@@ -123,7 +136,7 @@ const getTapeWidth = (rowIdx: number): string => {
           items.map((item, index) => (
             <div
               class:list={[
-                'absolute inset-0 transition-opacity duration-500',
+                'absolute inset-0 transition-opacity duration-700',
                 { 'opacity-100': index === 1, 'opacity-0': index !== 1 },
               ]}
               data-carousel-item
@@ -159,29 +172,115 @@ const getTapeWidth = (rowIdx: number): string => {
     </div>
   </div>
 
-  <!-- Mobile: Traditional scroll -->
-  <div class="lg:hidden overflow-x-auto">
-    <div class="flex gap-4 md:gap-6" data-carousel-track>
-      <div class="flex-shrink-0 w-[280px] md:w-[320px]">
+  <!-- Mobile: Vertical layout -->
+  <div class="lg:hidden" data-mobile-carousel={id}>
+    <div class="flex flex-col gap-[4.27vw] md:gap-6">
+      <!-- First image position -->
+      <div
+        class="aspect-[3/4] relative overflow-hidden"
+        data-mobile-position="1"
+      >
+        {
+          items.map((item, index) => (
+            <div
+              class:list={[
+                'absolute inset-0 transition-opacity duration-700',
+                { 'opacity-100': index === 0, 'opacity-0': index !== 0 },
+              ]}
+              data-mobile-image-1
+              data-mobile-item-index={index}
+            >
+              <ImageCard image={item.image} alt={item.alt} />
+            </div>
+          ))
+        }
+        <!-- Tap areas for navigation -->
+        <div class="absolute inset-0 flex">
+          <button
+            class="w-1/2 h-full opacity-0 cursor-pointer"
+            aria-label="Previous image"
+            data-mobile-tap-prev></button>
+          <button
+            class="w-1/2 h-full opacity-0 cursor-pointer"
+            aria-label="Next image"
+            data-mobile-tap-next></button>
+        </div>
+      </div>
+
+      <!-- ProductInfoCard with tape -->
+      <div class="relative">
+        <!-- Tape decoration -->
+        <img
+          src={getTapeSvgPath(rowIndex)}
+          alt=""
+          class="absolute -top-[6vw] left-1/2 -translate-x-1/2 z-10 md:hidden opacity-95"
+          style={`width: ${getTapeWidthMobile(rowIndex)}; height: auto;`}
+        />
+        <img
+          src={getTapeSvgPath(rowIndex)}
+          alt=""
+          class="absolute -top-[6vw] left-1/2 -translate-x-1/2 z-10 hidden md:block opacity-95"
+          style={`width: ${getTapeWidth(rowIndex)}; height: auto;`}
+        />
         <ProductInfoCard
           {...productInfo}
           totalPages={items.length}
           carouselId={id}
         />
       </div>
-      {
-        items.map((item) => (
-          <div class="flex-shrink-0 w-[280px]">
-            <ImageCard image={item.image} alt={item.alt} />
-          </div>
-        ))
-      }
+
+      <!-- Second image position -->
+      <div
+        class="aspect-[3/4] relative overflow-hidden"
+        data-mobile-position="2"
+      >
+        {
+          items.map((item, index) => (
+            <div
+              class:list={[
+                'absolute inset-0 transition-opacity duration-700',
+                { 'opacity-100': index === 1, 'opacity-0': index !== 1 },
+              ]}
+              data-mobile-image-2
+              data-mobile-item-index={index}
+            >
+              <ImageCard image={item.image} alt={item.alt} />
+            </div>
+          ))
+        }
+        <!-- Tap areas for navigation -->
+        <div class="absolute inset-0 flex">
+          <button
+            class="w-1/2 h-full opacity-0 cursor-pointer"
+            aria-label="Previous image"
+            data-mobile-tap-prev></button>
+          <button
+            class="w-1/2 h-full opacity-0 cursor-pointer"
+            aria-label="Next image"
+            data-mobile-tap-next></button>
+        </div>
+      </div>
+
+      <!-- Pagination (ページネーション) -->
+      <div class="flex justify-center gap-2 mt-4" data-carousel-pagination={id}>
+        {
+          items.map((_, index) => (
+            <button
+              class={`pagination-btn w-2 h-2 rounded-full transition-colors ${
+                index === 0 ? 'bg-navy' : 'bg-navy/30'
+              }`}
+              aria-label={`Go to item ${index + 1}`}
+              data-page={index}
+            />
+          ))
+        }
+      </div>
     </div>
   </div>
 
   <!-- Navigation buttons -->
   <button
-    class="carousel-prev absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+    class="carousel-prev hidden lg:block absolute -left-8 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
     aria-label="Previous items"
     data-carousel-prev
   >
@@ -200,7 +299,7 @@ const getTapeWidth = (rowIdx: number): string => {
   </button>
 
   <button
-    class="carousel-next absolute -right-8 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
+    class="carousel-next hidden lg:block absolute -right-8 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 z-10 bg-white/90 hover:bg-white rounded-full p-3 shadow-lg transition-all"
     aria-label="Next items"
     data-carousel-next
   >
@@ -232,12 +331,13 @@ const getTapeWidth = (rowIdx: number): string => {
         `[data-carousel-pagination="${carouselId}"]`
       )
 
-      if (!prevBtn || !nextBtn) return
-
       let currentIndex = 0
       let autoScrollInterval
       let isTransitioning = false
       const isDesktop = window.innerWidth >= 1024
+
+      // Mobile doesn't have navigation buttons
+      if (isDesktop && (!prevBtn || !nextBtn)) return
 
       // Get all carousel items and group by position
       const positions = isDesktop
@@ -252,13 +352,26 @@ const getTapeWidth = (rowIdx: number): string => {
       // For mobile, get track
       const track = carousel.querySelector('[data-carousel-track]')
 
+      // Mobile carousel elements
+      const mobileCarousel = document.querySelector(
+        `[data-mobile-carousel="${carouselId}"]`
+      )
+      const mobilePosition1 = mobileCarousel?.querySelector(
+        '[data-mobile-position="1"]'
+      )
+      const mobilePosition2 = mobileCarousel?.querySelector(
+        '[data-mobile-position="2"]'
+      )
+
       // Total items count
-      const totalItems =
-        isDesktop && positions[1]
-          ? positions[1].length
-          : track
-            ? track.children.length - 1
-            : 0 // -1 for info card
+      let totalItems = 0
+      if (isDesktop && positions[1]) {
+        totalItems = positions[1].length
+      } else if (mobileCarousel && mobilePosition1) {
+        totalItems = mobilePosition1.querySelectorAll(
+          '[data-mobile-item-index]'
+        ).length
+      }
 
       if (totalItems === 0) return
 
@@ -298,21 +411,63 @@ const getTapeWidth = (rowIdx: number): string => {
               }
             })
           })
-        } else if (track) {
-          // Mobile: Traditional scroll
+        } else if (track && window.innerWidth >= 1024) {
+          // Only apply scroll transform for desktop
           const itemWidth = track.children[0].offsetWidth
           const gap = 16
           const offset = currentIndex * (itemWidth + gap)
           track.style.transform = `translateX(-${offset}px)`
+        } else if (!isDesktop && mobilePosition1 && mobilePosition2) {
+          // Mobile: Update two image positions with opacity
+          // Position 1: Show current image
+          const images1 = mobilePosition1.querySelectorAll(
+            '[data-mobile-image-1]'
+          )
+          images1.forEach((item) => {
+            const itemIndex = parseInt(
+              item.getAttribute('data-mobile-item-index')
+            )
+            if (itemIndex === currentIndex) {
+              item.classList.add('opacity-100')
+              item.classList.remove('opacity-0')
+            } else {
+              item.classList.remove('opacity-100')
+              item.classList.add('opacity-0')
+            }
+          })
+
+          // Position 2: Show next image (offset by 1)
+          const nextIndex = (currentIndex + 1) % totalItems
+          const images2 = mobilePosition2.querySelectorAll(
+            '[data-mobile-image-2]'
+          )
+          images2.forEach((item) => {
+            const itemIndex = parseInt(
+              item.getAttribute('data-mobile-item-index')
+            )
+            if (itemIndex === nextIndex) {
+              item.classList.add('opacity-100')
+              item.classList.remove('opacity-0')
+            } else {
+              item.classList.remove('opacity-100')
+              item.classList.add('opacity-0')
+            }
+          })
         }
 
         // Update pagination
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
           paginationBtns.forEach((btn, index) => {
-            // 左から2番目の画像のインデックスを計算
-            const secondPositionIndex = (currentIndex + 1) % totalItems
-            btn.classList.toggle('is-active', index === secondPositionIndex)
+            if (isDesktop) {
+              // Desktop: Active is second position
+              const secondPositionIndex = (currentIndex + 1) % totalItems
+              btn.classList.toggle('is-active', index === secondPositionIndex)
+            } else {
+              // Mobile: Active is current index
+              btn.classList.toggle('bg-navy', index === currentIndex)
+              btn.classList.toggle('bg-navy/30', index !== currentIndex)
+            }
           })
         }
       }
@@ -338,6 +493,8 @@ const getTapeWidth = (rowIdx: number): string => {
       }
 
       const startAutoScroll = () => {
+        // Clear any existing interval before starting a new one
+        stopAutoScroll()
         autoScrollInterval = setInterval(moveNext, 3000)
       }
 
@@ -347,10 +504,17 @@ const getTapeWidth = (rowIdx: number): string => {
         }
       }
 
-      // Stop auto scroll on interaction
-      carousel.addEventListener('mouseenter', stopAutoScroll)
-      carousel.addEventListener('mouseleave', startAutoScroll)
-      carousel.addEventListener('touchstart', stopAutoScroll)
+      // Stop auto scroll on interaction (desktop only)
+      if (isDesktop) {
+        carousel.addEventListener('mouseenter', stopAutoScroll)
+        carousel.addEventListener('mouseleave', startAutoScroll)
+      }
+      // Touch events for mobile
+      if (!isDesktop) {
+        carousel.addEventListener('touchstart', stopAutoScroll, {
+          passive: true,
+        })
+      }
 
       // Pagination click handlers
       if (pagination) {
@@ -360,24 +524,70 @@ const getTapeWidth = (rowIdx: number): string => {
             e.preventDefault()
             if (isTransitioning) return
             stopAutoScroll()
-            // クリックされた番号を左から2番目に表示するため、currentIndexを調整
-            currentIndex = (index - 1 + totalItems) % totalItems
+            if (isDesktop) {
+              // Desktop: クリックされた番号を左から2番目に表示するため、currentIndexを調整
+              currentIndex = (index - 1 + totalItems) % totalItems
+            } else {
+              // Mobile: クリックされた番号をそのまま使用
+              currentIndex = index
+            }
             updateCarousel()
+            setTimeout(() => {
+              startAutoScroll()
+            }, 2000)
           })
         })
       }
 
-      prevBtn.addEventListener('click', (e) => {
-        e.preventDefault()
-        stopAutoScroll()
-        movePrev()
-      })
+      if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          stopAutoScroll()
+          movePrev()
+        })
+      }
 
-      nextBtn.addEventListener('click', (e) => {
-        e.preventDefault()
-        stopAutoScroll()
-        moveNext()
-      })
+      if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+          e.preventDefault()
+          stopAutoScroll()
+          moveNext()
+        })
+      }
+
+      // Mobile tap navigation
+      if (!isDesktop && mobileCarousel) {
+        const mobileTapPrevBtns = mobileCarousel.querySelectorAll(
+          '[data-mobile-tap-prev]'
+        )
+        const mobileTapNextBtns = mobileCarousel.querySelectorAll(
+          '[data-mobile-tap-next]'
+        )
+
+        mobileTapPrevBtns.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            stopAutoScroll()
+            movePrev()
+            setTimeout(() => {
+              startAutoScroll()
+            }, 3000)
+          })
+        })
+
+        mobileTapNextBtns.forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            stopAutoScroll()
+            moveNext()
+            setTimeout(() => {
+              startAutoScroll()
+            }, 3000)
+          })
+        })
+      }
 
       // Initial update and start auto scroll
       updateCarousel()

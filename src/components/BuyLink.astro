@@ -6,24 +6,29 @@ interface Props {
   color?: 'brown' | 'beige-dark'
 }
 
-const { href, class: className = '', size = 'lg', color = 'brown' } = Astro.props
+const {
+  href,
+  class: className = '',
+  size = 'lg',
+  color = 'brown',
+} = Astro.props
 
 // サイズに応じたクラスを定義
 const sizeClasses = {
   sm: 'text-[1.25vw]',
   md: 'text-lg',
-  lg: 'text-[2.2vw]',
+  lg: 'text-[6.4vw] md:text-[2.2vw]',
 }
 
 const svgSizeClasses = {
   sm: 'h-2.5 w-[150%]',
   md: 'h-4 w-[140%]',
-  lg: 'h-5 w-[150%]',
+  lg: 'h-4 w-[150%] md:h-5',
 }
 
 // カラーに応じたクラスを定義
 const colorClasses = {
-  'brown': 'text-brown stroke-brown',
+  brown: 'text-brown stroke-brown',
   'beige-dark': 'text-beige-dark stroke-beige-dark',
 }
 ---
