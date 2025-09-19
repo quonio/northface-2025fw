@@ -15,11 +15,11 @@ const { class: className = '' } = Astro.props
     className
   )}
 >
-  <div class="container mx-auto px-4">
-    <div class="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
+  <div class="container mx-auto px-4 max-w-6xl">
+    <div class="flex flex-col md:flex-row gap-8 md:gap-20 mb-12">
       <!-- Logo -->
       <div class="flex-shrink-0">
-        <Logo class="w-32 md:w-40 text-gold" />
+        <Logo class="w-32 md:w-32 text-gold" />
       </div>
 
       <!-- Staff Credit & Photo -->
@@ -38,7 +38,9 @@ const { class: className = '' } = Astro.props
 
         <!-- Photo -->
         <div>
-          <h3 class="font-display text-lg font-medium mb-2 text-gold">PHOTO</h3>
+          <h3 class="font-display text-sm md:text-base font-medium mb-2">
+            PHOTO
+          </h3>
           <div class="space-y-2 text-sm md:text-base">
             <p>Photography: Kentaro Otsuka</p>
             <p>Hair: Akemi Ezashi (mod's hair)</p>
@@ -48,8 +50,10 @@ const { class: className = '' } = Astro.props
       </div>
 
       <!-- Company Info -->
-      <div>
-        <p class="font-display text-lg md:text-xl mb-2">Goldwin Inc.</p>
+      <div class="pl-16">
+        <p class="font-display text-sm md:text-base font-medium mb-2">
+          Goldwin Inc.
+        </p>
         <div class="space-y-1 text-sm md:text-base">
           <p>
             TEL: <a
@@ -62,7 +66,7 @@ const { class: className = '' } = Astro.props
               href="https://www.thenorthface.jp/"
               target="_blank"
               rel="noopener noreferrer"
-              class="hover:text-gold transition-colors"
+              class="hover:text-gold/70 transition-colors"
               >https://www.thenorthface.jp/</a
             >
           </p>
@@ -70,8 +74,7 @@ const { class: className = '' } = Astro.props
       </div>
     </div>
 
-    <div class="border-t border-paper/20 pt-8 md:pt-12">
-
+    <div class="pt-8 md:pt-12 text-center">
       <!-- Disclaimer & Copyright -->
       <div class="space-y-4 text-xs md:text-sm">
         <p>
