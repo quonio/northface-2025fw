@@ -24,24 +24,26 @@ const { image, modelNumber, title, copy, price, link, id } = Astro.props
       widths={[300, 400, 500]}
       sizes="(max-width: 640px) 300px, 400px"
       loading="lazy"
-      class="h-full w-full object-cover rounded-[1.111vw]"
+      class="h-full w-full object-cover rounded-[4.27vw] md:rounded-[1.111vw]"
     />
   </div>
 
-  <div class="p-[1.111vw] flex flex-col">
-    <p class="text-[0.694vw] text-cream font-light mb-[0.556vw]">
+  <div class="py-[4.8vw] md:py-[1.67vw] flex flex-col">
+    <p
+      class="text-[3.2vw] md:text-[0.694vw] text-cream font-light mb-[0.556vw]"
+    >
       {modelNumber}
     </p>
 
     <h3
-      class="font-sans text-[1.111vw] font-medium text-cream mb-[0.833vw] tracking-tight"
+      class="font-sans text-[7.47vw] md:text-[1.111vw] font-medium text-cream mb-[0.833vw] tracking-tight"
     >
       {title}
     </h3>
 
     {
       price && (
-        <p class="text-[0.833vw] font-medium text-beige-dark mb-[1.111vw]">
+        <p class="text-[3.2vw] md:text-[0.833vw] font-medium text-beige-dark mb-[3.2vw] md:mb-[1.111vw]">
           {price}
         </p>
       )
@@ -49,7 +51,7 @@ const { image, modelNumber, title, copy, price, link, id } = Astro.props
 
     {
       copy && (
-        <p class="text-[0.833vw] text-cream font-light mb-[1.111vw] flex-grow">
+        <p class="text-[4.8vw] md:text-[0.97vw] text-cream font-light mb-[8vw] md:mb-[1.111vw] flex-grow">
           {copy}
         </p>
       )
@@ -58,7 +60,7 @@ const { image, modelNumber, title, copy, price, link, id } = Astro.props
     {
       link && (
         <div class="mt-auto">
-          <BuyLink href={link} size="sm" color="beige-dark" />
+          <BuyLink href={link} size="md" color="beige-dark" />
         </div>
       )
     }

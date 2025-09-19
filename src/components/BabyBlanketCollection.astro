@@ -67,14 +67,14 @@ const products = [
 
 <section
   class={cn(
-    'py-16 md:py-24 lg:py-32 bg-light-navy-2 overflow-hidden',
+    'py-[21.33vw] md:py-24 lg:py-32 bg-light-navy-2 overflow-hidden',
     className
   )}
 >
   <div class="container mx-auto px-4">
     <!-- Section Title -->
     <h2
-      class="text-center font-display font-medium text-cream mb-36 leading-tight text-[3.819vw]"
+      class="text-center font-display font-medium text-cream mb-[8.47vw] md:mb-36 leading-tight text-[7.47vw] md:text-[3.819vw]"
     >
       Baby Blanket<br />
       <span class="text-brown">Collection</span>
@@ -121,7 +121,7 @@ const products = [
 
     <!-- Product Cards -->
     <div
-      class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10 max-w-6xl mx-auto"
+      class="grid grid-cols-1 md:grid-cols-3 gap-[8vw] px-4 md:px-0 md:gap-8 lg:gap-10 max-w-6xl mx-auto"
     >
       {products.map((product) => <ProductCard {...product} />)}
     </div>
