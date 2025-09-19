@@ -19,11 +19,11 @@ interface Props {
 const { class: className = '' } = Astro.props
 ---
 
-<section class={cn('pb-16 lg:pb-20 overflow-hidden', className)}>
+<section class={cn('mb-[16vw] lg:pb-20 overflow-hidden', className)}>
   <div class="container mx-auto px-4">
     <!-- First 3 images -->
     <div
-      class="mb-16 grid grid-cols-1 gap-4 md:mb-20 md:grid-cols-3 md:gap-6 lg:gap-8"
+      class="mb-[16vw] grid grid-cols-1 gap-4 md:mb-20 md:grid-cols-3 md:gap-6 lg:gap-8"
     >
       <div
         class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
@@ -46,16 +46,14 @@ const { class: className = '' } = Astro.props
           loading="lazy"
           class="h-full w-full object-cover"
         />
-        <!-- Tape decoration on image -->
+        <!-- Tape decoration on image (desktop only) -->
         <img
           src={tape2}
           alt="Decorative tape"
-          class="tape-image absolute -bottom-[1.8vw] left-1/2 translate-x-[-50%] w-[14.8vw] max-w-[213px] h-auto opacity-0 z-10"
+          class="tape-image absolute -bottom-[1.8vw] left-1/2 translate-x-[-50%] w-[14.8vw] max-w-[213px] h-auto opacity-0 z-10 hidden md:block"
         />
       </div>
-      <div
-        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
-      >
+      <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style03}
           alt="THE NORTH FACE MATERNITY+ Style 3"
@@ -64,13 +62,19 @@ const { class: className = '' } = Astro.props
           loading="lazy"
           class="h-full w-full object-cover"
         />
+        <!-- Tape decoration on image (mobile only) -->
+        <img
+          src={tape2}
+          alt="Decorative tape"
+          class="tape-image absolute -bottom-[5vw] left-1/2 translate-x-[-50%] w-[40vw] h-auto opacity-0 z-10 block md:hidden"
+        />
       </div>
     </div>
 
     <!-- Title Section -->
-    <div class="mb-16 text-center md:mb-20">
+    <div class="mb-[16vw] text-center md:mb-20">
       <h2
-        class="font-display text-tape-navy-dark text-3xl font-medium md:text-4xl lg:text-5xl"
+        class="font-display text-tape-navy-dark text-[5.87vw] font-medium md:text-4xl lg:text-5xl"
       >
         THE NORTH FACE <span class="text-brown">MATERNITY+</span>
       </h2>
@@ -80,9 +84,7 @@ const { class: className = '' } = Astro.props
     <div
       class="mb-16 grid grid-cols-1 gap-4 md:mb-24 md:grid-cols-3 md:gap-6 lg:gap-8"
     >
-      <div
-        class="gallery-item aspect-[3/4] overflow-hidden border border-navy-dark"
-      >
+      <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style04}
           alt="THE NORTH FACE MATERNITY+ Style 4"
@@ -90,6 +92,12 @@ const { class: className = '' } = Astro.props
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
           class="h-full w-full object-cover transition-transform"
+        />
+        <!-- Tape decoration on image (mobile only) -->
+        <img
+          src={tape6}
+          alt="Decorative tape"
+          class="tape-image-2 absolute -top-[5vw] left-1/2 translate-x-[-50%] w-[25vw] h-auto opacity-0 z-10 block md:hidden"
         />
       </div>
       <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
@@ -101,11 +109,11 @@ const { class: className = '' } = Astro.props
           loading="lazy"
           class="h-full w-full object-cover"
         />
-        <!-- Tape decoration on image -->
+        <!-- Tape decoration on image (desktop only) -->
         <img
           src={tape6}
           alt="Decorative tape"
-          class="tape-image-2 absolute -top-[1.8vw] left-1/2 translate-x-[-50%] w-[9.4vw] h-auto opacity-0 z-10"
+          class="tape-image-2 absolute -top-[1.8vw] left-1/2 translate-x-[-50%] w-[9.4vw] h-auto opacity-0 z-10 hidden md:block"
         />
       </div>
       <div
