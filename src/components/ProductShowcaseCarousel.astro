@@ -1,0 +1,241 @@
+---
+import { Image } from 'astro:assets'
+import ProductInfoCard from './ProductInfoCard.astro'
+import { cn } from '@/utils/cn'
+
+export interface ProductData {
+  headline?: string
+  modelNumber?: string
+  title: string
+  copy?: string
+  description?: string
+  price?: string
+  link?: string
+}
+
+interface SingleProductProps {
+  images: ImageMetadata[]
+  imageAlt: string
+  headline?: string
+  modelNumber?: string
+  title: string
+  copy?: string
+  description?: string
+  price?: string
+  link?: string
+  products?: never
+  reverse?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+  id: string
+}
+
+interface MultipleProductProps {
+  images: ImageMetadata[]
+  imageAlt: string
+  products: ProductData[]
+  headline?: never
+  modelNumber?: never
+  title?: never
+  copy?: never
+  description?: never
+  price?: never
+  link?: never
+  reverse?: boolean
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+  id: string
+}
+
+type Props = SingleProductProps | MultipleProductProps
+
+const props = Astro.props as Props
+const {
+  images,
+  imageAlt,
+  reverse = false,
+  size = 'sm',
+  class: className = '',
+  id,
+} = props
+
+// 単一商品か複数商品かを判定
+const isSingleProduct = !('products' in props)
+
+// 商品データの配列を生成
+const productDataArray: ProductData[] = isSingleProduct
+  ? [
+      {
+        headline: (props as SingleProductProps).headline,
+        modelNumber: (props as SingleProductProps).modelNumber,
+        title: (props as SingleProductProps).title,
+        copy: (props as SingleProductProps).copy,
+        description: (props as SingleProductProps).description,
+        price: (props as SingleProductProps).price,
+        link: (props as SingleProductProps).link,
+      },
+    ]
+  : (props as MultipleProductProps).products
+---
+
+<div
+  class={cn(
+    'flex flex-col items-start',
+    reverse ? 'md:flex-row-reverse' : 'md:flex-row',
+    className
+  )}
+  data-showcase-carousel={id}
+>
+  <div class="w-full md:w-[20.833vw] relative">
+    <div class="relative aspect-[3/4] overflow-hidden">
+      {
+        images.map((image, index) => (
+          <div
+            class:list={[
+              'absolute inset-0 transition-opacity duration-500',
+              { 'opacity-100': index === 0, 'opacity-0': index !== 0 },
+            ]}
+            data-showcase-image
+            data-image-index={index}
+          >
+            <Image
+              src={image}
+              alt={`${imageAlt} ${index + 1}`}
+              class="w-full h-full object-cover border border-light-navy"
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="w-full md:w-[20.833vw] -ml-px">
+    {
+      productDataArray.length === 1 ? (
+        <ProductInfoCard
+          headline={productDataArray[0].headline}
+          modelNumber={productDataArray[0].modelNumber}
+          title={productDataArray[0].title}
+          copy={productDataArray[0].copy}
+          description={productDataArray[0].description}
+          price={productDataArray[0].price}
+          link={productDataArray[0].link}
+          size={size}
+          totalPages={images.length}
+          carouselId={id}
+        />
+      ) : (
+        <div class="flex flex-col">
+          {productDataArray.map((product, index) => (
+            <div class={index > 0 ? '-mt-px' : ''}>
+              <ProductInfoCard
+                headline={product.headline}
+                modelNumber={product.modelNumber}
+                title={product.title}
+                copy={product.copy}
+                description={product.description}
+                price={product.price}
+                link={product.link}
+                size={size}
+                totalPages={index === productDataArray.length - 1 ? images.length : 0}
+                carouselId={index === productDataArray.length - 1 ? id : undefined}
+              />
+            </div>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</div>
+
+<script is:inline>
+  function initShowcaseCarousels() {
+    const showcases = document.querySelectorAll('[data-showcase-carousel]')
+
+    showcases.forEach((showcase) => {
+      const id = showcase.getAttribute('data-showcase-carousel')
+      const images = showcase.querySelectorAll('[data-showcase-image]')
+      const pagination = document.querySelector(
+        `[data-carousel-pagination="${id}"]`
+      )
+      const paginationBtns = pagination?.querySelectorAll('.pagination-btn')
+
+      if (!images.length) return
+
+      let currentIndex = 0
+      let autoScrollInterval
+
+      const updateCarousel = () => {
+        images.forEach((image, index) => {
+          if (index === currentIndex) {
+            image.classList.add('opacity-100')
+            image.classList.remove('opacity-0')
+          } else {
+            image.classList.remove('opacity-100')
+            image.classList.add('opacity-0')
+          }
+        })
+
+        if (paginationBtns) {
+          paginationBtns.forEach((btn, index) => {
+            btn.classList.toggle('is-active', index === currentIndex)
+          })
+        }
+      }
+
+      const moveToIndex = (index) => {
+        currentIndex = index
+        updateCarousel()
+      }
+
+      const moveNext = () => {
+        currentIndex = (currentIndex + 1) % images.length
+        updateCarousel()
+      }
+
+      const startAutoScroll = () => {
+        autoScrollInterval = setInterval(moveNext, 3000)
+      }
+
+      const stopAutoScroll = () => {
+        if (autoScrollInterval) {
+          clearInterval(autoScrollInterval)
+        }
+      }
+
+      // Pagination click handlers
+      if (paginationBtns) {
+        paginationBtns.forEach((btn, index) => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault()
+            stopAutoScroll()
+            moveToIndex(index)
+            startAutoScroll()
+          })
+        })
+      }
+
+      // Stop auto scroll on interaction
+      showcase.addEventListener('mouseenter', stopAutoScroll)
+      showcase.addEventListener('mouseleave', startAutoScroll)
+      showcase.addEventListener('touchstart', stopAutoScroll)
+
+      // Start auto scroll
+      startAutoScroll()
+
+      // Clean up on page unload
+      window.addEventListener('beforeunload', stopAutoScroll)
+    })
+  }
+
+  // Initialize on DOM content loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShowcaseCarousels)
+  } else {
+    initShowcaseCarousels()
+  }
+
+  // Reinitialize on Astro page transitions
+  document.addEventListener('astro:page-load', initShowcaseCarousels)
+</script>
+

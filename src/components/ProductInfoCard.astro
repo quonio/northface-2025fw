@@ -49,9 +49,9 @@ const sizeClasses = {
     price: 'text-sm',
     copy: 'text-sm',
     description: 'text-xs',
-    buyLink: 'right-4 bottom-[calc(1rem+3rem+1rem)]',
+    buyLink: 'right-4 bottom-[calc(1rem+3.61vw+1rem)]',
     pager: '-mx-4 -mb-4',
-    pagerButton: 'text-2xl',
+    pagerButton: 'text-[2.78vw]',
   },
   md: {
     container: 'p-6',
@@ -166,7 +166,7 @@ const currentSize = sizeClasses[size]
 
   {
     link && size === 'sm' && (
-      <div class="mt-0 pr-4 flex justify-end">
+      <div class={cn("mt-0 pr-4 flex justify-end", totalPages > 0 && carouselId && "mb-4")}>
         <BuyLink href={link} size="sm" />
       </div>
     )
@@ -180,16 +180,19 @@ const currentSize = sizeClasses[size]
         style={
           size === 'lg'
             ? 'width: calc(100% + 4.48vw); max-height: 6vw;'
-            : 'width: calc(100% + 3rem);'
+            : size === 'sm'
+              ? 'width: calc(3.61vw * 4); max-height: 3.61vw;'
+              : 'width: calc(100% + 3rem);'
         }
         data-carousel-pagination={carouselId}
       >
         {Array.from({ length: totalPages }, (_, i) => (
           <button
             class={cn(
-              'pagination-btn relative z-[1] flex-1 bg-transparent border-t border-r border-light-navy-2 font-thin text-light-navy-2 no-underline aspect-square flex items-center justify-center leading-none',
+              'pagination-btn relative z-[1] bg-transparent border-t border-r border-light-navy-2 font-thin text-light-navy-2 no-underline flex items-center justify-center leading-none',
+              size === 'sm' ? 'w-[3.61vw] h-[3.61vw]' : 'flex-1 aspect-square',
               'hover:bg-light-navy-2/10 transition-colors',
-              'last:border-r-0',
+              size !== 'sm' && 'last:border-r-0',
               '[&.is-active]:bg-light-navy-2 [&.is-active]:text-white [&.is-active]:border-light-navy-2 [&.is-active]:z-[2]',
               currentSize.pagerButton
             )}

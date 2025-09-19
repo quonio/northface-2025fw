@@ -1,15 +1,49 @@
 ---
 import ProductCarousel from './ProductCarousel.astro'
 import ProductShowcase from './ProductShowcase.astro'
+import ProductShowcaseCarousel from './ProductShowcaseCarousel.astro'
 import { cn } from '@/utils/cn'
 import type { ProductInfo, CarouselItem } from '@/types/product'
-// Import style images
-import style01 from '@/assets/images/img-style-01.jpg'
-import style02 from '@/assets/images/img-style-02.jpg'
-import style03 from '@/assets/images/img-style-03.jpg'
-import style04 from '@/assets/images/img-style-04.jpg'
-import style05 from '@/assets/images/img-style-05.jpg'
-import style06 from '@/assets/images/img-style-06.jpg'
+
+// Import collection item 01 images
+import cl__item01_01 from '@/assets/images/cl__item01-01.jpg'
+import cl__item01_02 from '@/assets/images/cl__item01-02.jpg'
+import cl__item01_03 from '@/assets/images/cl__item01-03.jpg'
+import cl__item01_04 from '@/assets/images/cl__item01-04.jpg'
+import cl__item01_05 from '@/assets/images/cl__item01-05.jpg'
+import cl__item01_06 from '@/assets/images/cl__item01-06.jpg'
+
+// Import collection item 02 images
+import cl__item02_01 from '@/assets/images/cl__item02-01.jpg'
+import cl__item02_02 from '@/assets/images/cl__item02-02.jpg'
+import cl__item02_03 from '@/assets/images/cl__item02-03.jpg'
+import cl__item02_04 from '@/assets/images/cl__item02-04.jpg'
+import cl__item02_05 from '@/assets/images/cl__item02-05.jpg'
+import cl__item02_06 from '@/assets/images/cl__item02-06.jpg'
+
+// Import collection item 03 images
+import cl__item03_01 from '@/assets/images/cl__item03-01.jpg'
+import cl__item03_02 from '@/assets/images/cl__item03-02.jpg'
+import cl__item03_03 from '@/assets/images/cl__item03-03.jpg'
+import cl__item03_04 from '@/assets/images/cl__item03-04.jpg'
+import cl__item03_05 from '@/assets/images/cl__item03-05.jpg'
+import cl__item03_06 from '@/assets/images/cl__item03-06.jpg'
+
+// Import collection item 04 images
+import cl__item04_01 from '@/assets/images/cl__item04-01.jpg'
+import cl__item04_02 from '@/assets/images/cl__item04-02.jpg'
+import cl__item04_03 from '@/assets/images/cl__item04-03.jpg'
+import cl__item04_04 from '@/assets/images/cl__item04-04.jpg'
+import cl__item04_05 from '@/assets/images/cl__item04-05.jpg'
+import cl__item04_06 from '@/assets/images/cl__item04-06.jpg'
+
+// Import collection item 05 images
+import cl__item05_01 from '@/assets/images/cl__item05-01.jpg'
+import cl__item05_02 from '@/assets/images/cl__item05-02.jpg'
+import cl__item05_03 from '@/assets/images/cl__item05-03.jpg'
+import cl__item05_04 from '@/assets/images/cl__item05-04.jpg'
+import cl__item05_05 from '@/assets/images/cl__item05-05.jpg'
+import cl__item05_06 from '@/assets/images/cl__item05-06.jpg'
 
 // Import unit images
 import unit01 from '@/assets/images/img-collection-unit-01.png'
@@ -21,6 +55,18 @@ import unit05 from '@/assets/images/img-collection-unit-05.png'
 // Import new collection images
 import collection7 from '@/assets/images/img-collection-7-1.jpg'
 import collection8 from '@/assets/images/img-collection-8-1.jpg'
+
+// Import collection item 06 images
+import cl__item06_01 from '@/assets/images/cl__item06-01.jpg'
+import cl__item06_02 from '@/assets/images/cl__item06-02.jpg'
+import cl__item06_03 from '@/assets/images/cl__item06-03.jpg'
+import cl__item06_04 from '@/assets/images/cl__item06-04.jpg'
+
+// Import collection item 07 images
+import cl__item07_01 from '@/assets/images/cl__item07-01.jpg'
+import cl__item07_02 from '@/assets/images/cl__item07-02.jpg'
+import cl__item07_03 from '@/assets/images/cl__item07-03.jpg'
+import cl__item07_04 from '@/assets/images/cl__item07-04.jpg'
 
 interface Props {
   class?: string
@@ -82,13 +128,21 @@ const productInfos: ProductInfo[] = [
   },
 ]
 
-// Create items for carousels using style images
-const createCarouselItems = (startIndex: number): CarouselItem[] => {
-  const images = [style01, style02, style03, style04, style05, style06]
+// Create items for carousels using collection images
+const createCarouselItems = (productIndex: number): CarouselItem[] => {
+  const collectionImages = [
+    [cl__item01_01, cl__item01_02, cl__item01_03, cl__item01_04, cl__item01_05, cl__item01_06],
+    [cl__item02_01, cl__item02_02, cl__item02_03, cl__item02_04, cl__item02_05, cl__item02_06],
+    [cl__item03_01, cl__item03_02, cl__item03_03, cl__item03_04, cl__item03_05, cl__item03_06],
+    [cl__item04_01, cl__item04_02, cl__item04_03, cl__item04_04, cl__item04_05, cl__item04_06],
+    [cl__item05_01, cl__item05_02, cl__item05_03, cl__item05_04, cl__item05_05, cl__item05_06],
+  ]
+  
+  const images = collectionImages[productIndex] || collectionImages[0]
   return Array.from({ length: 6 }, (_, i) => ({
-    id: `item-${startIndex}-${i}`,
+    id: `item-${productIndex + 1}-${i}`,
     image: images[i],
-    alt: `THE NORTH FACE MATERNITY+ Style ${i + 1}`,
+    alt: `THE NORTH FACE MATERNITY+ Collection ${productIndex + 1} Image ${i + 1}`,
   }))
 }
 
@@ -178,8 +232,8 @@ const carouselRows = productInfos.map((info, index) => ({
   <div class="container mx-auto px-4 py-24 flex justify-center">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-[85vw]">
       <!-- Product 1 -->
-      <ProductShowcase
-        image={collection7}
+      <ProductShowcaseCarousel
+        images={[cl__item06_01, cl__item06_02, cl__item06_03, cl__item06_04]}
         imageAlt="CR Utility Pants"
         products={[
           {
@@ -200,11 +254,12 @@ const carouselRows = productInfos.map((info, index) => ({
           },
         ]}
         size="sm"
+        id="showcase-1"
       />
 
       <!-- Product 2 -->
-      <ProductShowcase
-        image={collection8}
+      <ProductShowcaseCarousel
+        images={[cl__item07_01, cl__item07_02, cl__item07_03, cl__item07_04]}
         imageAlt="Maternity Fleece Jacket"
         headline="WOMENS"
         modelNumber="NAM82510"
@@ -213,6 +268,7 @@ const carouselRows = productInfos.map((info, index) => ({
         price="¥22,000 (Tax incl.)"
         link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NAM82510"
         size="sm"
+        id="showcase-2"
       />
     </div>
   </div>

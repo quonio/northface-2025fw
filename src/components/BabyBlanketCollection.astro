@@ -3,13 +3,14 @@ import { Image } from 'astro:assets'
 import ProductCard from './ProductCard.astro'
 import { cn } from '@/utils/cn'
 // Import style images for gallery
-import style01 from '@/assets/images/img-style-01.jpg'
-import style02 from '@/assets/images/img-style-02.jpg'
-import style03 from '@/assets/images/img-style-03.jpg'
-import style04 from '@/assets/images/img-style-04.jpg'
-import style05 from '@/assets/images/img-style-05.jpg'
-import style06 from '@/assets/images/img-style-06.jpg'
-import placeholderImage from '@/assets/images/main-kv.jpg'
+import blanket01Image from '@/assets/images/cl__blanket_01.jpg'
+import blanket02Image from '@/assets/images/cl__blanket_02.jpg'
+import blanket03Image from '@/assets/images/cl__blanket_03.jpg'
+import blanket04Image from '@/assets/images/cl__blanket_04.jpg'
+import blanket05Image from '@/assets/images/cl__blanket_05.jpg'
+import blanket06Image from '@/assets/images/cl__blanket_06.jpg'
+import blanket07Image from '@/assets/images/cl__blanket_07.jpg'
+import blanket08Image from '@/assets/images/cl__blanket_08.jpg'
 import blanket01 from '@/assets/images/img-blanket-1.jpg'
 import blanket02 from '@/assets/images/img-blanket-2.jpg'
 import blanket03 from '@/assets/images/img-blanket-3.jpg'
@@ -22,14 +23,14 @@ const { class: className = '' } = Astro.props
 
 // Gallery images with rotation values
 const galleryImages = [
-  { image: style01, rotation: -12, alt: 'Baby Blanket Style 1' },
-  { image: style02, rotation: 8, alt: 'Baby Blanket Style 2' },
-  { image: style03, rotation: -10, alt: 'Baby Blanket Style 3' },
-  { image: style04, rotation: 15, alt: 'Baby Blanket Style 4' },
-  { image: style05, rotation: -7, alt: 'Baby Blanket Style 5' },
-  { image: style06, rotation: 9, alt: 'Baby Blanket Style 6' },
-  { image: placeholderImage, rotation: -11, alt: 'Baby Blanket Style 7' },
-  { image: placeholderImage, rotation: 6, alt: 'Baby Blanket Style 8' },
+  { image: blanket01Image, rotation: -12, alt: 'Baby Blanket Style 1' },
+  { image: blanket02Image, rotation: 8, alt: 'Baby Blanket Style 2' },
+  { image: blanket03Image, rotation: -10, alt: 'Baby Blanket Style 3' },
+  { image: blanket04Image, rotation: 15, alt: 'Baby Blanket Style 4' },
+  { image: blanket05Image, rotation: -7, alt: 'Baby Blanket Style 5' },
+  { image: blanket06Image, rotation: 9, alt: 'Baby Blanket Style 6' },
+  { image: blanket07Image, rotation: -11, alt: 'Baby Blanket Style 7' },
+  { image: blanket08Image, rotation: 6, alt: 'Baby Blanket Style 8' },
 ]
 
 // Product cards data
@@ -98,7 +99,7 @@ const products = [
             )}
             data-rotation={item.rotation}
           >
-            <div class="bg-white p-2 md:p-3 shadow-2xl">
+            <div class="shadow-2xl">
               <div class="aspect-square overflow-hidden">
                 <Image
                   src={item.image}
