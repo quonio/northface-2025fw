@@ -179,7 +179,7 @@ const currentSize = sizeClasses[size]
         class={cn('pager flex gap-0 mt-auto', currentSize.pager)}
         style={
           size === 'lg'
-            ? 'width: calc(100% + 4.48vw);'
+            ? 'width: calc(100% + 4.48vw); max-height: 6vw;'
             : 'width: calc(100% + 3rem);'
         }
         data-carousel-pagination={carouselId}

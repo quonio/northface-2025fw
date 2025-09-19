@@ -233,11 +233,11 @@ const { productInfo, items, id, rowIndex = 1 } = Astro.props
               if (itemIndex === targetIndex) {
                 item.classList.add('opacity-100')
                 item.classList.remove('opacity-0')
-                
+
                 // Add gentle shake animation for position 2 (odd rows) or position 3 (even rows)
                 const isEvenRow = rowIndex % 2 === 0
                 const animationPosition = isEvenRow ? '3' : '2'
-                
+
                 if (pos === animationPosition) {
                   // Remove any existing animation class
                   item.classList.remove('shake-gentle')
@@ -360,8 +360,8 @@ const { productInfo, items, id, rowIndex = 1 } = Astro.props
 
 <style is:global>
   /* Gentle shake animation for position 2 and 3 images */
-  [data-position="2"][data-carousel-item],
-  [data-position="3"][data-carousel-item] {
+  [data-position='2'][data-carousel-item],
+  [data-position='3'][data-carousel-item] {
     transform-origin: top center;
   }
 
