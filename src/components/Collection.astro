@@ -201,7 +201,7 @@ const carouselRows = productInfos.map((info, index) => ({
   </div>
 
   <!-- First 3 Carousel Rows -->
-  <div class="space-y-12 md:space-y-24">
+  <div class="space-y-[21.33vw] md:space-y-24">
     {
       carouselRows.slice(0, 3).map((row, index) => (
         <div class="relative px-0">
@@ -212,8 +212,11 @@ const carouselRows = productInfos.map((info, index) => ({
   </div>
 
   <!-- Unit Images Section -->
-  <div class="container mx-auto px-24 py-16 md:py-20" id="unit-images-section">
-    <div class="grid grid-cols-5 gap-2">
+  <div
+    class="container mx-auto px-0 md:px-24 py-[7.4vw] md:py-20"
+    id="unit-images-section"
+  >
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-2">
       <div class="relative unit-image-wrapper">
         <img
           src={unit01.src}
@@ -242,7 +245,7 @@ const carouselRows = productInfos.map((info, index) => ({
           class="unit-image w-full h-full object-cover"
         />
       </div>
-      <div class="relative unit-image-wrapper">
+      <div class="relative unit-image-wrapper col-span-2 md:col-span-1 mx-auto w-1/2 md:w-full">
         <img
           src={unit05.src}
           alt="Collection Unit 5"

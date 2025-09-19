@@ -321,16 +321,26 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       const nextBtn = carousel.querySelector('[data-carousel-next]')
       const carouselId = carousel.getAttribute('data-carousel')
       const rowIndex = parseInt(carousel.getAttribute('data-row-index') || '1')
-      const pagination = document.querySelector(
-        `[data-carousel-pagination="${carouselId}"]`
-      )
+      const isDesktop = window.innerWidth >= 1024
+      
+      // デスクトップとモバイルで異なるページネーションを取得
+      const allPaginations = document.querySelectorAll(`[data-carousel-pagination="${carouselId}"]`)
+      let pagination = null
+      
+      // モバイルとデスクトップで正しいページネーションを選択
+      allPaginations.forEach(p => {
+        if (isDesktop && !p.classList.contains('md:hidden')) {
+          pagination = p
+        } else if (!isDesktop && p.classList.contains('md:hidden')) {
+          pagination = p
+        }
+      })
 
       let currentIndex = 0
       let autoScrollInterval
       let isTransitioning = false
-      const isDesktop = window.innerWidth >= 1024
 
-      // Mobile doesn't have navigation buttons
+      // Desktop needs navigation buttons
       if (isDesktop && (!prevBtn || !nextBtn)) return
 
       // Get all carousel items and group by position
@@ -347,9 +357,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       const track = carousel.querySelector('[data-carousel-track]')
 
       // Mobile carousel elements
-      const mobileCarousel = document.querySelector(
-        `[data-mobile-carousel="${carouselId}"]`
-      )
+      const mobileCarousel = !isDesktop ? carousel.querySelector('[data-mobile-carousel]') : null
       const mobilePosition1 = mobileCarousel?.querySelector(
         '[data-mobile-position="1"]'
       )
@@ -452,15 +460,20 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         // Update pagination
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
+          // モバイルでのデバッグ
+          if (!isDesktop) {
+            console.log('Mobile pagination found:', pagination)
+            console.log('Pagination buttons:', paginationBtns.length)
+            console.log('Current index:', currentIndex)
+          }
           paginationBtns.forEach((btn, index) => {
             if (isDesktop) {
               // Desktop: Active is second position
               const secondPositionIndex = (currentIndex + 1) % totalItems
               btn.classList.toggle('is-active', index === secondPositionIndex)
             } else {
-              // Mobile: Active is current index
-              btn.classList.toggle('bg-navy', index === currentIndex)
-              btn.classList.toggle('bg-navy/30', index !== currentIndex)
+              // Mobile: Active is current index (NumberPagination component)
+              btn.classList.toggle('is-active', index === currentIndex)
             }
           })
         }
