@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 import { cn } from '@/utils/cn'
-import graphImage from '@/assets/images/img-graph-01.png'
+import productPc from '@/assets/images/img-product-pc.svg'
+import productSp from '@/assets/images/img-product-sp.svg'
 
 interface Props {
   class?: string
@@ -14,27 +15,37 @@ const { class: className = '' } = Astro.props
   <div class="container mx-auto px-4">
     <!-- Section Title -->
     <h2
-      class="text-center font-display text-3xl lg:text-[3.125vw] font-light text-brown mb-12 md:mb-16"
+      class="text-center font-display text-[8vw] lg:text-[3.125vw] font-light text-brown mb-12 md:mb-16"
     >
       PRODUCT LINES
     </h2>
 
     <!-- Graph Image -->
-    <div class="mb-12 md:mb-8 lg:mb-12 max-w-[60vw] mx-auto">
+    <div class="mb-12 md:mb-8 lg:mb-12 max-w-[90vw] md:max-w-[60vw] mx-auto">
+      <!-- Mobile Image -->
       <Image
-        src={graphImage}
+        src={productSp}
         alt="MATERNITY+ Product Lines Timeline"
-        widths={[390, 768, 1024, 1280]}
-        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1200px"
+        widths={[390, 768]}
+        sizes="100vw"
         loading="lazy"
-        class="w-full max-w-6xl mx-auto h-auto"
+        class="w-full h-auto block md:hidden"
+      />
+      <!-- Desktop Image -->
+      <Image
+        src={productPc}
+        alt="MATERNITY+ Product Lines Timeline"
+        widths={[768, 1024, 1280]}
+        sizes="(max-width: 1280px) 90vw, 1200px"
+        loading="lazy"
+        class="w-full max-w-6xl mx-auto h-auto hidden md:block"
       />
     </div>
 
     <!-- Description Text -->
-    <div class="mx-auto">
+    <div class="mx-auto max-w-[85.33vw] md:max-w-max">
       <p
-        class="text-[1.12vw] leading-loose text-brown text-center font-medium font-sans-jp"
+        class="md:text-[1.12vw] leading-loose text-brown text-center font-medium font-sans-jp"
       >
         心身ともに変化の大きな妊娠期。<br />
         妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。<br
