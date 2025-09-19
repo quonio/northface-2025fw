@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets'
+import { getImage } from 'astro:assets'
 import Logo from './Logo.astro'
 import kvMainPc from '../assets/images/kv__main-pc.jpg'
 import kvMainTab from '../assets/images/kv__main-tab.jpg'
@@ -10,55 +10,92 @@ export interface Props {
 }
 
 const { imageAlt } = Astro.props
+
+// 各デバイス用の画像を最適化
+const pcImage = await getImage({
+  src: kvMainPc,
+  format: 'webp',
+  quality: 100,
+  widths: [1280, 1440, 1920, 2800],
+})
+
+const tabImage = await getImage({
+  src: kvMainTab,
+  format: 'webp',
+  quality: 100,
+  widths: [768, 1024],
+})
+
+const spImage = await getImage({
+  src: kvMainSp,
+  format: 'webp',
+  quality: 100,
+  widths: [390, 768],
+})
 ---
 
-<section class="relative h-screen w-full lg:p-5" aria-label="Hero section">
+<section
+  class="relative md:h-screen w-full p-3.5 lg:p-5"
+  aria-label="Hero section"
+>
   <div
-    class="relative flex h-full w-full items-center justify-center overflow-hidden"
+    class="relative flex h-auto md:h-full w-full items-center justify-center overflow-hidden aspect-[348/640]"
   >
-    <Picture
-      src={kvMainPc}
-      alt={imageAlt}
-      widths={[390, 768, 1280, 1440, 1920, 2800]}
-      sizes="100vw"
-      loading="eager"
-      fetchpriority="high"
-      class="absolute inset-0 h-full w-full object-cover object-center"
-      data-animation-target="hero-image"
-      formats={['webp']}
-      quality={100}
-      pictureAttributes={{
-        class: 'absolute inset-0 h-full w-full',
-      }}
+    <picture
+      class="absolute inset-0 h-auto md:h-full w-full border border-light-navy-2"
     >
-      <source media="(max-width: 767px)" srcset={kvMainSp.src} />
-      <source media="(max-width: 1023px)" srcset={kvMainTab.src} />
-      <source media="(min-width: 1024px)" srcset={kvMainPc.src} />
-    </Picture>
+      <source
+        media="
+      (max-width:
+      767px)"
+        srcset={spImage.srcSet?.attribute}
+        type="image/webp"
+      />
+      <source
+        media="(max-width: 1023px)"
+        srcset={tabImage.srcSet?.attribute}
+        type="image/webp"
+      />
+      <source
+        media="(min-width: 1024px)"
+        srcset={pcImage.srcSet?.attribute}
+        type="image/webp"
+      />
+      <img
+        src={pcImage.src}
+        srcset={pcImage.srcSet?.attribute}
+        alt={imageAlt}
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 h-full w-full object-cover object-center"
+        data-animation-target="hero-image"
+        sizes="100vw"
+      />
+    </picture>
     <Logo
-      class="text-cream absolute top-8 left-1/2 z-20 w-32 -translate-x-1/2 md:top-12 md:w-40 lg:w-48"
+      class="text-cream absolute top-[5.33vw] left-[5.33vw] md:top-8 md:left-1/2 z-20 w-[25.6vw] md:-translate-x-1/2 lg:top-12 md:w-40 xl:w-[8.61vw]"
     />
 
     <!-- Left side text -->
     <div
-      class="text-cream absolute top-8 left-4 z-10 md:top-12 md:left-8 lg:left-12"
+      class="text-cream absolute top-auto bottom-[5.33vw] left-[5.33vw] md:top-8 md:left-4 z-10 lg:top-12 lg:left-12"
     >
       <h1
-        class="font-display text-[1.82vw] leading-tight font-semibold md:text-[1.82vw] lg:text-[1.56vw] xl:text-[1.25vw]"
+        class="font-display text-[4.8vw] leading-tight font-semibold md:text-[1.82vw] lg:text-[1.56vw] xl:text-[1.25vw]"
       >
         THE NORTH FACE MATERNITY+
       </h1>
-      <p class="mt-1 text-[1.3vw] md:text-[0.98vw]">
+      <p class="mt-1 text-[2.67vw] md:text-[0.98vw]">
         for the Pregnant, Moms and Dads.
       </p>
     </div>
 
     <!-- Right side text -->
     <div
-      class="text-cream absolute top-8 right-4 z-10 text-right md:top-12 md:right-8 lg:right-12"
+      class="text-cream absolute top-[5.33vw] right-[5.33vw] z-10 text-right md:top-12 md:right-8 lg:right-12"
     >
       <p
-        class="font-display text-lg font-medium md:text-[1.82vw] lg:text-[1.56vw]"
+        class="font-display text-[3.73vw] font-medium md:text-[1.82vw] lg:text-[1.56vw]"
       >
         2025 FALL&WINTER
       </p>
