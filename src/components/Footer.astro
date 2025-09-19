@@ -11,14 +11,14 @@ const { class: className = '' } = Astro.props
 
 <footer
   class={cn(
-    'bg-light-navy-2 text-gold py-12 md:py-16 lg:py-20 font-light',
+    'bg-light-navy-2 text-gold pt-[22.4vw] pb-[6.4vw] md:py-16 lg:py-20 font-light',
     className
   )}
 >
-  <div class="container mx-auto px-4 max-w-6xl">
+  <div class="container mx-auto px-[6.4vw] md:px-4 max-w-6xl">
     <div class="flex flex-col md:flex-row gap-8 md:gap-20 mb-12">
-      <!-- Logo -->
-      <div class="flex-shrink-0">
+      <!-- Logo - Hidden on mobile, shown on desktop -->
+      <div class="flex-shrink-0 hidden md:block">
         <Logo class="w-32 md:w-32 text-gold" />
       </div>
 
@@ -50,7 +50,7 @@ const { class: className = '' } = Astro.props
       </div>
 
       <!-- Company Info -->
-      <div class="pl-16">
+      <div class="pl-0 md:pl-16">
         <p class="font-display text-sm md:text-base font-medium mb-2">
           Goldwin Inc.
         </p>
@@ -74,10 +74,15 @@ const { class: className = '' } = Astro.props
       </div>
     </div>
 
+    <!-- Logo - Centered on mobile only -->
+    <div class="flex justify-center mb-8 mt-24 md:hidden">
+      <Logo class="w-32 text-gold" />
+    </div>
+
     <div class="pt-8 md:pt-12 text-center">
       <!-- Disclaimer & Copyright -->
       <div class="space-y-4 text-xs md:text-sm">
-        <p>
+        <p class="leading-loose">
           ※内容および詳細・商品価格は、予告なく変更されることもありますので予めご了承ください。
         </p>
         <p>Our sale is limited to Japan only. © GOLDWIN INC.</p>
