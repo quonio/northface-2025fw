@@ -165,6 +165,8 @@ const products = [
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger)
 
+  const isDevelopment = import.meta.env.DEV
+
   function initBabyBlanketAnimation() {
     const galleryContainer = document.querySelector('.gallery-container')
     const galleryImages = document.querySelectorAll('.gallery-image')
@@ -250,7 +252,7 @@ const products = [
         trigger: galleryContainer,
         start: 'top 80%',
         end: 'center center',
-        markers: true, // Set to true for debugging
+        markers: isDevelopment,
         scrub: 1,
         onUpdate: (self) => {
           const progress = self.progress
