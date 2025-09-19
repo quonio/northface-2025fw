@@ -267,44 +267,58 @@ const carouselRows = productInfos.map((info, index) => ({
   <div class="container mx-auto px-4 py-24 flex justify-center">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-[85vw]">
       <!-- Product 1 -->
-      <ProductShowcaseCarousel
-        images={[cl__item06_01, cl__item06_02, cl__item06_03, cl__item06_04]}
-        imageAlt="CR Utility Pants"
-        products={[
-          {
-            headline: 'UNISEX',
-            modelNumber: 'NBM82510',
-            title: 'CR Utility Pants',
-            copy: '機能性とデザイン性を両立した多機能パンツ',
-            price: '¥28,600 (Tax incl.)',
-            link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82510',
-          },
-          {
-            headline: 'UNISEX',
-            modelNumber: 'NBM82511',
-            title: 'CR Utility Shorts',
-            copy: '暖かい季節に最適な多機能ショートパンツ',
-            price: '¥22,000 (Tax incl.)',
-            link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82511',
-          },
-        ]}
-        size="sm"
-        id="showcase-1"
-      />
+      <div class="relative">
+        <img
+          src="/src/assets/images/decorations/tape-4.svg"
+          alt=""
+          class="absolute -top-[2.39vw] -left-[1.4vw] z-10 w-[5.28vw] opacity-95"
+        />
+        <ProductShowcaseCarousel
+          images={[cl__item06_01, cl__item06_02, cl__item06_03, cl__item06_04]}
+          imageAlt="CR Utility Pants"
+          products={[
+            {
+              headline: 'UNISEX',
+              modelNumber: 'NBM82510',
+              title: 'CR Utility Pants',
+              copy: '機能性とデザイン性を両立した多機能パンツ',
+              price: '¥28,600 (Tax incl.)',
+              link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82510',
+            },
+            {
+              headline: 'UNISEX',
+              modelNumber: 'NBM82511',
+              title: 'CR Utility Shorts',
+              copy: '暖かい季節に最適な多機能ショートパンツ',
+              price: '¥22,000 (Tax incl.)',
+              link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82511',
+            },
+          ]}
+          size="sm"
+          id="showcase-1"
+        />
+      </div>
 
       <!-- Product 2 -->
-      <ProductShowcaseCarousel
-        images={[cl__item07_01, cl__item07_02, cl__item07_03, cl__item07_04]}
-        imageAlt="Maternity Fleece Jacket"
-        headline="WOMENS"
-        modelNumber="NAM82510"
-        title="Maternity Fleece Jacket"
-        copy="妊娠中から産後まで長く着用できるフリースジャケット"
-        price="¥22,000 (Tax incl.)"
-        link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NAM82510"
-        size="sm"
-        id="showcase-2"
-      />
+      <div class="relative">
+        <ProductShowcaseCarousel
+          images={[cl__item07_01, cl__item07_02, cl__item07_03, cl__item07_04]}
+          imageAlt="Maternity Fleece Jacket"
+          headline="WOMENS"
+          modelNumber="NAM82510"
+          title="Maternity Fleece Jacket"
+          copy="妊娠中から産後まで長く着用できるフリースジャケット"
+          price="¥22,000 (Tax incl.)"
+          link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NAM82510"
+          size="sm"
+          id="showcase-2"
+        />
+        <img
+          src="/src/assets/images/decorations/tape-5.svg"
+          alt=""
+          class="absolute bottom-[12vw] -right-[1.11vw] z-10 w-[4.86vw] opacity-95"
+        />
+      </div>
     </div>
   </div>
 </section>
