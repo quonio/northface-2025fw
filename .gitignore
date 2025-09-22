@@ -17,6 +17,8 @@ pnpm-debug.log*
 # build output
 dist/
 .output/
+delivery/
+deliveries/
 
 # editor
 .vscode/
@@ -24,3 +26,20 @@ dist/
 
 # misc
 .astro/
+
+# terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
+terraform.tfvars.json
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc

@@ -9,7 +9,12 @@
     "preview": "astro preview",
     "astro": "astro",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "prepare-delivery": "node scripts/prepare-delivery.js",
+    "create-zip": "node scripts/create-zip.js",
+    "build:delivery": "pnpm build && pnpm prepare-delivery && pnpm create-zip",
+    "deploy:staging": "bash scripts/deploy-staging.sh",
+    "clear:staging": "bash scripts/clear-s3.sh"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
