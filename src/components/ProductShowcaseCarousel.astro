@@ -109,7 +109,7 @@ const productDataArray: ProductData[] = isSingleProduct
     </div>
   </div>
 
-  <div class="w-full md:w-[20.833vw] -ml-px">
+  <div class="w-full md:w-[20.833vw] -mt-px md:mt-0 md:-ml-px">
     {
       productDataArray.length === 1 ? (
         <ProductInfoCard
@@ -137,8 +137,12 @@ const productDataArray: ProductData[] = isSingleProduct
                 price={product.price}
                 link={product.link}
                 size={size}
-                totalPages={index === productDataArray.length - 1 ? images.length : 0}
-                carouselId={index === productDataArray.length - 1 ? id : undefined}
+                totalPages={
+                  index === productDataArray.length - 1 ? images.length : 0
+                }
+                carouselId={
+                  index === productDataArray.length - 1 ? id : undefined
+                }
               />
             </div>
           ))}
@@ -238,4 +242,3 @@ const productDataArray: ProductData[] = isSingleProduct
   // Reinitialize on Astro page transitions
   document.addEventListener('astro:page-load', initShowcaseCarousels)
 </script>
-

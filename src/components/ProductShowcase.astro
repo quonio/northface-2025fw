@@ -61,15 +61,17 @@ const isSingleProduct = !('products' in props)
 
 // 商品データの配列を生成
 const productDataArray: ProductData[] = isSingleProduct
-  ? [{
-      headline: (props as SingleProductProps).headline,
-      modelNumber: (props as SingleProductProps).modelNumber,
-      title: (props as SingleProductProps).title,
-      copy: (props as SingleProductProps).copy,
-      description: (props as SingleProductProps).description,
-      price: (props as SingleProductProps).price,
-      link: (props as SingleProductProps).link,
-    }]
+  ? [
+      {
+        headline: (props as SingleProductProps).headline,
+        modelNumber: (props as SingleProductProps).modelNumber,
+        title: (props as SingleProductProps).title,
+        copy: (props as SingleProductProps).copy,
+        description: (props as SingleProductProps).description,
+        price: (props as SingleProductProps).price,
+        link: (props as SingleProductProps).link,
+      },
+    ]
   : (props as MultipleProductProps).products
 ---
 
@@ -88,34 +90,36 @@ const productDataArray: ProductData[] = isSingleProduct
     />
   </div>
   <div class="w-full md:w-[20.833vw] -ml-px">
-    {productDataArray.length === 1 ? (
-      <ProductInfoCard
-        headline={productDataArray[0].headline}
-        modelNumber={productDataArray[0].modelNumber}
-        title={productDataArray[0].title}
-        copy={productDataArray[0].copy}
-        description={productDataArray[0].description}
-        price={productDataArray[0].price}
-        link={productDataArray[0].link}
-        size={size}
-      />
-    ) : (
-      <div class="flex flex-col">
-        {productDataArray.map((product, index) => (
-          <div class={index > 0 ? '-mt-px' : ''}>
-            <ProductInfoCard
-              headline={product.headline}
-              modelNumber={product.modelNumber}
-              title={product.title}
-              copy={product.copy}
-              description={product.description}
-              price={product.price}
-              link={product.link}
-              size={size}
-            />
-          </div>
-        ))}
-      </div>
-    )}
+    {
+      productDataArray.length === 1 ? (
+        <ProductInfoCard
+          headline={productDataArray[0].headline}
+          modelNumber={productDataArray[0].modelNumber}
+          title={productDataArray[0].title}
+          copy={productDataArray[0].copy}
+          description={productDataArray[0].description}
+          price={productDataArray[0].price}
+          link={productDataArray[0].link}
+          size={size}
+        />
+      ) : (
+        <div class="flex flex-col">
+          {productDataArray.map((product, index) => (
+            <div class={index > 0 ? '-mt-px' : ''}>
+              <ProductInfoCard
+                headline={product.headline}
+                modelNumber={product.modelNumber}
+                title={product.title}
+                copy={product.copy}
+                description={product.description}
+                price={product.price}
+                link={product.link}
+                size={size}
+              />
+            </div>
+          ))}
+        </div>
+      )
+    }
   </div>
 </div>

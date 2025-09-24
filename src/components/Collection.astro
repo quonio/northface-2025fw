@@ -74,13 +74,13 @@ const { class: className = '' } = Astro.props
 const productInfos: ProductInfo[] = [
   {
     headline: 'UNISEX',
-    modelNumber: 'NYM82510',
+    modelNumber: 'NYM82501',
     title: 'CR Move Insulation Jacket',
     copy: '抱っこ対応のユニセックスモデルの中わたジャケット',
     description:
       'ベビーカバー（ダッカー）をフロントに装着することで、子どもを抱いた上から着用することができるジャケット。ベビーカバーは単体でも使用でき、内側は子どもの肌に心地よいフリース素材仕様。子どもの成長後はダッカーを外して単体でのジャケット着用が可能。3色展開。',
     price: '¥44,000 (Tax incl.)',
-    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NYM82510',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NYM82501',
   },
   {
     headline: 'WOMENS',
@@ -350,7 +350,7 @@ const carouselRows = productInfos.map((info, index) => ({
   }
 
   .unit-image.shake-active {
-    animation: shake 1200ms;
+    animation: shake 1800ms;
   }
 
   @keyframes shake {
@@ -358,31 +358,31 @@ const carouselRows = productInfos.map((info, index) => ({
       transform: rotateZ(0);
     }
     10% {
-      transform: rotateZ(-15deg);
+      transform: rotateZ(-8deg);
     }
     20% {
-      transform: rotateZ(7.5deg);
+      transform: rotateZ(4deg);
     }
     30% {
-      transform: rotateZ(-5deg);
+      transform: rotateZ(-2.5deg);
     }
     40% {
-      transform: rotateZ(3.75deg);
+      transform: rotateZ(2deg);
     }
     50% {
-      transform: rotateZ(-3deg);
+      transform: rotateZ(-1.5deg);
     }
     60% {
-      transform: rotateZ(2.5deg);
+      transform: rotateZ(1.25deg);
     }
     70% {
-      transform: rotateZ(-2.14deg);
+      transform: rotateZ(-1deg);
     }
     80% {
-      transform: rotateZ(1.88deg);
+      transform: rotateZ(0.75deg);
     }
     90% {
-      transform: rotateZ(-1.67deg);
+      transform: rotateZ(-0.5deg);
     }
     100% {
       transform: rotateZ(0);
