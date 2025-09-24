@@ -1,8 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 import { cn } from '@/utils/cn'
-import footerCoverImage01 from '@/assets/images/img-footer-cover-01.jpg'
-import footerCoverImage02 from '@/assets/images/img-footer-cover-02.jpg'
+import footerCoverImage01 from '@/assets/images/kv__footer01.jpg'
+import footerCoverImage02 from '@/assets/images/kv__footer02.jpg'
 
 interface Props {
   class?: string
@@ -16,7 +16,7 @@ const { class: className } = Astro.props
     <Image
       src={footerCoverImage01}
       alt="THE NORTH FACE MATERNITY+ Family"
-      widths={[390, 768, 1280, 1920, 2560]}
+      widths={[390, 768, 1280, 1920, 2560, 3840]}
       sizes="100vw"
       loading="lazy"
       class="family-photo-image family-photo-1 absolute inset-0 h-full w-full object-cover object-center opacity-100 transition-opacity"
@@ -25,7 +25,7 @@ const { class: className } = Astro.props
     <Image
       src={footerCoverImage02}
       alt="THE NORTH FACE MATERNITY+ Family"
-      widths={[390, 768, 1280, 1920, 2560]}
+      widths={[390, 768, 1280, 1920, 2560, 3840]}
       sizes="100vw"
       loading="lazy"
       class="family-photo-image family-photo-2 absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity"

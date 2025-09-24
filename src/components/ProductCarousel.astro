@@ -325,19 +325,35 @@ const getTapeWidthMobile = (rowIdx: number): string => {
 
       // カルーセル内のページネーションを探す（カルーセルのスコープ内のみ）
       let pagination = null
-      
+
       if (isDesktop) {
         // デスクトップ: カルーセル内のarticle要素内を探す
-        pagination = carousel.querySelector(`article [data-carousel-pagination="${carouselId}"]`)
+        pagination = carousel.querySelector(
+          `article [data-carousel-pagination="${carouselId}"]`
+        )
       } else {
         // モバイル: md:hiddenクラスを持つページネーションを探す
-        pagination = carousel.querySelector(`[data-carousel-pagination="${carouselId}"].md\\:hidden`)
+        pagination = carousel.querySelector(
+          `[data-carousel-pagination="${carouselId}"].md\\:hidden`
+        )
       }
-      
-      console.log('Carousel:', carouselId, 'row:', rowIndex, 'found pagination:', !!pagination)
-      
+
+      console.log(
+        'Carousel:',
+        carouselId,
+        'row:',
+        rowIndex,
+        'found pagination:',
+        !!pagination
+      )
+
       if (!pagination) {
-        console.warn('No pagination found for carousel:', carouselId, 'isDesktop:', isDesktop)
+        console.warn(
+          'No pagination found for carousel:',
+          carouselId,
+          'isDesktop:',
+          isDesktop
+        )
       }
 
       let currentIndex = 0
@@ -466,7 +482,12 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         // Update pagination
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
-          console.log('Updating pagination buttons:', paginationBtns.length, 'currentIndex:', currentIndex)
+          console.log(
+            'Updating pagination buttons:',
+            paginationBtns.length,
+            'currentIndex:',
+            currentIndex
+          )
           paginationBtns.forEach((btn, index) => {
             if (isDesktop) {
               // Desktop: Active is second position
@@ -540,7 +561,14 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         paginationBtns.forEach((btn, index) => {
           btn.addEventListener('click', (e) => {
             e.preventDefault()
-            console.log('Pagination clicked:', index, 'carousel:', carouselId, 'isDesktop:', isDesktop)
+            console.log(
+              'Pagination clicked:',
+              index,
+              'carousel:',
+              carouselId,
+              'isDesktop:',
+              isDesktop
+            )
             if (isTransitioning) return
             stopAutoScroll()
             if (isDesktop) {
@@ -613,12 +641,19 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       // Initial update and start auto scroll
       updateCarousel()
       startAutoScroll()
-      
+
       // Debug: Check initial state
       if (pagination) {
-        const activeBtns = pagination.querySelectorAll('.pagination-btn.is-active')
-        console.log('Initial active buttons:', activeBtns.length, 'for carousel:', carouselId)
-        activeBtns.forEach(btn => {
+        const activeBtns = pagination.querySelectorAll(
+          '.pagination-btn.is-active'
+        )
+        console.log(
+          'Initial active buttons:',
+          activeBtns.length,
+          'for carousel:',
+          carouselId
+        )
+        activeBtns.forEach((btn) => {
           console.log('Active button:', btn.textContent, btn.className)
         })
       }

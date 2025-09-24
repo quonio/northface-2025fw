@@ -107,7 +107,7 @@ const products = [
                 <Image
                   src={item.image}
                   alt={item.alt}
-                  widths={[300, 400, 500]}
+                  widths={[300, 400, 500, 1000, 1500]}
                   sizes="(max-width: 768px) 50vw, 25vw"
                   loading="lazy"
                   class="h-full w-full object-cover"
@@ -184,10 +184,7 @@ const products = [
     const containerRect = galleryContainer.getBoundingClientRect()
     const windowHeight = window.innerHeight
     const hasAlreadyPassed = containerRect.top < windowHeight * 0.2
-    logger.log(
-      '🚀 BabyBlanketCollection: hasAlreadyPassed =',
-      hasAlreadyPassed
-    )
+    logger.log('🚀 BabyBlanketCollection: hasAlreadyPassed =', hasAlreadyPassed)
 
     // Set initial positions for each image
     galleryImages.forEach((image, index) => {
