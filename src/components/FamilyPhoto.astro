@@ -19,7 +19,7 @@ const { class: className } = Astro.props
       widths={[390, 768, 1280, 1920, 2560]}
       sizes="100vw"
       loading="lazy"
-      class="family-photo-image family-photo-1 absolute inset-0 h-full w-full object-cover object-center"
+      class="family-photo-image family-photo-1 absolute inset-0 h-full w-full object-cover object-center opacity-100 transition-opacity"
       data-image="1"
     />
     <Image
@@ -28,7 +28,7 @@ const { class: className } = Astro.props
       widths={[390, 768, 1280, 1920, 2560]}
       sizes="100vw"
       loading="lazy"
-      class="family-photo-image family-photo-2 absolute inset-0 h-full w-full object-cover object-center"
+      class="family-photo-image family-photo-2 absolute inset-0 h-full w-full object-cover object-center opacity-0 transition-opacity"
       data-image="2"
     />
   </div>
@@ -53,8 +53,7 @@ const { class: className } = Astro.props
 
     logger.log('✅ FamilyPhoto: Elements found', { section, image1, image2 })
 
-    // 初期状態を設定
-    // image2を下から上にスライドさせるため、clipPathを使用
+    // 初期状態を設定（image1を表示、image2を非表示）
     gsap.set(image1, {
       opacity: 1,
       zIndex: 1,
@@ -62,11 +61,10 @@ const { class: className } = Astro.props
       transformOrigin: 'center center',
     })
     gsap.set(image2, {
-      opacity: 1,
+      opacity: 0,
       zIndex: 2,
       scale: 1.05, // 初期状態で少し大きめ
       transformOrigin: 'center center',
-      clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', // 初期状態：完全に隠れている
     })
 
     // 管理されたScrollTriggerを作成（ピン留め効果付き）
@@ -80,28 +78,19 @@ const { class: className } = Astro.props
       markers: false, // 本番環境では false
       onUpdate: (self) => {
         const progress = self.progress
+        const fadeProgress = Math.min(progress * 1.5, 1) // セクション前半で切り替え完了
         logger.log('📊 FamilyPhoto Progress:', progress.toFixed(2))
+        logger.log('🎞️ FamilyPhoto Fade Progress:', fadeProgress.toFixed(2))
 
-        // 下から上にスライドするようにclipPathをアニメーション
-        const revealHeight = progress * 100
-        gsap.to(image2, {
-          clipPath: `polygon(0 ${100 - revealHeight}%, 100% ${100 - revealHeight}%, 100% 100%, 0 100%)`,
-          duration: 0,
-          immediateRender: false,
+        // フェードによるクロスディゾルブ
+        gsap.set(image1, {
+          opacity: 1 - fadeProgress,
+          scale: 1 + progress * 0.05, // 最大5%拡大
         })
 
-        // 固定中のわずかなズーム効果（オプション）
-        const scale = 1 + progress * 0.05 // 最大5%拡大
-        gsap.to(image1, {
-          scale: scale,
-          duration: 0,
-          immediateRender: false,
-        })
-
-        gsap.to(image2, {
+        gsap.set(image2, {
+          opacity: fadeProgress,
           scale: 1 + (1 - progress) * 0.05, // image2は逆方向にスケール
-          duration: 0,
-          immediateRender: false,
         })
       },
     })
