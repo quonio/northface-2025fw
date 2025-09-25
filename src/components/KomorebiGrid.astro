@@ -35,11 +35,15 @@
     />
   </div>
   <div class="control-group">
+    <label>影の濃さ: <span id="shadow-opacity-value">55</span></label>
+    <input type="range" id="shadow-opacity" min="10" max="100" step="5" value="55">
+  </div>
+  <div class="control-group">
     <label>粒子:</label>
     <select id="particle-type">
       <option value="none">なし</option>
-      <option value="dynamic" selected>動的</option>
-      <option value="static">静的</option>
+      <option value="dynamic">動的</option>
+      <option value="static" selected>静的</option>
     </select>
   </div>
 </div>
@@ -63,7 +67,8 @@
       this.size = Math.random() * baseSize + baseSize * 0.9 // 基準の90%〜190%の範囲（中間サイズ）
 
       // 【影の濃さ】Math.random() * (最大-最小) + 最小
-      this.opacity = Math.random() * 40 + 50 // 透明度50〜90の範囲（はっきり見えるように濃く）
+      this.baseOpacity = Math.random() * 40 + 50 // 透明度50〜90の範囲（はっきり見えるように濃く）
+      this.opacity = this.baseOpacity
 
       this.shapeType = Math.floor(Math.random() * 5) // 形状タイプを5種類に増やす
       this.rotation = Math.random() * Math.PI * 2 // ランダムな初期回転
@@ -82,7 +87,7 @@
       this.size = Math.random() * baseSize + baseSize * 0.9
     }
 
-    draw(p, offset) {
+    draw(p, offset, opacityMultiplier = 1) {
       // 【風による動きの幅】値を大きくすると動きが大きくなる
       let movementX = (offset - 0.5) * 25 // 横方向の動き幅（一定）
       let movementY = (offset - 0.5) * 15 // 縦方向の動き幅（一定）
@@ -98,7 +103,7 @@
       // 【ぼかしレイヤー数】2に減らして軽く
       for (let layer = 2; layer > 0; layer--) {
         let layerSize = this.size * (1 + (layer - 1) * 0.25) // 控えめな拡散
-        let layerOpacity = this.opacity / (layer * 2.0) // 程よい濃さ
+        let layerOpacity = (this.baseOpacity * opacityMultiplier) / (layer * 2.0) // 程よい濃さ
 
         // 【影の色】乗算後のような色を直接指定 (R, G, B, 透明度)
         p.fill(180, 150, 120, layerOpacity) // より暗いベージュブラウン系の影
@@ -208,7 +213,8 @@
     // 開発用パラメータ（グローバルに公開）
     window.komorebiSettings = {
       calmSpeedMultiplier: 0.9,
-      gustSpeedMultiplier: 2.2
+      gustSpeedMultiplier: 2.2,
+      shadowOpacityMultiplier: 1.1 // 初期値を5%上げた状態（1.05 → 1.1に変更）
     }
 
     p.setup = function () {
@@ -319,7 +325,7 @@
             (i / gridSize) * noiseOffset + timeOffset,
             (j / gridSize) * noiseOffset + timeOffset
           )
-          grid[i][j].draw(p, offset)
+          grid[i][j].draw(p, offset, window.komorebiSettings.shadowOpacityMultiplier)
         }
       }
 
@@ -346,6 +352,16 @@
       const value = parseFloat(e.target.value)
       window.komorebiSettings.gustSpeedMultiplier = value
       gustSpeedValue.textContent = value.toFixed(1)
+    })
+
+    // 影の濃さ調整
+    const shadowOpacitySlider = document.getElementById('shadow-opacity')
+    const shadowOpacityValue = document.getElementById('shadow-opacity-value')
+    
+    shadowOpacitySlider.addEventListener('input', (e) => {
+      const value = parseInt(e.target.value)
+      window.komorebiSettings.shadowOpacityMultiplier = value / 50 // 50が基準値（1.0）
+      shadowOpacityValue.textContent = value
     })
 
     // 粒子背景切り替え
@@ -394,7 +410,7 @@
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    background-image: url('/images/overlay.gif');
+    background-image: url('/images/overlay.png');
     background-repeat: repeat;
     background-size: 120px;
     opacity: 0.24;
