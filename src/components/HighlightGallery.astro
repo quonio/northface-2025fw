@@ -19,7 +19,12 @@ interface Props {
 const { class: className = '' } = Astro.props
 ---
 
-<section class={cn('mb-[7.4vw] md:mb-4 lg:pb-20 overflow-hidden', className)}>
+<section
+  class={cn(
+    'mb-[7.4vw] md:mb-4 lg:pb-20 overflow-hidden relative z-10',
+    className
+  )}
+>
   <div class="container mx-auto px-4">
     <!-- First 3 images -->
     <div
@@ -131,7 +136,7 @@ const { class: className = '' } = Astro.props
     </div>
 
     <!-- Description Text -->
-    <div class="mx-auto max-w-[85.33vw] md:max-w-max">
+    <div class="mx-auto max-w-[85.33vw] md:max-w-max relative z-10">
       <p
         class="text-tape-navy-dark text-center text-[4vw] md:text-[1.1vw] leading-loose font-sans-jp"
       >
