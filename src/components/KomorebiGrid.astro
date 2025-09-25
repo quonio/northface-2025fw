@@ -1,9 +1,55 @@
 ---
 // Grid-based Komorebi effect using provided code structure
+const isDevelopment = import.meta.env.DEV;
 ---
 
+<div id="pattern-background"></div>
 <div id="komorebi-grid"></div>
 <div id="komorebi-overlay"></div>
+
+{isDevelopment && (
+  <!-- 開発用コントロールパネル -->
+  <div id="dev-controls">
+    <h3>木漏れ日調整</h3>
+    <div class="control-group">
+      <label>現在の風: <span id="current-wind">穏やか (1.5x)</span></label>
+    </div>
+    <div class="control-group">
+      <label>穏やかな風: <span id="calm-speed-value">1.5</span>x</label>
+      <input
+        type="range"
+        id="calm-speed"
+        min="0.1"
+        max="2.0"
+        step="0.1"
+        value="1.5"
+      />
+    </div>
+    <div class="control-group">
+      <label>強風: <span id="gust-speed-value">2.5</span>x</label>
+      <input
+        type="range"
+        id="gust-speed"
+        min="1.0"
+        max="5.0"
+        step="0.1"
+        value="2.5"
+      />
+    </div>
+    <div class="control-group">
+      <label>影の濃さ: <span id="shadow-opacity-value">60</span></label>
+      <input type="range" id="shadow-opacity" min="10" max="100" step="5" value="60">
+    </div>
+    <div class="control-group">
+      <label>粒子:</label>
+      <select id="particle-type">
+        <option value="none">なし</option>
+        <option value="dynamic">動的</option>
+        <option value="static" selected>静的</option>
+      </select>
+    </div>
+  </div>
+)}
 
 <!-- p5.js library -->
 <script
@@ -24,7 +70,8 @@
       this.size = Math.random() * baseSize + baseSize * 0.9 // 基準の90%〜190%の範囲（中間サイズ）
 
       // 【影の濃さ】Math.random() * (最大-最小) + 最小
-      this.opacity = Math.random() * 40 + 50 // 透明度50〜90の範囲（はっきり見えるように濃く）
+      this.baseOpacity = Math.random() * 40 + 50 // 透明度50〜90の範囲（はっきり見えるように濃く）
+      this.opacity = this.baseOpacity
 
       this.shapeType = Math.floor(Math.random() * 5) // 形状タイプを5種類に増やす
       this.rotation = Math.random() * Math.PI * 2 // ランダムな初期回転
@@ -43,7 +90,7 @@
       this.size = Math.random() * baseSize + baseSize * 0.9
     }
 
-    draw(p, offset) {
+    draw(p, offset, opacityMultiplier = 1) {
       // 【風による動きの幅】値を大きくすると動きが大きくなる
       let movementX = (offset - 0.5) * 25 // 横方向の動き幅（一定）
       let movementY = (offset - 0.5) * 15 // 縦方向の動き幅（一定）
@@ -59,7 +106,7 @@
       // 【ぼかしレイヤー数】2に減らして軽く
       for (let layer = 2; layer > 0; layer--) {
         let layerSize = this.size * (1 + (layer - 1) * 0.25) // 控えめな拡散
-        let layerOpacity = this.opacity / (layer * 2.0) // 程よい濃さ
+        let layerOpacity = (this.baseOpacity * opacityMultiplier) / (layer * 2.0) // 程よい濃さ
 
         // 【影の色】乗算後のような色を直接指定 (R, G, B, 透明度)
         p.fill(180, 150, 120, layerOpacity) // より暗いベージュブラウン系の影
@@ -166,6 +213,13 @@
     let phaseTimer = 0 // 各フェーズの持続時間
     let phaseDuration = 100 // 現在のフェーズの持続時間
 
+    // 開発用パラメータ（グローバルに公開）
+    window.komorebiSettings = {
+      calmSpeedMultiplier: 1.5,
+      gustSpeedMultiplier: 2.5,
+      shadowOpacityMultiplier: 1.2 // 影の濃さ60（60/50 = 1.2）
+    }
+
     p.setup = function () {
       canvasWidth = p.windowWidth
       canvasHeight = p.windowHeight
@@ -250,8 +304,22 @@
         gustIntensity = p.min(gustIntensity + 0.12, 1.0)
       }
 
-      // 風の強さに応じてアニメーション速度を変える
-      let currentWindSpeed = baseWindSpeed * (0.2 + gustIntensity * 6) // 穏やか時0.2倍速、強風時6.2倍速
+      // 風の強さに応じてアニメーション速度を変える（開発用パラメータを使用）
+      let speedRange =
+        window.komorebiSettings.gustSpeedMultiplier -
+        window.komorebiSettings.calmSpeedMultiplier
+      let currentWindSpeed =
+        baseWindSpeed *
+        (window.komorebiSettings.calmSpeedMultiplier +
+          gustIntensity * speedRange)
+
+      // 風の強さを表示に更新
+      const windDisplay = document.getElementById('current-wind')
+      if (windDisplay) {
+        const actualSpeed = window.komorebiSettings.calmSpeedMultiplier + gustIntensity * speedRange
+        const windType = gustIntensity > 0.3 ? '強風' : '穏やか'
+        windDisplay.textContent = `${windType} (${actualSpeed.toFixed(1)}x)`
+      }
 
       // Draw grid particles directly
       for (let i = 0; i < gridSize + 2; i++) {
@@ -260,7 +328,7 @@
             (i / gridSize) * noiseOffset + timeOffset,
             (j / gridSize) * noiseOffset + timeOffset
           )
-          grid[i][j].draw(p, offset)
+          grid[i][j].draw(p, offset, window.komorebiSettings.shadowOpacityMultiplier)
         }
       }
 
@@ -268,6 +336,57 @@
       timeOffset += currentWindSpeed
     }
   })
+
+  // 開発用コントロールパネルのイベントリスナー（開発環境のみ）
+  if (typeof document !== 'undefined' && document.getElementById('dev-controls')) {
+    document.addEventListener('DOMContentLoaded', () => {
+    // 風速調整
+    const calmSpeedSlider = document.getElementById('calm-speed')
+    const calmSpeedValue = document.getElementById('calm-speed-value')
+    const gustSpeedSlider = document.getElementById('gust-speed')
+    const gustSpeedValue = document.getElementById('gust-speed-value')
+
+    calmSpeedSlider.addEventListener('input', (e) => {
+      const value = parseFloat(e.target.value)
+      window.komorebiSettings.calmSpeedMultiplier = value
+      calmSpeedValue.textContent = value.toFixed(1)
+    })
+
+    gustSpeedSlider.addEventListener('input', (e) => {
+      const value = parseFloat(e.target.value)
+      window.komorebiSettings.gustSpeedMultiplier = value
+      gustSpeedValue.textContent = value.toFixed(1)
+    })
+
+    // 影の濃さ調整
+    const shadowOpacitySlider = document.getElementById('shadow-opacity')
+    const shadowOpacityValue = document.getElementById('shadow-opacity-value')
+
+    shadowOpacitySlider.addEventListener('input', (e) => {
+      const value = parseInt(e.target.value)
+      window.komorebiSettings.shadowOpacityMultiplier = value / 50 // 50が基準値（1.0）
+      shadowOpacityValue.textContent = value
+    })
+
+    // 粒子背景切り替え
+    const particleSelect = document.getElementById('particle-type')
+    const patternBg = document.getElementById('pattern-background')
+
+    particleSelect.addEventListener('change', (e) => {
+      const value = e.target.value
+      if (value === 'none') {
+        patternBg.style.display = 'none'
+      } else {
+        patternBg.style.display = 'block'
+        if (value === 'dynamic') {
+          patternBg.style.backgroundImage = "url('/images/overlay.gif')"
+        } else {
+          patternBg.style.backgroundImage = "url('/images/overlay.png')"
+        }
+      }
+    })
+    })
+  }
 </script>
 
 <style>
@@ -287,6 +406,22 @@
     transform: scale(1.05); /* 端の処理（1.0〜1.1）*/
   }
 
+  /* パターン背景 */
+  #pattern-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url('/images/overlay.png');
+    background-repeat: repeat;
+    background-size: 120px;
+    opacity: 0.24;
+    mix-blend-mode: multiply; /* 乗算で影を強調 */
+  }
+
   /* 【オーバーレイぼかし効果】全体に柔らかいぼかしを追加 */
   #komorebi-overlay {
     position: fixed;
@@ -299,5 +434,65 @@
     backdrop-filter: blur(16px); /* 全体のぼかし効果 */
     -webkit-backdrop-filter: blur(16px); /* Safari対応 */
     background: rgba(255, 255, 255, 0.02); /* わずかな白色オーバーレイ */
+  }
+
+  /* 開発用コントロールパネル */
+  #dev-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 12px;
+    z-index: 1000;
+    min-width: 280px;
+  }
+
+  #dev-controls h3 {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 10px;
+  }
+
+  #dev-controls .control-group {
+    margin-bottom: 15px;
+  }
+
+  #dev-controls label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ccc;
+  }
+
+  #dev-controls input[type='range'] {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  #dev-controls select {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 5px;
+    border-radius: 3px;
+  }
+
+  #dev-controls select option {
+    background: #333;
+  }
+
+  #dev-controls span {
+    color: #4a9eff;
+    font-weight: bold;
+  }
+
+  #current-wind {
+    color: #90ee90 !important; /* 薄い緑色 */
+    font-weight: bold;
   }
 </style>
