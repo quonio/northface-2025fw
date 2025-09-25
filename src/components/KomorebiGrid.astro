@@ -1,52 +1,55 @@
 ---
 // Grid-based Komorebi effect using provided code structure
+const isDevelopment = import.meta.env.DEV;
 ---
 
 <div id="pattern-background"></div>
 <div id="komorebi-grid"></div>
 <div id="komorebi-overlay"></div>
 
-<!-- 開発用コントロールパネル -->
-<div id="dev-controls">
-  <h3>木漏れ日調整</h3>
-  <div class="control-group">
-    <label>現在の風: <span id="current-wind">穏やか (0.9x)</span></label>
+{isDevelopment && (
+  <!-- 開発用コントロールパネル -->
+  <div id="dev-controls">
+    <h3>木漏れ日調整</h3>
+    <div class="control-group">
+      <label>現在の風: <span id="current-wind">穏やか (1.5x)</span></label>
+    </div>
+    <div class="control-group">
+      <label>穏やかな風: <span id="calm-speed-value">1.5</span>x</label>
+      <input
+        type="range"
+        id="calm-speed"
+        min="0.1"
+        max="2.0"
+        step="0.1"
+        value="1.5"
+      />
+    </div>
+    <div class="control-group">
+      <label>強風: <span id="gust-speed-value">2.5</span>x</label>
+      <input
+        type="range"
+        id="gust-speed"
+        min="1.0"
+        max="5.0"
+        step="0.1"
+        value="2.5"
+      />
+    </div>
+    <div class="control-group">
+      <label>影の濃さ: <span id="shadow-opacity-value">60</span></label>
+      <input type="range" id="shadow-opacity" min="10" max="100" step="5" value="60">
+    </div>
+    <div class="control-group">
+      <label>粒子:</label>
+      <select id="particle-type">
+        <option value="none">なし</option>
+        <option value="dynamic">動的</option>
+        <option value="static" selected>静的</option>
+      </select>
+    </div>
   </div>
-  <div class="control-group">
-    <label>穏やかな風: <span id="calm-speed-value">0.9</span>x</label>
-    <input
-      type="range"
-      id="calm-speed"
-      min="0.1"
-      max="2.0"
-      step="0.1"
-      value="0.9"
-    />
-  </div>
-  <div class="control-group">
-    <label>強風: <span id="gust-speed-value">2.2</span>x</label>
-    <input
-      type="range"
-      id="gust-speed"
-      min="1.0"
-      max="5.0"
-      step="0.1"
-      value="2.2"
-    />
-  </div>
-  <div class="control-group">
-    <label>影の濃さ: <span id="shadow-opacity-value">55</span></label>
-    <input type="range" id="shadow-opacity" min="10" max="100" step="5" value="55">
-  </div>
-  <div class="control-group">
-    <label>粒子:</label>
-    <select id="particle-type">
-      <option value="none">なし</option>
-      <option value="dynamic">動的</option>
-      <option value="static" selected>静的</option>
-    </select>
-  </div>
-</div>
+)}
 
 <!-- p5.js library -->
 <script
@@ -212,9 +215,9 @@
 
     // 開発用パラメータ（グローバルに公開）
     window.komorebiSettings = {
-      calmSpeedMultiplier: 0.9,
-      gustSpeedMultiplier: 2.2,
-      shadowOpacityMultiplier: 1.1 // 初期値を5%上げた状態（1.05 → 1.1に変更）
+      calmSpeedMultiplier: 1.5,
+      gustSpeedMultiplier: 2.5,
+      shadowOpacityMultiplier: 1.2 // 影の濃さ60（60/50 = 1.2）
     }
 
     p.setup = function () {
@@ -334,8 +337,9 @@
     }
   })
 
-  // 開発用コントロールパネルのイベントリスナー
-  document.addEventListener('DOMContentLoaded', () => {
+  // 開発用コントロールパネルのイベントリスナー（開発環境のみ）
+  if (typeof document !== 'undefined' && document.getElementById('dev-controls')) {
+    document.addEventListener('DOMContentLoaded', () => {
     // 風速調整
     const calmSpeedSlider = document.getElementById('calm-speed')
     const calmSpeedValue = document.getElementById('calm-speed-value')
@@ -357,7 +361,7 @@
     // 影の濃さ調整
     const shadowOpacitySlider = document.getElementById('shadow-opacity')
     const shadowOpacityValue = document.getElementById('shadow-opacity-value')
-    
+
     shadowOpacitySlider.addEventListener('input', (e) => {
       const value = parseInt(e.target.value)
       window.komorebiSettings.shadowOpacityMultiplier = value / 50 // 50が基準値（1.0）
@@ -381,7 +385,8 @@
         }
       }
     })
-  })
+    })
+  }
 </script>
 
 <style>
