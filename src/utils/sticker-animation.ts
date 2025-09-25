@@ -153,9 +153,7 @@ export function useStickerAnimation(
   }
 
   if (finalConfig.duration <= 0) {
-    logger.warn(
-      'useStickerAnimation: duration must be positive, using default'
-    )
+    logger.warn('useStickerAnimation: duration must be positive, using default')
     finalConfig.duration = DEFAULT_CONFIG.duration
   }
 
@@ -246,8 +244,8 @@ export function useStickerAnimation(
         animationId = requestAnimationFrame(animate)
       } else {
         // Animation complete - add drop shadow
-        stickerDOM.container.style.filter =
-          'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
+        // stickerDOM.container.style.filter =
+        //   'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
         animationState.phase = 'stuck'
         animationState.progress = 1
       }
@@ -330,7 +328,10 @@ export function useStickerAnimation(
         cy: 0,
         dw: size.width * peelAmount * 0.5,
         dh: size.height,
-        dx: peelAmount > 0.1 ? size.width - size.width * peelAmount * 0.6 : -10000,
+        dx:
+          peelAmount > 0.1
+            ? size.width - size.width * peelAmount * 0.6
+            : -10000,
         dy: 0,
       }
     }
@@ -435,12 +436,6 @@ export function useStickerAnimation(
     animationState.phase = 'stuck'
     animationState.progress = 1
     savePos = null
-
-    // Add drop shadow effect after animation
-    setTimeout(() => {
-      stickerDOM.container.style.filter =
-        'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2))'
-    }, finalConfig.duration)
   }
 
   const handleMouseMove = (e: MouseEvent) => {
