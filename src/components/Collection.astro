@@ -74,23 +74,23 @@ const { class: className = '' } = Astro.props
 const productInfos: ProductInfo[] = [
   {
     headline: 'UNISEX',
-    modelNumber: 'NYM82501',
+    modelNumber: 'NYM82510',
     title: 'CR Move Insulation Jacket',
     copy: '抱っこ対応のユニセックスモデルの中わたジャケット',
     description:
       'ベビーカバー（ダッカー）をフロントに装着することで、子どもを抱いた上から着用することができるジャケット。ベビーカバーは単体でも使用でき、内側は子どもの肌に心地よいフリース素材仕様。子どもの成長後はダッカーを外して単体でのジャケット着用が可能。3色展開。',
     price: '¥44,000 (Tax incl.)',
-    link: 'https://www.goldwin.co.jp/ap/item/i/m/NYM82501',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NYM82510',
   },
   {
     headline: 'WOMENS',
-    modelNumber: 'NYM82510',
+    modelNumber: 'NYM82501',
     title: 'Maternity Insulation Jacket',
     copy: '身幅の調整が可能な、保温性を備えた中綿ロングコート',
     description:
       'ゆとりのあるシルエットとドットボタンでの調整で、お腹の大きくなる妊娠中から、子どもの成長後まで長期間の着用が可能。産後は小さな子供を抱っこした際に上から着用でき、子供の顔を出すことを想定して、襟元はVネックにも変化可能な2WAY仕様。2色展開。',
     price: '¥41,800 (Tax incl.)',
-    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NYM82510',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NYM82501',
   },
   {
     headline: 'UNISEX',
@@ -100,7 +100,7 @@ const productInfos: ProductInfo[] = [
     description:
       '「極力バッグは持ちたくない」というパパの実際の声から生まれた、10個のポケットを備えるジャケット。ベビーカバー（ダッカー）をフロントに装着することで抱っこに対応。カバーを外せば収納力のある防水ジャケットとして単体で着用ができる。表地にはGORE-TEXを使用。2色展開。',
     price: '¥66,000 (Tax incl.)',
-    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NPM62510',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NPM62510',
   },
   {
     headline: 'WOMENS',
@@ -110,7 +110,7 @@ const productInfos: ProductInfo[] = [
     description:
       '防風性・はっ水性に優れた柔らかな手触りのGORE-TEX WINDSTOPPER®️の内側に、光電子®️ダウンをたっぷり封入した保温性に優れたダウンジャケット。お腹の大きくなる妊娠中から、子どもの成長後まで長期間の着用が可能。ベビーキャリアカバーを連結すれば子どもを抱っこしたまま着用でき、単体でもベビーカーや抱っこひもに装着できる。2色展開。',
     price: '¥93,500 (Tax incl.)',
-    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NDM92501',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NDM92501',
   },
   {
     headline: 'UNISEX',
@@ -120,7 +120,7 @@ const productInfos: ProductInfo[] = [
     description:
       '袖と背面に配したポケットは抱っこひも使用時にも使いやすい配置。背面ポケットには左右どちらからでもアプローチでき、両脇ファスナーを開くことにより、抱っこひものヒップベルトの干渉が少なく使用できる。3色展開。',
     price: '¥17,600 (Tax incl.)',
-    link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NTM62510',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NTM62510',
   },
 ]
 
@@ -282,23 +282,23 @@ const carouselRows = productInfos.map((info, index) => ({
         />
         <ProductShowcaseCarousel
           images={[cl__item06_01, cl__item06_02, cl__item06_03, cl__item06_04]}
-          imageAlt="CR Utility Pants"
+          imageAlt="CR L/S Message Tee"
           products={[
             {
               headline: 'UNISEX',
-              modelNumber: 'NBM82510',
-              title: 'CR Utility Pants',
-              copy: '機能性とデザイン性を両立した多機能パンツ',
-              price: '¥28,600 (Tax incl.)',
-              link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82510',
+              modelNumber: 'NTM82511',
+              title: 'CR L/S Message Tee',
+              copy: 'SRHR認知向上の思いを込めた長袖グラフィックTシャツ',
+              price: '¥7,700 (Tax incl.)',
+              link: 'https://www.goldwin.co.jp/ap/item/i/m/NTM82511',
             },
             {
-              headline: 'UNISEX',
-              modelNumber: 'NBM82511',
-              title: 'CR Utility Shorts',
-              copy: '暖かい季節に最適な多機能ショートパンツ',
-              price: '¥22,000 (Tax incl.)',
-              link: 'https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NBM82511',
+              headline: 'WOMEN’S',
+              modelNumber: 'NBM32203',
+              title: 'Maternity Long Pant',
+              copy: '妊娠中から産後まで長く着用できるマタニティパンツ',
+              price: '¥16,500 (Tax incl.)',
+              link: 'https://www.goldwin.co.jp/ap/item/i/m/NBM32203',
             },
           ]}
           size="sm"
@@ -310,13 +310,13 @@ const carouselRows = productInfos.map((info, index) => ({
       <div class="relative">
         <ProductShowcaseCarousel
           images={[cl__item07_01, cl__item07_02, cl__item07_03, cl__item07_04]}
-          imageAlt="Maternity Fleece Jacket"
-          headline="WOMENS"
-          modelNumber="NAM82510"
-          title="Maternity Fleece Jacket"
-          copy="妊娠中から産後まで長く着用できるフリースジャケット"
-          price="¥22,000 (Tax incl.)"
-          link="https://www.goldwin.co.jp/tnf/ec/pro/disp/2/NAM82510"
+          imageAlt="Maternity Micro Fleece One Piece"
+          headline="WOMEN’S"
+          modelNumber="NLM72501"
+          title="Maternity Micro Fleece One Piece"
+          copy="軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース"
+          price="¥17,600 (Tax incl.)"
+          link="https://www.goldwin.co.jp/ap/item/i/m/NLM72501"
           size="sm"
           id="showcase-2"
         />
