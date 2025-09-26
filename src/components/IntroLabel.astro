@@ -26,7 +26,7 @@ const { class: className = '' } = Astro.props
       </div>
 
       <!-- English text label -->
-      <div class="relative inline-block" data-sticker-delay="200">
+      <div class="relative inline-block" data-sticker-delay="50">
         <img
           src={sealImage2.src}
           alt="A heart beat, echoing into the wild."
@@ -59,7 +59,7 @@ const { class: className = '' } = Astro.props
       if (target) {
         // Create sticker animation with auto animation on scroll
         const animation = useStickerAnimation(target, {
-          direction: 'left',
+          direction: 'right',
           delay: delay,
           duration: 1000,
           easing: 'cubic-bezier(0.23, 1, 0.32, 1)',
@@ -67,8 +67,8 @@ const { class: className = '' } = Astro.props
           autoAnimate: true,
           autoAnimationDelay: 200,
           observerOptions: {
-            threshold: 0.2,
-            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px',
           },
         })
 

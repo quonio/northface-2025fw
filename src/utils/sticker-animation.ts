@@ -311,11 +311,11 @@ export function useStickerAnimation(
     } else if (dir === 'right') {
       // Right direction - peels from left side
       return {
-        bmx: size.width * peelAmount,
+        bmx: size.width - size.width * peelAmount,
         bmy: 0,
         bx: size.width,
         by: 0,
-        sx: -1,
+        sx: 1,
         sy: 1,
         bs: 'shadowR',
         bsw: size.width * peelAmount,
@@ -328,10 +328,7 @@ export function useStickerAnimation(
         cy: 0,
         dw: size.width * peelAmount * 0.5,
         dh: size.height,
-        dx:
-          peelAmount > 0.1
-            ? size.width - size.width * peelAmount * 0.6
-            : -10000,
+        dx: peelAmount > 0.1 ? size.width - size.width * peelAmount * 0.6 : 10000,
         dy: 0,
       }
     }
