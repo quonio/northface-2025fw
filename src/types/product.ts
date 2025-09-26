@@ -8,6 +8,7 @@ export interface ProductInfo {
   description?: string
   price?: string
   link?: string
+  isComingSoon?: boolean
 }
 
 export interface CarouselItem {

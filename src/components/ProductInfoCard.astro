@@ -17,6 +17,7 @@ interface Props {
   totalPages?: number
   carouselId?: string
   size?: 'sm' | 'md' | 'lg'
+  isComingSoon?: boolean
 }
 
 const {
@@ -32,6 +33,7 @@ const {
   totalPages = 0,
   carouselId = '',
   size = 'lg',
+  isComingSoon = false,
 } = Astro.props
 
 // ®記号を上付きのspanタグに変換する関数
@@ -161,7 +163,7 @@ const currentSize = sizeClasses[size]
   {
     link && size !== 'sm' && (
       <div class={cn(currentSize.buyLink)}>
-        <BuyLink href={link} size={size} />
+        <BuyLink href={link} size={size} isComingSoon={isComingSoon} />
       </div>
     )
   }
@@ -174,7 +176,7 @@ const currentSize = sizeClasses[size]
           totalPages > 0 && carouselId && 'mb-4'
         )}
       >
-        <BuyLink href={link} size="sm" />
+        <BuyLink href={link} size="sm" isComingSoon={isComingSoon} />
       </div>
     )
   }

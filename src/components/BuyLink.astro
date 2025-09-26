@@ -4,6 +4,7 @@ interface Props {
   class?: string
   size?: 'sm' | 'md' | 'lg'
   color?: 'brown' | 'beige-dark'
+  isComingSoon?: boolean
 }
 
 const {
@@ -11,6 +12,7 @@ const {
   class: className = '',
   size = 'lg',
   color = 'brown',
+  isComingSoon = false,
 } = Astro.props
 
 // サイズに応じたクラスを定義
@@ -33,19 +35,32 @@ const colorClasses = {
 }
 ---
 
-<a
-  href={href}
-  target="_blank"
-  rel="noopener noreferrer"
-  class:list={[
-    'buy-link inline-block hover:no-underline transition-all font-extralight relative',
-    sizeClasses[size],
-    colorClasses[color],
-    className,
-  ]}
->
-  <span class="buy-text relative z-10 inline-block">BUY</span>
-  <svg
+{
+  isComingSoon ? (
+    <span
+      class:list={[
+        'inline-block transition-all font-extralight relative opacity-60 cursor-not-allowed',
+        sizeClasses[size],
+        colorClasses[color],
+        className,
+      ]}
+    >
+      <span class="relative z-10 inline-block">COMING SOON</span>
+    </span>
+  ) : (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      class:list={[
+        'buy-link inline-block hover:no-underline transition-all font-extralight relative',
+        sizeClasses[size],
+        colorClasses[color],
+        className,
+      ]}
+    >
+      <span class="buy-text relative z-10 inline-block">BUY</span>
+      <svg
     class:list={[
       'buy-link-svg absolute left-1/2 -translate-x-1/2 -bottom-1',
       svgSizeClasses[size],
@@ -63,6 +78,8 @@ const colorClasses = {
       stroke-dashoffset="0"></path>
   </svg>
 </a>
+  )
+}
 
 <style>
   /* 初期状態：線が表示されている */
