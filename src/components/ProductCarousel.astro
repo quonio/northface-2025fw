@@ -89,6 +89,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
             <img
               src={getTapeSvgPath(rowIndex)}
               alt=""
+              aria-hidden="true"
               class="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 opacity-95"
               style={`width: ${getTapeWidth(rowIndex)}`}
             />
@@ -124,6 +125,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
             <img
               src={getTapeSvgPath(rowIndex)}
               alt=""
+              aria-hidden="true"
               class="absolute -top-[0.4vw] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
               style={`width: ${getTapeWidth(rowIndex)}`}
             />
@@ -214,12 +216,14 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         <img
           src={getTapeSvgPath(rowIndex)}
           alt=""
+          aria-hidden="true"
           class="absolute -top-[6vw] left-1/2 -translate-x-1/2 z-10 md:hidden opacity-95"
           style={`width: ${getTapeWidthMobile(rowIndex)}; height: auto;`}
         />
         <img
           src={getTapeSvgPath(rowIndex)}
           alt=""
+          aria-hidden="true"
           class="absolute -top-[6vw] left-1/2 -translate-x-1/2 z-10 hidden md:block opacity-95"
           style={`width: ${getTapeWidth(rowIndex)}; height: auto;`}
         />

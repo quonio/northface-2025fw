@@ -27,7 +27,8 @@
       "Bash(pnpm build:*)",
       "Bash(pnpm prepare-delivery:*)",
       "Bash(chmod:*)",
-      "Bash(zip:*)"
+      "Bash(zip:*)",
+      "mcp__puppeteer__puppeteer_evaluate"
     ],
     "deny": []
   }
