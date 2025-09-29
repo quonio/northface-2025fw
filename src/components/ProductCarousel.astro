@@ -2,6 +2,7 @@
 import ProductInfoCard from './ProductInfoCard.astro'
 import ImageCard from './ImageCard.astro'
 import NumberPagination from './NumberPagination.astro'
+import { logger } from '@/utils/logger'
 import type { ProductInfo, CarouselItem } from '@/types/product'
 
 interface Props {
@@ -342,7 +343,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         )
       }
 
-      console.log(
+      logger.log(
         'Carousel:',
         carouselId,
         'row:',
@@ -352,7 +353,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
       )
 
       if (!pagination) {
-        console.warn(
+        logger.warn(
           'No pagination found for carousel:',
           carouselId,
           'isDesktop:',
@@ -486,7 +487,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         // Update pagination
         if (pagination) {
           const paginationBtns = pagination.querySelectorAll('.pagination-btn')
-          console.log(
+          logger.log(
             'Updating pagination buttons:',
             paginationBtns.length,
             'currentIndex:',
@@ -499,19 +500,19 @@ const getTapeWidthMobile = (rowIdx: number): string => {
               const isActive = index === secondPositionIndex
               btn.classList.toggle('is-active', isActive)
               if (isActive) {
-                console.log('Setting active button:', index, 'for desktop')
+                logger.log('Setting active button:', index, 'for desktop')
               }
             } else {
               // Mobile: Active is current index (NumberPagination component)
               const isActive = index === currentIndex
               btn.classList.toggle('is-active', isActive)
               if (isActive) {
-                console.log('Setting active button:', index, 'for mobile')
+                logger.log('Setting active button:', index, 'for mobile')
               }
             }
           })
         } else {
-          console.warn('No pagination to update')
+          logger.warn('No pagination to update')
         }
       }
 
@@ -565,7 +566,7 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         paginationBtns.forEach((btn, index) => {
           btn.addEventListener('click', (e) => {
             e.preventDefault()
-            console.log(
+            logger.log(
               'Pagination clicked:',
               index,
               'carousel:',
@@ -578,11 +579,11 @@ const getTapeWidthMobile = (rowIdx: number): string => {
             if (isDesktop) {
               // Desktop: クリックされた番号を左から2番目に表示するため、currentIndexを調整
               currentIndex = (index - 1 + totalItems) % totalItems
-              console.log('Desktop: Set currentIndex to', currentIndex)
+              logger.log('Desktop: Set currentIndex to', currentIndex)
             } else {
               // Mobile: クリックされた番号をそのまま使用
               currentIndex = index
-              console.log('Mobile: Set currentIndex to', currentIndex)
+              logger.log('Mobile: Set currentIndex to', currentIndex)
             }
             updateCarousel()
             setTimeout(() => {
@@ -651,14 +652,14 @@ const getTapeWidthMobile = (rowIdx: number): string => {
         const activeBtns = pagination.querySelectorAll(
           '.pagination-btn.is-active'
         )
-        console.log(
+        logger.log(
           'Initial active buttons:',
           activeBtns.length,
           'for carousel:',
           carouselId
         )
         activeBtns.forEach((btn) => {
-          console.log('Active button:', btn.textContent, btn.className)
+          logger.log('Active button:', btn.textContent, btn.className)
         })
       }
 
