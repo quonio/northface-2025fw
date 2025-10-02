@@ -164,7 +164,6 @@ const products = [
   import { gsap } from 'gsap'
   import { ScrollTrigger } from 'gsap/ScrollTrigger'
   import { createManagedScrollTrigger } from '@/utils/gsap-manager'
-  import { logger } from '@/utils/logger'
 
   // Register ScrollTrigger plugin
   gsap.registerPlugin(ScrollTrigger)
@@ -184,7 +183,6 @@ const products = [
     const containerRect = galleryContainer.getBoundingClientRect()
     const windowHeight = window.innerHeight
     const hasAlreadyPassed = containerRect.top < windowHeight * 0.2
-    logger.log('🚀 BabyBlanketCollection: hasAlreadyPassed =', hasAlreadyPassed)
 
     // Set initial positions for each image
     galleryImages.forEach((image, index) => {
@@ -257,17 +255,10 @@ const products = [
         scrub: 1,
         onUpdate: (self) => {
           const progress = self.progress
-          logger.log('🚀 ScrollTrigger progress:', progress)
           // Manually control timeline progress based on scroll
           tl.progress(progress)
         },
       })
-
-      if (scrollTrigger) {
-        logger.log('🚀 ScrollTrigger created successfully')
-      } else {
-        logger.error('❌ Failed to create ScrollTrigger')
-      }
     }
   }
 

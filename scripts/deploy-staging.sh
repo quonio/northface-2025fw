@@ -31,6 +31,12 @@ echo "バケット: $BUCKET_NAME"
 echo "CloudFront Distribution: $DISTRIBUTION_ID"
 echo ""
 
+DELIVERY_ROOT="delivery/www.thenorthface.jp/special/maternity"
+ASSET_SOURCE="${DELIVERY_ROOT}/asset"
+ASSET_TARGET="s3://${BUCKET_NAME}/special/maternity/asset"
+HTML_SOURCE="${DELIVERY_ROOT}/index.html"
+HTML_TARGET="s3://${BUCKET_NAME}/special/maternity/index.html"
+
 # ビルドと納品ファイル作成
 print_info "ビルドと納品ファイルの作成..."
 if pnpm build:delivery; then
@@ -41,9 +47,14 @@ else
 fi
 
 # アセットファイルをS3にアップロード
+if [ ! -d "$ASSET_SOURCE" ]; then
+    print_error "アセットディレクトリが見つかりません: $ASSET_SOURCE"
+    exit 1
+fi
+
 print_info "アセットファイルをアップロード中..."
-if aws s3 sync delivery/web/template/ja/full/page/static/full/tnf/ \
-    s3://${BUCKET_NAME}/static/full/tnf/ \
+if aws s3 sync "${ASSET_SOURCE}/" \
+    "${ASSET_TARGET}/" \
     --delete \
     --cache-control "public, max-age=31536000"; then
     print_success "アセットファイルのアップロードが完了しました"
@@ -53,9 +64,14 @@ else
 fi
 
 # HTMLファイルをS3にアップロード
+if [ ! -f "$HTML_SOURCE" ]; then
+    print_error "HTMLファイルが見つかりません: $HTML_SOURCE"
+    exit 1
+fi
+
 print_info "HTMLファイルをアップロード中..."
-if aws s3 cp delivery/web/template/ja/full/page/tnf/index.html \
-    s3://${BUCKET_NAME}/special/maternity/index.html \
+if aws s3 cp "$HTML_SOURCE" \
+    "$HTML_TARGET" \
     --cache-control "public, max-age=3600" \
     --content-type "text/html"; then
     print_success "HTMLファイルのアップロードが完了しました"

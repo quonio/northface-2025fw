@@ -163,13 +163,10 @@ const { class: className = '' } = Astro.props
 <script>
   import { gsap } from 'gsap'
   import { createManagedScrollTrigger } from '@/utils/gsap-manager'
-  import { logger } from '@/utils/logger'
 
   const isDevelopment = import.meta.env.DEV
 
   function initHighlightGalleryAnimations() {
-    logger.log('🚀 HighlightGallery: Starting animations')
-
     // 全てのギャラリーアイテムの初期状態を設定
     const allGalleryItems = document.querySelectorAll('.gallery-item')
     allGalleryItems.forEach((item, index) => {
@@ -217,7 +214,6 @@ const { class: className = '' } = Astro.props
         end: 'bottom 20%',
         markers: isDevelopment,
         onEnter: () => {
-          logger.log('📍 First Gallery ScrollTrigger: onEnter')
           const firstThreeItems =
             firstGallerySection.querySelectorAll('.gallery-item')
           gsap.to(firstThreeItems, {
@@ -249,26 +245,17 @@ const { class: className = '' } = Astro.props
             },
           })
         },
-        onLeave: () => logger.log('📍 First Gallery ScrollTrigger: onLeave'),
-        onEnterBack: () =>
-          logger.log('📍 First Gallery ScrollTrigger: onEnterBack'),
-        onLeaveBack: () =>
-          logger.log('📍 First Gallery ScrollTrigger: onLeaveBack'),
       })
     }
 
     // タイトルのアニメーション（ScrollTriggerなし）
     const testElement = document.querySelector('.text-center h2')
     if (testElement) {
-      logger.log('✅ Test element found:', testElement)
       gsap.from(testElement, {
         duration: 2,
         y: 50,
         opacity: 0,
         ease: 'bounce.out',
-        onComplete: () => {
-          logger.log('🎉 Basic animation completed!')
-        },
       })
     }
 
@@ -281,7 +268,6 @@ const { class: className = '' } = Astro.props
         end: 'bottom 20%',
         markers: isDevelopment,
         onEnter: () => {
-          logger.log('📍 Second Gallery ScrollTrigger: onEnter')
           const secondThreeItems =
             secondGallerySection.querySelectorAll('.gallery-item')
           gsap.to(secondThreeItems, {
@@ -313,43 +299,26 @@ const { class: className = '' } = Astro.props
             },
           })
         },
-        onLeave: () => logger.log('📍 Second Gallery ScrollTrigger: onLeave'),
-        onEnterBack: () =>
-          logger.log('📍 Second Gallery ScrollTrigger: onEnterBack'),
-        onLeaveBack: () =>
-          logger.log('📍 Second Gallery ScrollTrigger: onLeaveBack'),
       })
     }
 
     // デバッグ情報を表示
     if (import.meta.env.DEV) {
       const memoryInfo = (performance as any).memory
-      if (memoryInfo) {
-        logger.log('💾 Memory usage:', {
-          used: Math.round(memoryInfo.usedJSHeapSize / 1024 / 1024) + ' MB',
-          total: Math.round(memoryInfo.totalJSHeapSize / 1024 / 1024) + ' MB',
-          limit: Math.round(memoryInfo.jsHeapSizeLimit / 1024 / 1024) + ' MB',
-        })
-      }
     }
   }
 
   // 初期化
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      logger.log('📄 DOM loaded, starting HighlightGallery animations...')
       setTimeout(initHighlightGalleryAnimations, 100)
     })
   } else {
-    logger.log('📄 DOM ready, starting HighlightGallery animations...')
     setTimeout(initHighlightGalleryAnimations, 100)
   }
 
   // Astro page transitions
   document.addEventListener('astro:page-load', () => {
-    logger.log(
-      '🔄 Astro page loaded, restarting HighlightGallery animations...'
-    )
     setTimeout(initHighlightGalleryAnimations, 100)
   })
 </script>

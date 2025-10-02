@@ -37,21 +37,15 @@ const { class: className } = Astro.props
 <script>
   import { gsap } from 'gsap'
   import { createManagedScrollTrigger } from '@/utils/gsap-manager'
-  import { logger } from '@/utils/logger'
 
   function initFamilyPhotoAnimation() {
-    logger.log('🎯 FamilyPhoto: Initializing animation')
-
     const section = document.querySelector('.family-photo-section')
     const image1 = document.querySelector('.family-photo-1') as HTMLElement
     const image2 = document.querySelector('.family-photo-2') as HTMLElement
 
     if (!section || !image1 || !image2) {
-      logger.warn('⚠️ FamilyPhoto: Required elements not found')
       return
     }
-
-    logger.log('✅ FamilyPhoto: Elements found', { section, image1, image2 })
 
     // 初期状態を設定（image1を表示、image2を非表示）
     gsap.set(image1, {
@@ -79,8 +73,6 @@ const { class: className } = Astro.props
       onUpdate: (self) => {
         const progress = self.progress
         const fadeProgress = Math.min(progress * 1.5, 1) // セクション前半で切り替え完了
-        logger.log('📊 FamilyPhoto Progress:', progress.toFixed(2))
-        logger.log('🎞️ FamilyPhoto Fade Progress:', fadeProgress.toFixed(2))
 
         // フェードによるクロスディゾルブ
         gsap.set(image1, {
@@ -94,10 +86,6 @@ const { class: className } = Astro.props
         })
       },
     })
-
-    if (scrollTrigger) {
-      logger.log('🚀 FamilyPhoto: ScrollTrigger created successfully')
-    }
   }
 
   // 初期化
