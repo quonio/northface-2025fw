@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Hero from '../../components/Hero.astro'
+import IntroLabel from '../../components/IntroLabel.astro'
+import HighlightGallery from '../../components/HighlightGallery.astro'
+import ProductLines from '../../components/ProductLines.astro'
+import Collection from '../../components/Collection.astro'
+import DualCTA from '../../components/DualCTA.astro'
+import BabyBlanketCollection from '../../components/BabyBlanketCollection.astro'
+import FamilyPhoto from '../../components/FamilyPhoto.astro'
+import BannerSection from '../../components/BannerSection.astro'
+import Footer from '../../components/Footer.astro'
+import '../../app.css'
+
+// Import English data
+import { contentDataEn } from '../../data/content-en'
+import { productDataEn } from '../../data/products-en'
+
+const content = contentDataEn.getContent()
+const mainProducts = productDataEn.getMainProducts()
+const additionalProducts = productDataEn.getAdditionalProducts()
+const babyBlankets = productDataEn.getBabyBlankets()
+
+// Prepare component props
+const heroData = {
+  imageAlt: content.hero.imageAlt,
+}
+
+const introLabelData = {
+  // sealImageSrc: content.intro.sealImageSrc,
+  sealImageAlt: content.intro.sealImageAlt,
+}
+
+const highlightGalleryData = {
+  description: content.gallery.description,
+  imageAlts: content.gallery.imageAlts,
+}
+
+const productLinesData = {
+  description: content.productLines.description,
+  imageSrc: content.productLines.imageSrc,
+}
+
+const collectionData = {
+  products: mainProducts,
+  label: content.collection.label,
+}
+
+const babyBlanketData = {
+  products: babyBlankets,
+}
+
+const footerData = {
+  disclaimer: content.footer.disclaimer,
+  ariaLabel: content.footer.ariaLabel,
+}
+---
+
+<BaseLayout
+  title={content.meta.title}
+  description={content.meta.description}
+  lang={content.meta.lang}
+>
+  <Hero {...heroData} />
+  <IntroLabel {...introLabelData} />
+  <HighlightGallery {...highlightGalleryData} />
+  <ProductLines {...productLinesData} />
+  <Collection {...collectionData} />
+  <DualCTA />
+  <BabyBlanketCollection {...babyBlanketData} />
+  <FamilyPhoto />
+  <!-- <BannerSection /> -->
+  <Footer {...footerData} />
+</BaseLayout>

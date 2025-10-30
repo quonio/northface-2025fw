@@ -64,14 +64,30 @@ import cl__item07_02 from '@/assets/images/cl__item07-02.jpg'
 import cl__item07_03 from '@/assets/images/cl__item07-03.jpg'
 import cl__item07_04 from '@/assets/images/cl__item07-04.jpg'
 
+import type { Product } from '@/data/types'
+
 interface Props {
   class?: string
+  products?: Product[]
+  label?: string
 }
 
-const { class: className = '' } = Astro.props
+const { 
+  class: className = '', 
+  products,
+  label = 'MATERNITY+' 
+} = Astro.props
 
 // Create carousel data for each row
-const productInfos: ProductInfo[] = [
+const productInfos: ProductInfo[] = products ? products.map(product => ({
+  headline: product.headline,
+  modelNumber: product.modelNumber,
+  title: product.title,
+  copy: product.copy,
+  description: product.description,
+  price: product.price,
+  link: product.link,
+})) : [
   {
     headline: 'UNISEX',
     modelNumber: 'NYM82510',
@@ -190,7 +206,7 @@ const carouselRows = productInfos.map((info, index) => ({
     <h2
       class="font-display text-center text-3xl font-medium md:text-4xl lg:text-[3.819vw]"
     >
-      <span class="text-brown">MATERNITY+</span>
+      <span class="text-brown">{label}</span>
       <br class="md:hidden lg:block" />
       <span class="text-tape-navy-dark">2025FW COLLECTION</span>
     </h2>

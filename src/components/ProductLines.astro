@@ -6,9 +6,18 @@ import productSp from '@/assets/images/img-product-sp.svg'
 
 interface Props {
   class?: string
+  description?: string
+  imageSrc?: {
+    pc: string
+    sp: string
+  }
 }
 
-const { class: className = '' } = Astro.props
+const { 
+  class: className = '',
+  description,
+  imageSrc
+} = Astro.props
 ---
 
 <section class={cn('py-16 lg:py-20 bg-cream relative z-10', className)}>
@@ -47,11 +56,15 @@ const { class: className = '' } = Astro.props
       <p
         class="md:text-[1.12vw] leading-loose text-brown text-center font-medium font-sans-jp"
       >
-        心身ともに変化の大きな妊娠期。<br />
-        妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。<br
-          class="hidden md:block"
-        />
-        さまざまなシーンに対応する、高い拡張性を備えるアイテムがMATERNITY+には揃っています。
+        {description || (
+          <>
+            心身ともに変化の大きな妊娠期。<br />
+            妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。<br
+              class="hidden md:block"
+            />
+            さまざまなシーンに対応する、高い拡張性を備えるアイテムがMATERNITY+には揃っています。
+          </>
+        )}
       </p>
     </div>
   </div>

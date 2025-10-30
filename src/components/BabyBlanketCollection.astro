@@ -14,12 +14,17 @@ import blanket08Image from '@/assets/images/cl__blanket_08.jpg'
 import blanket01 from '@/assets/images/img-blanket-1.jpg'
 import blanket02 from '@/assets/images/img-blanket-2.jpg'
 import blanket03 from '@/assets/images/img-blanket-3.jpg'
+import type { Product } from '@/data/types'
 
 interface Props {
   class?: string
+  products?: Product[]
 }
 
-const { class: className = '' } = Astro.props
+const { 
+  class: className = '',
+  products: propsProducts 
+} = Astro.props
 
 // Gallery images with rotation values
 const galleryImages = [
@@ -34,7 +39,15 @@ const galleryImages = [
 ]
 
 // Product cards data
-const products = [
+const products = propsProducts ? propsProducts.map((product, index) => ({
+  id: `blanket-${index + 1}`,
+  image: product.images[0].src,
+  modelNumber: product.modelNumber,
+  title: product.title,
+  copy: product.copy,
+  price: product.price,
+  link: product.link,
+})) : [
   {
     id: 'blanket-1',
     image: blanket01,
