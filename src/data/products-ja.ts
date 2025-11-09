@@ -168,6 +168,18 @@ const additionalProducts: Product[] = [
   },
   {
     headline: 'WOMENS',
+    modelNumber: 'NBM32203',
+    title: 'Maternity Long Pant',
+    copy: '妊娠中から産後まで長く着用できるマタニティパンツ',
+    description: '妊娠中から産後まで長く着用できるマタニティパンツ',
+    price: '¥16,500 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NBM32203',
+    images: [
+      { src: cl__item06_01, alt: 'Maternity Long Pant Image 1' },
+    ],
+  },
+  {
+    headline: 'WOMENS',
     modelNumber: 'NLM72501',
     title: 'Maternity Micro Fleece One Piece',
     copy: '軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース',

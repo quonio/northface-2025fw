@@ -18,11 +18,7 @@ interface Props {
   imageAlts?: string[]
 }
 
-const { 
-  class: className = '',
-  description,
-  imageAlts
-} = Astro.props
+const { class: className = '', description, imageAlts } = Astro.props
 
 const defaultImageAlts = [
   'THE NORTH FACE MATERNITY+ Style 1',
@@ -157,33 +153,37 @@ const actualImageAlts = imageAlts || defaultImageAlts
     </div>
 
     <!-- Description Text -->
-    <div class="mx-auto max-w-[85.33vw] md:max-w-max relative z-10">
+    <div class="mx-auto max-w-[85.33vw] md:max-w-max relative z-10 md:px-14">
       <p
         class="text-tape-navy-dark text-center text-[4vw] md:text-[1.1vw] leading-loose font-sans-jp"
       >
-        {description ? (
-          description.map((text, index) => (
+        {
+          description ? (
+            description.map((text, index) => (
+              <>
+                {text}
+                {index < description.length - 1 && (
+                  <br
+                    class={index === 1 || index === 3 ? 'hidden md:block' : ''}
+                  />
+                )}
+              </>
+            ))
+          ) : (
             <>
-              {text}
-              {index < description.length - 1 && (
-                <br class={index === 1 || index === 3 ? "hidden md:block" : ""} />
-              )}
+              THE NORTH
+              FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。
+              <br />
+              性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、
+              <br class="hidden md:block" />
+              長く愛着を持つことができるウエアを取り揃えています。
+              <br />
+              MATERNITY+は、「妊娠・出産や子育てを経験する家族」のEXPLORATIONを叶えるカテゴリーとして、
+              <br class="hidden md:block" />
+              育児をするひとを性別を問わずサポートします。
             </>
-          ))
-        ) : (
-          <>
-            THE NORTH
-            FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。<br />
-            性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、<br
-              class="hidden md:block"
-            />
-            長く愛着を持つことができるウエアを取り揃えています。<br />
-            MATERNITY+は、「妊娠・出産や子育てを経験する家族」のEXPLORATIONを叶えるカテゴリーとして、<br
-              class="hidden md:block"
-            />
-            育児をするひとを性別を問わずサポートします。
-          </>
-        )}
+          )
+        }
       </p>
     </div>
   </div>

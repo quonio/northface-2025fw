@@ -39,10 +39,10 @@ export interface ContentData {
   };
   productLines: {
     imageSrc: {
-      pc: string;
-      sp: string;
+      pc: ImageMetadata;
+      sp: ImageMetadata;
     };
-    description: string;
+    description: string | string[];
   };
   collection: {
     label: string;
