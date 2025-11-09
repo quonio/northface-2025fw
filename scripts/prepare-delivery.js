@@ -5,6 +5,7 @@ import path from 'path'
 const config = {
   source: {
     html: 'dist/index.html',
+    htmlEn: 'dist/en/index.html',
     astroAssets: 'dist/_astro',
     distImages: 'dist/images',
     publicImages: 'public/images',
@@ -355,6 +356,15 @@ async function prepareDelivery() {
     const htmlOutputPath = path.join(deliveryRoot, 'index.html')
     await replacePathsInHtml(config.source.html, htmlOutputPath)
 
+    // 英語ページの処理
+    if (await pathExists(config.source.htmlEn)) {
+      const enDir = path.join(deliveryRoot, 'en')
+      await ensureDir(enDir)
+      const htmlEnOutputPath = path.join(enDir, 'index.html')
+      await replacePathsInHtml(config.source.htmlEn, htmlEnOutputPath)
+      console.log('✓ 英語版HTMLファイルを処理しました')
+    }
+
     console.log('\n✅ 納品用ファイルの準備が完了しました！')
     console.log('\n📂 納品用ファイルは以下に作成されました:')
     console.log(`   ${path.resolve(deliveryRoot)}`)
@@ -367,6 +377,8 @@ async function prepareDelivery() {
     console.log('               │   ├── css/')
     console.log('               │   ├── img/')
     console.log('               │   └── js/')
+    console.log('               ├── en/')
+    console.log('               │   └── index.html')
     console.log('               └── index.html')
   } catch (error) {
     console.error('\n❌ エラーが発生しました:', error.message)

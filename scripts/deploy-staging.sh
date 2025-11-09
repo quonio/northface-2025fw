@@ -36,6 +36,8 @@ ASSET_SOURCE="${DELIVERY_ROOT}/asset"
 ASSET_TARGET="s3://${BUCKET_NAME}/special/maternity/asset"
 HTML_SOURCE="${DELIVERY_ROOT}/index.html"
 HTML_TARGET="s3://${BUCKET_NAME}/special/maternity/index.html"
+HTML_EN_SOURCE="${DELIVERY_ROOT}/en/index.html"
+HTML_EN_TARGET="s3://${BUCKET_NAME}/special/maternity/en/index.html"
 
 # ビルドと納品ファイル作成
 print_info "ビルドと納品ファイルの作成..."
@@ -78,6 +80,22 @@ if aws s3 cp "$HTML_SOURCE" \
 else
     print_error "HTMLファイルのアップロードに失敗しました"
     exit 1
+fi
+
+# 英語版HTMLファイルをS3にアップロード
+if [ -f "$HTML_EN_SOURCE" ]; then
+    print_info "英語版HTMLファイルをアップロード中..."
+    if aws s3 cp "$HTML_EN_SOURCE" \
+        "$HTML_EN_TARGET" \
+        --cache-control "public, max-age=3600" \
+        --content-type "text/html"; then
+        print_success "英語版HTMLファイルのアップロードが完了しました"
+    else
+        print_error "英語版HTMLファイルのアップロードに失敗しました"
+        exit 1
+    fi
+else
+    print_info "英語版HTMLファイルが見つかりません (スキップ)"
 fi
 
 # CloudFrontのキャッシュを無効化

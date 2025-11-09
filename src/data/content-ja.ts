@@ -1,4 +1,6 @@
 import type { ContentData, ContentDataService } from './types';
+import productPc from '@/assets/images/img-product-pc.svg';
+import productSp from '@/assets/images/img-product-sp.svg';
 
 const contentJa: ContentData = {
   meta: {
@@ -32,8 +34,8 @@ const contentJa: ContentData = {
   },
   productLines: {
     imageSrc: {
-      pc: '/images/img-product-pc.svg',
-      sp: '/images/img-product-sp.svg',
+      pc: productPc,
+      sp: productSp,
     },
     description: '心身ともに変化の大きな妊娠期。妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。さまざまなシーンに対応する、高い拡張性を備えるアイテムがMATERNITY+には揃っています。',
   },

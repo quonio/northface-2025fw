@@ -6,12 +6,16 @@ resource "aws_cloudfront_function" "redirect_to_index" {
 function handler(event) {
     var request = event.request;
     var uri = request.uri;
-    
+
     // /special/maternity へのアクセスを /special/maternity/index.html にリダイレクト
     if (uri === '/special/maternity') {
         request.uri = '/special/maternity/index.html';
     }
-    
+    // /special/maternity/en へのアクセスを /special/maternity/en/index.html にリダイレクト
+    else if (uri === '/special/maternity/en') {
+        request.uri = '/special/maternity/en/index.html';
+    }
+
     return request;
 }
 EOF
@@ -52,6 +56,32 @@ resource "aws_cloudfront_distribution" "distribution" {
   # /special/maternity/ へのアクセスをindex.htmlにリダイレクト
   ordered_cache_behavior {
     path_pattern     = "/special/maternity"
+    allowed_methods  = ["GET", "HEAD"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "S3-${aws_s3_bucket.hosting.id}"
+
+    forwarded_values {
+      query_string = false
+      cookies {
+        forward = "none"
+      }
+    }
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.redirect_to_index.arn
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
+    min_ttl                = 0
+    default_ttl            = 3600
+    max_ttl                = 86400
+    compress               = true
+  }
+
+  # /special/maternity/en へのアクセスをindex.htmlにリダイレクト
+  ordered_cache_behavior {
+    path_pattern     = "/special/maternity/en"
     allowed_methods  = ["GET", "HEAD"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "S3-${aws_s3_bucket.hosting.id}"
