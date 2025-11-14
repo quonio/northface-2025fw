@@ -1,0 +1,71 @@
+---
+const shops = [
+  {
+    name: 'THE NORTH FACE CAMP / PLAY EARTH KIDS / NEUTRALWORKS. Ebisu Garden Place',
+    address:
+      'Ebisu Garden Place Center Plaza 1F, 4-20-3 Ebisu, Shibuya-ku, Tokyo 150-0013',
+    phone: '03-6432-5380',
+    mapUrl: '#',
+  },
+  {
+    name: 'THE NORTH FACE+ Sapporo Factory',
+    address:
+      'Sapporo Factory 2-Jo Building B1F, Kita 2-jo Higashi 4-chome, Chuo-ku, Sapporo-shi, Hokkaido 060-0032',
+    phone: '011-207-4131',
+    mapUrl: '#',
+  },
+  {
+    name: 'THE NORTH FACE / HELLY HANSEN S-PAL Sendai',
+    address:
+      'S-PAL Sendai East Building 4F, 1-1-1 Chuo, Aoba-ku, Sendai-shi, Miyagi 980-0021',
+    phone: '022-253-6364',
+    mapUrl: '#',
+  },
+  {
+    name: 'THE NORTH FACE+ Grand Front Osaka',
+    address:
+      'Grand Front Osaka South Building 5F, 4-20 Ofukacho, Kita-ku, Osaka-shi, Osaka 530-0011',
+    phone: '06-6485-7805',
+    mapUrl: '#',
+  },
+  {
+    name: 'THE NORTH FACE+ Canal City Hakata',
+    address:
+      'Canal City OPA 3F, 1-2-22 Sumiyoshi, Hakata-ku, Fukuoka-shi, Fukuoka 812-0018',
+    phone: '092-263-2132',
+    mapUrl: '#',
+  },
+]
+---
+
+<section class="py-20 px-5">
+  <div class="mx-auto lg:pl-28 max-w-6xl lg:max-w-2xl">
+    <h2
+      class="font-display text-sm md:text-base font-bold mb-8 text-navy-darker"
+    >
+      SHOP LIST
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+      {
+        shops.map((shop, index) => (
+          <div
+            class={`max-w-[400px] ${index === shops.length - 1 && shops.length % 2 !== 0 ? 'lg:col-start-2' : ''}`}
+          >
+            <h3 class="font-display text-base font-bold mb-2 leading-relaxed">
+              {shop.name}
+            </h3>
+            <p class="mb-4 font-display text-base font-light leading-relaxed text-navy-darker tracking-tight">
+              Address: {shop.address}{' '}
+              <a href={shop.mapUrl} class="underline cursor-pointer">
+                Map
+              </a>
+            </p>
+            <p class="font-display text-base font-light leading-relaxed text-navy-darker tracking-tighter">
+              Phone: {shop.phone}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
