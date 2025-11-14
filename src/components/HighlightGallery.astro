@@ -14,9 +14,22 @@ const isDevelopment = import.meta.env.DEV
 
 interface Props {
   class?: string
+  description?: string[]
+  imageAlts?: string[]
 }
 
-const { class: className = '' } = Astro.props
+const { class: className = '', description, imageAlts } = Astro.props
+
+const defaultImageAlts = [
+  'THE NORTH FACE MATERNITY+ Style 1',
+  'THE NORTH FACE MATERNITY+ Style 2',
+  'THE NORTH FACE MATERNITY+ Style 3',
+  'THE NORTH FACE MATERNITY+ Style 4',
+  'THE NORTH FACE MATERNITY+ Style 5',
+  'THE NORTH FACE MATERNITY+ Style 6',
+]
+
+const actualImageAlts = imageAlts || defaultImageAlts
 ---
 
 <section
@@ -35,7 +48,7 @@ const { class: className = '' } = Astro.props
       >
         <Image
           src={style01}
-          alt="THE NORTH FACE MATERNITY+ Style 1"
+          alt={actualImageAlts[0]}
           widths={[390, 500, 600, 1000]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
@@ -45,7 +58,7 @@ const { class: className = '' } = Astro.props
       <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style02}
-          alt="THE NORTH FACE MATERNITY+ Style 2"
+          alt={actualImageAlts[1]}
           widths={[390, 500, 600, 1000]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
@@ -62,7 +75,7 @@ const { class: className = '' } = Astro.props
       <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style03}
-          alt="THE NORTH FACE MATERNITY+ Style 3"
+          alt={actualImageAlts[2]}
           widths={[390, 500, 600, 1000]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
@@ -94,7 +107,7 @@ const { class: className = '' } = Astro.props
       <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style04}
-          alt="THE NORTH FACE MATERNITY+ Style 4"
+          alt={actualImageAlts[3]}
           widths={[390, 500, 600, 1000]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
@@ -111,7 +124,7 @@ const { class: className = '' } = Astro.props
       <div class="gallery-item aspect-[3/4] border border-navy-dark relative">
         <Image
           src={style05}
-          alt="THE NORTH FACE MATERNITY+ Style 5"
+          alt={actualImageAlts[4]}
           widths={[390, 500, 600, 1000]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
@@ -130,7 +143,7 @@ const { class: className = '' } = Astro.props
       >
         <Image
           src={style06}
-          alt="THE NORTH FACE MATERNITY+ Style 6"
+          alt={actualImageAlts[5]}
           widths={[390, 500, 600, 1000]}
           sizes="(max-width: 768px) 100vw, 33vw"
           loading="lazy"
@@ -140,21 +153,37 @@ const { class: className = '' } = Astro.props
     </div>
 
     <!-- Description Text -->
-    <div class="mx-auto max-w-[85.33vw] md:max-w-max relative z-10">
+    <div class="mx-auto max-w-[85.33vw] md:max-w-max relative z-10 md:px-14">
       <p
         class="text-tape-navy-dark text-center text-[4vw] md:text-[1.1vw] leading-loose font-sans-jp"
       >
-        THE NORTH
-        FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。<br
-        />
-        性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、<br
-          class="hidden md:block"
-        />
-        長く愛着を持つことができるウエアを取り揃えています。<br />
-        MATERNITY+は、「妊娠・出産や子育てを経験する家族」のEXPLORATIONを叶えるカテゴリーとして、<br
-          class="hidden md:block"
-        />
-        育児をするひとを性別を問わずサポートします。
+        {
+          description ? (
+            description.map((text, index) => (
+              <>
+                {text}
+                {index < description.length - 1 && (
+                  <br
+                    class={index === 1 || index === 3 ? 'hidden md:block' : ''}
+                  />
+                )}
+              </>
+            ))
+          ) : (
+            <>
+              THE NORTH
+              FACEのMATERNITY+は、挑戦や変化に立ち向かうことを楽しむためのアイテムラインです。
+              <br />
+              性別を問わず育児をする人の負担を軽減し、子どもの成長とともに変化を楽しみ、
+              <br class="hidden md:block" />
+              長く愛着を持つことができるウエアを取り揃えています。
+              <br />
+              MATERNITY+は、「妊娠・出産や子育てを経験する家族」のEXPLORATIONを叶えるカテゴリーとして、
+              <br class="hidden md:block" />
+              育児をするひとを性別を問わずサポートします。
+            </>
+          )
+        }
       </p>
     </div>
   </div>

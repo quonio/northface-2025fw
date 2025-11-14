@@ -6,9 +6,18 @@ import productSp from '@/assets/images/img-product-sp.svg'
 
 interface Props {
   class?: string
+  description?: string | string[]
+  imageSrc?: {
+    pc: ImageMetadata
+    sp: ImageMetadata
+  }
 }
 
-const { class: className = '' } = Astro.props
+const { class: className = '', description, imageSrc } = Astro.props
+
+// Use provided images or default to Japanese versions
+const pcImage = imageSrc?.pc || productPc
+const spImage = imageSrc?.sp || productSp
 ---
 
 <section class={cn('py-16 lg:py-20 bg-cream relative z-10', className)}>
@@ -24,7 +33,7 @@ const { class: className = '' } = Astro.props
     <div class="mb-12 md:mb-8 lg:mb-12 max-w-[90vw] md:max-w-[60vw] mx-auto">
       <!-- Mobile Image -->
       <Image
-        src={productSp}
+        src={spImage}
         alt="MATERNITY+ Product Lines Timeline"
         widths={[390, 768]}
         sizes="100vw"
@@ -33,7 +42,7 @@ const { class: className = '' } = Astro.props
       />
       <!-- Desktop Image -->
       <Image
-        src={productPc}
+        src={pcImage}
         alt="MATERNITY+ Product Lines Timeline"
         widths={[768, 1024, 1280]}
         sizes="(max-width: 1280px) 90vw, 1200px"
@@ -47,11 +56,24 @@ const { class: className = '' } = Astro.props
       <p
         class="md:text-[1.12vw] leading-loose text-brown text-center font-medium font-sans-jp"
       >
-        心身ともに変化の大きな妊娠期。<br />
-        妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。<br
-          class="hidden md:block"
-        />
-        さまざまなシーンに対応する、高い拡張性を備えるアイテムがMATERNITY+には揃っています。
+        {
+          Array.isArray(description)
+            ? description.map((line, index) => (
+                <>
+                  {line}
+                  {index < description.length - 1 && <br />}
+                </>
+              ))
+            : description || (
+                <>
+                  心身ともに変化の大きな妊娠期。
+                  <br />
+                  妊娠中も、産後の子どもとのお出かけも、自分ひとりで使う時も。
+                  <br class="hidden md:block" />
+                  さまざまなシーンに対応する、高い拡張性を備えるアイテムがMATERNITY+には揃っています。
+                </>
+              )
+        }
       </p>
     </div>
   </div>

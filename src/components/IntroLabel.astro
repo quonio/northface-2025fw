@@ -5,9 +5,15 @@ import { cn } from '@/utils/cn'
 
 interface Props {
   class?: string
+  sealImageSrc?: string
+  sealImageAlt?: string
 }
 
-const { class: className = '' } = Astro.props
+const { 
+  class: className = '',
+  sealImageSrc = sealImage1.src,
+  sealImageAlt = "きみがいるから、行き先がふえていく"
+} = Astro.props
 ---
 
 <section class={cn('relative py-[10.67vw] md:py-32 lg:py-16 z-10', className)}>
@@ -16,8 +22,8 @@ const { class: className = '' } = Astro.props
       <!-- Japanese text label -->
       <div class="relative inline-block" data-sticker-delay="0">
         <img
-          src={sealImage1.src}
-          alt="きみがいるから、行き先がふえていく"
+          src={sealImageSrc}
+          alt={sealImageAlt}
           width={562}
           height={80}
           loading="lazy"

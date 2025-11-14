@@ -18,6 +18,9 @@ Kiro-style Spec Driven Development implementation using claude code slash comman
 - Check `.kiro/specs/` for active specifications
 - Use `/kiro:spec-status [feature-name]` to check progress
 
+#### Current Active Specs
+- `maternity-en-page` - 既存のMaternityページの英語版作成
+
 ## Development Guidelines
 - Think in English, but generate responses in Japanese (思考は英語、回答の生成は日本語で行うように)
 

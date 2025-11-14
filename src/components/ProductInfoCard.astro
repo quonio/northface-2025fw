@@ -10,8 +10,6 @@ interface Props {
   title: string
   copy?: string
   description?: string
-  colors?: string[]
-  sizes?: string[]
   price?: string
   link?: string
   totalPages?: number
@@ -26,8 +24,6 @@ const {
   title,
   copy,
   description,
-  colors = [],
-  sizes = [],
   price,
   link,
   totalPages = 0,
@@ -84,6 +80,9 @@ const sizeClasses = {
 }
 
 const currentSize = sizeClasses[size]
+
+// Detect language from URL path
+const isEnglish = Astro.url.pathname.startsWith('/en')
 ---
 
 <article
@@ -92,72 +91,86 @@ const currentSize = sizeClasses[size]
     currentSize.container
   )}
 >
-  <div>
-    {
-      headline && (
-        <div class="inline-block mb-[3.2vw] md:mb-6">
-          <span
+  <div class="relative overflow-hidden md:max-h-[calc(100%-5.5rem)]">
+    <div class="overflow-y-scroll h-full pb-8" data-content-scroll>
+      {
+        headline && (
+          <div class="inline-block mb-[3.2vw] md:mb-6">
+            <span
+              class={cn(
+                'inline-block bg-no-repeat bg-center p-[0.5em] font-light uppercase tracking-[0.1em] text-brown whitespace-nowrap min-w-[62px] min-h-[20px] leading-none text-center',
+                currentSize.headline
+              )}
+              style={`background-image: url(${headlineFrame.src}); background-size: 100% 100%;`}
+            >
+              {headline}
+            </span>
+          </div>
+        )
+      }
+
+      {
+        modelNumber && (
+          <p
             class={cn(
-              'inline-block bg-no-repeat bg-center p-[0.5em] font-light uppercase tracking-[0.1em] text-brown whitespace-nowrap min-w-[62px] min-h-[20px] leading-none text-center',
-              currentSize.headline
+              'text-tape-navy-dark font-light mb-2',
+              currentSize.modelNumber
             )}
-            style={`background-image: url(${headlineFrame.src}); background-size: 100% 100%;`}
           >
-            {headline}
-          </span>
-        </div>
-      )
-    }
+            {modelNumber}
+          </p>
+        )
+      }
 
-    {
-      modelNumber && (
-        <p
-          class={cn(
-            'text-tape-navy-dark font-light mb-2',
-            currentSize.modelNumber
-          )}
-        >
-          {modelNumber}
-        </p>
-      )
-    }
+      <h3
+        class={cn(
+          'font-sans font-medium text-tape-navy-dark mb-2 tracking-tight',
+          currentSize.title
+        )}
+      >
+        {title}
+      </h3>
 
-    <h3
-      class={cn(
-        'font-sans font-medium text-tape-navy-dark mb-2 tracking-tight',
-        currentSize.title
-      )}
+      {
+        price && (
+          <p class={cn('font-medium text-brown mb-6', currentSize.price)}>
+            {price}
+          </p>
+        )
+      }
+
+      {
+        copy && (
+          <p
+            class={cn(
+              'font-bold text-tape-navy-dark mb-4',
+              currentSize.copy,
+              isEnglish ? 'tracking-tight' : ''
+            )}
+          >
+            {copy}
+          </p>
+        )
+      }
+
+      {
+        description && (
+          <p
+            class={cn(
+              'text-tape-navy-dark mb-4 leading-[1.75] font-normal font-sans-jp',
+              currentSize.description,
+              isEnglish ? 'tracking-tight' : ''
+            )}
+            set:html={formatRegisteredMark(description)}
+          />
+        )
+      }
+    </div>
+    <!-- Gradient overlay -->
+    <div
+      class="hidden md:block absolute bottom-0 left-0 right-0 h-[2vw] bg-linear-to-t from-cream-dark to-transparent pointer-events-none"
     >
-      {title}
-    </h3>
-
-    {
-      price && (
-        <p class={cn('font-medium text-brown mb-6', currentSize.price)}>
-          {price}
-        </p>
-      )
-    }
-
-    {
-      copy && (
-        <p class={cn('font-bold text-tape-navy-dark mb-4', currentSize.copy)}>
-          {copy}
-        </p>
-      )
-    }
-
-    {
-      description && (
-        <p
-          class={cn(
-            'text-tape-navy-dark mb-4 leading-[1.75] font-normal font-sans-jp',
-            currentSize.description
-          )}
-          set:html={formatRegisteredMark(description)}
-        />
-      )
-    }
+    </div>
   </div>
 
   {

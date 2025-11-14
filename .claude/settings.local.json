@@ -28,7 +28,12 @@
       "Bash(pnpm prepare-delivery:*)",
       "Bash(chmod:*)",
       "Bash(zip:*)",
-      "mcp__puppeteer__puppeteer_evaluate"
+      "mcp__puppeteer__puppeteer_evaluate",
+      "Bash(aws s3 ls:*)",
+      "Bash(echo:*)",
+      "Bash(terraform plan:*)",
+      "Bash(terraform apply:*)",
+      "Bash(aws cloudfront create-invalidation:*)"
     ],
     "deny": []
   }

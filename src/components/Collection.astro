@@ -64,14 +64,32 @@ import cl__item07_02 from '@/assets/images/cl__item07-02.jpg'
 import cl__item07_03 from '@/assets/images/cl__item07-03.jpg'
 import cl__item07_04 from '@/assets/images/cl__item07-04.jpg'
 
+import type { Product } from '@/data/types'
+
 interface Props {
   class?: string
+  products?: Product[]
+  additionalProducts?: Product[]
+  label?: string
 }
 
-const { class: className = '' } = Astro.props
+const {
+  class: className = '',
+  products,
+  additionalProducts,
+  label = 'MATERNITY+'
+} = Astro.props
 
 // Create carousel data for each row
-const productInfos: ProductInfo[] = [
+const productInfos: ProductInfo[] = products ? products.map(product => ({
+  headline: product.headline,
+  modelNumber: product.modelNumber,
+  title: product.title,
+  copy: product.copy,
+  description: product.description,
+  price: product.price,
+  link: product.link,
+})) : [
   {
     headline: 'UNISEX',
     modelNumber: 'NYM82510',
@@ -182,6 +200,54 @@ const carouselRows = productInfos.map((info, index) => ({
   productInfo: info,
   items: createCarouselItems(index),
 }))
+
+// Get additional products or use defaults
+const defaultAdditionalProducts: Product[] = [
+  {
+    headline: 'UNISEX',
+    modelNumber: 'NTM82511',
+    title: 'CR L/S Message Tee',
+    copy: 'SRHR認知向上の思いを込めた長袖グラフィックTシャツ',
+    description: 'SRHR認知向上の思いを込めた長袖グラフィックTシャツ',
+    price: '¥7,700 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NTM82511',
+    images: [
+      { src: cl__item06_01, alt: 'CR L/S Message Tee Image 1' },
+      { src: cl__item06_02, alt: 'CR L/S Message Tee Image 2' },
+      { src: cl__item06_03, alt: 'CR L/S Message Tee Image 3' },
+      { src: cl__item06_04, alt: 'CR L/S Message Tee Image 4' },
+    ],
+  },
+  {
+    headline: 'WOMENS',
+    modelNumber: 'NBM32203',
+    title: 'Maternity Long Pant',
+    copy: '妊娠中から産後まで長く着用できるマタニティパンツ',
+    description: '妊娠中から産後まで長く着用できるマタニティパンツ',
+    price: '¥16,500 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NBM32203',
+    images: [
+      { src: cl__item06_01, alt: 'Maternity Long Pant Image 1' },
+    ],
+  },
+  {
+    headline: 'WOMENS',
+    modelNumber: 'NLM72501',
+    title: 'Maternity Micro Fleece One Piece',
+    copy: '軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース',
+    description: '軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース',
+    price: '¥17,600 (Tax incl.)',
+    link: 'https://www.goldwin.co.jp/ap/item/i/m/NLM72501',
+    images: [
+      { src: cl__item07_01, alt: 'Maternity Micro Fleece One Piece Image 1' },
+      { src: cl__item07_02, alt: 'Maternity Micro Fleece One Piece Image 2' },
+      { src: cl__item07_03, alt: 'Maternity Micro Fleece One Piece Image 3' },
+      { src: cl__item07_04, alt: 'Maternity Micro Fleece One Piece Image 4' },
+    ],
+  },
+]
+
+const finalAdditionalProducts = additionalProducts || defaultAdditionalProducts
 ---
 
 <section class={cn('overflow-hidden px-4 md:px-0 relative z-10', className)}>
@@ -190,7 +256,7 @@ const carouselRows = productInfos.map((info, index) => ({
     <h2
       class="font-display text-center text-3xl font-medium md:text-4xl lg:text-[3.819vw]"
     >
-      <span class="text-brown">MATERNITY+</span>
+      <span class="text-brown">{label}</span>
       <br class="md:hidden lg:block" />
       <span class="text-tape-navy-dark">2025FW COLLECTION</span>
     </h2>
@@ -273,7 +339,7 @@ const carouselRows = productInfos.map((info, index) => ({
     <div
       class="grid grid-cols-2 gap-[3.2vw] md:grid-cols-2 md:gap-6 w-full md:max-w-[85vw]"
     >
-      <!-- Product 1 -->
+      <!-- Product 1: CR L/S Message Tee + Maternity Long Pant -->
       <div class="relative">
         <img
           src="/images/decorations/tape-4.svg"
@@ -282,24 +348,24 @@ const carouselRows = productInfos.map((info, index) => ({
           class="absolute -top-[8.39vw] -left-[3.4vw] md:-top-[2.39vw] md:-left-[1.4vw] z-10 w-[12vw] md:w-[5.28vw] opacity-95"
         />
         <ProductShowcaseCarousel
-          images={[cl__item06_01, cl__item06_02, cl__item06_03, cl__item06_04]}
-          imageAlt="CR L/S Message Tee"
+          images={finalAdditionalProducts[0].images.map((img) => img.src)}
+          imageAlt={finalAdditionalProducts[0].title}
           products={[
             {
-              headline: 'UNISEX',
-              modelNumber: 'NTM82511',
-              title: 'CR L/S Message Tee',
-              copy: 'SRHR認知向上の思いを込めた長袖グラフィックTシャツ',
-              price: '¥7,700 (Tax incl.)',
-              link: 'https://www.goldwin.co.jp/ap/item/i/m/NTM82511',
+              headline: finalAdditionalProducts[0].headline,
+              modelNumber: finalAdditionalProducts[0].modelNumber,
+              title: finalAdditionalProducts[0].title,
+              copy: finalAdditionalProducts[0].copy,
+              price: finalAdditionalProducts[0].price,
+              link: finalAdditionalProducts[0].link,
             },
-            {
-              headline: 'WOMEN’S',
-              modelNumber: 'NBM32203',
-              title: 'Maternity Long Pant',
-              copy: '妊娠中から産後まで長く着用できるマタニティパンツ',
-              price: '¥16,500 (Tax incl.)',
-              link: 'https://www.goldwin.co.jp/ap/item/i/m/NBM32203',
+            finalAdditionalProducts[1] && {
+              headline: finalAdditionalProducts[1].headline,
+              modelNumber: finalAdditionalProducts[1].modelNumber,
+              title: finalAdditionalProducts[1].title,
+              copy: finalAdditionalProducts[1].copy,
+              price: finalAdditionalProducts[1].price,
+              link: finalAdditionalProducts[1].link,
             },
           ]}
           size="sm"
@@ -307,27 +373,31 @@ const carouselRows = productInfos.map((info, index) => ({
         />
       </div>
 
-      <!-- Product 2 -->
-      <div class="relative">
-        <ProductShowcaseCarousel
-          images={[cl__item07_01, cl__item07_02, cl__item07_03, cl__item07_04]}
-          imageAlt="Maternity Micro Fleece One Piece"
-          headline="WOMEN’S"
-          modelNumber="NLM72501"
-          title="Maternity Micro Fleece One Piece"
-          copy="軽くて暖かい、お手入れ簡単な授乳対応フリースワンピース"
-          price="¥17,600 (Tax incl.)"
-          link="https://www.goldwin.co.jp/ap/item/i/m/NLM72501"
-          size="sm"
-          id="showcase-2"
-        />
-        <img
-          src="/images/decorations/tape-5.svg"
-          alt=""
-          aria-hidden="true"
-          class="absolute bottom-[42vw] -right-[1.42vw] w-[11.2vw] md:bottom-auto md:top-[50%] md:-right-[1.11vw] z-10 md:w-[4.86vw] opacity-95"
-        />
-      </div>
+      <!-- Product 2: Maternity Micro Fleece One Piece -->
+      {
+        finalAdditionalProducts[2] && (
+          <div class="relative">
+            <ProductShowcaseCarousel
+              images={finalAdditionalProducts[2].images.map((img) => img.src)}
+              imageAlt={finalAdditionalProducts[2].title}
+              headline={finalAdditionalProducts[2].headline}
+              modelNumber={finalAdditionalProducts[2].modelNumber}
+              title={finalAdditionalProducts[2].title}
+              copy={finalAdditionalProducts[2].copy}
+              price={finalAdditionalProducts[2].price}
+              link={finalAdditionalProducts[2].link}
+              size="sm"
+              id="showcase-2"
+            />
+            <img
+              src="/images/decorations/tape-5.svg"
+              alt=""
+              aria-hidden="true"
+              class="absolute bottom-[42vw] -right-[1.42vw] w-[11.2vw] md:bottom-auto md:top-[50%] md:-right-[1.11vw] z-10 md:w-[4.86vw] opacity-95"
+            />
+          </div>
+        )
+      }
     </div>
   </div>
 </section>
