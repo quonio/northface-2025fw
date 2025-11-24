@@ -8,17 +8,17 @@ const shops = [
     mapUrl: '#',
   },
   {
-    name: 'THE NORTH FACE+ Sapporo Factory',
-    address:
-      'Sapporo Factory 2-Jo Building B1F, Kita 2-jo Higashi 4-chome, Chuo-ku, Sapporo-shi, Hokkaido 060-0032',
-    phone: '011-207-4131',
-    mapUrl: '#',
-  },
-  {
     name: 'THE NORTH FACE / HELLY HANSEN S-PAL Sendai',
     address:
       'S-PAL Sendai East Building 4F, 1-1-1 Chuo, Aoba-ku, Sendai-shi, Miyagi 980-0021',
     phone: '022-253-6364',
+    mapUrl: '#',
+  },
+  {
+    name: 'THE NORTH FACE+ Sapporo Factory',
+    address:
+      'Sapporo Factory 2-Jo Building B1F, Kita 2-jo Higashi 4-chome, Chuo-ku, Sapporo-shi, Hokkaido 060-0032',
+    phone: '011-207-4131',
     mapUrl: '#',
   },
   {
@@ -38,29 +38,29 @@ const shops = [
 ]
 ---
 
-<section class="py-20 px-5">
-  <div class="mx-auto lg:pl-28 max-w-6xl lg:max-w-2xl">
+<section class="py-[24vw] md:py-[5.5556vw] px-[6.4vw] md:px-[1.3889vw]">
+  <div class="mx-auto md:pl-0 2xl:pl-[8vw] max-w-6xl md:max-w-[74vw]">
     <h2
-      class="font-display text-sm md:text-base font-bold mb-8 text-navy-darker"
+      class="font-display text-sm md:text-[1.1111vw] font-bold mb-8 text-navy-darker"
     >
       SHOP LIST
     </h2>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 gap-x-[10vw]">
       {
         shops.map((shop, index) => (
           <div
-            class={`max-w-[400px] ${index === shops.length - 1 && shops.length % 2 !== 0 ? 'lg:col-start-2' : ''}`}
+            class={`max-w-full md:max-w-[28vw] ${index === shops.length - 1 && shops.length % 2 !== 0 ? 'lg:col-start-2' : ''}`}
           >
-            <h3 class="font-display text-base font-bold mb-2 leading-relaxed">
+            <h3 class="text-navy-darker font-display text-base md:text-[1.1111vw] font-bold mb-0 leading-relaxed">
               {shop.name}
             </h3>
-            <p class="mb-4 font-display text-base font-light leading-relaxed text-navy-darker tracking-tight">
+            <p class="mb-0 font-display text-base md:text-[1.1111vw] font-light leading-relaxed text-navy-darker tracking-tight">
               Address: {shop.address}{' '}
-              <a href={shop.mapUrl} class="underline cursor-pointer">
+              <a href={shop.mapUrl} class="hover:underline cursor-pointer">
                 Map
               </a>
             </p>
-            <p class="font-display text-base font-light leading-relaxed text-navy-darker tracking-tighter">
+            <p class="font-display text-base md:text-[1.1111vw] font-light leading-relaxed text-navy-darker tracking-tighter">
               Phone: {shop.phone}
             </p>
           </div>
