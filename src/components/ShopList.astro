@@ -5,35 +5,35 @@ const shops = [
     address:
       'Ebisu Garden Place Center Plaza 1F, 4-20-3 Ebisu, Shibuya-ku, Tokyo 150-0013',
     phone: '03-6432-5380',
-    mapUrl: '#',
+    mapUrl: 'https://maps.app.goo.gl/nPxWk4XDYvBRDan89',
   },
   {
     name: 'THE NORTH FACE / HELLY HANSEN S-PAL Sendai',
     address:
       'S-PAL Sendai East Building 4F, 1-1-1 Chuo, Aoba-ku, Sendai-shi, Miyagi 980-0021',
     phone: '022-253-6364',
-    mapUrl: '#',
+    mapUrl: 'https://maps.app.goo.gl/HnJ9Xi9fQazWK8MH9',
   },
   {
     name: 'THE NORTH FACE+ Sapporo Factory',
     address:
       'Sapporo Factory 2-Jo Building B1F, Kita 2-jo Higashi 4-chome, Chuo-ku, Sapporo-shi, Hokkaido 060-0032',
     phone: '011-207-4131',
-    mapUrl: '#',
+    mapUrl: 'https://maps.app.goo.gl/q4He8F9gn8ctHe61A',
   },
   {
     name: 'THE NORTH FACE+ Grand Front Osaka',
     address:
       'Grand Front Osaka South Building 5F, 4-20 Ofukacho, Kita-ku, Osaka-shi, Osaka 530-0011',
     phone: '06-6485-7805',
-    mapUrl: '#',
+    mapUrl: 'https://maps.app.goo.gl/wrNuAd2smZKFqQPX9',
   },
   {
     name: 'THE NORTH FACE+ Canal City Hakata',
     address:
       'Canal City OPA 3F, 1-2-22 Sumiyoshi, Hakata-ku, Fukuoka-shi, Fukuoka 812-0018',
     phone: '092-263-2132',
-    mapUrl: '#',
+    mapUrl: 'https://maps.app.goo.gl/fcp5bQKHAaE577dKA',
   },
 ]
 ---
@@ -56,7 +56,11 @@ const shops = [
             </h3>
             <p class="mb-0 font-display text-base md:text-[1.1111vw] font-light leading-relaxed text-navy-darker tracking-tight">
               Address: {shop.address}{' '}
-              <a href={shop.mapUrl} class="hover:underline cursor-pointer">
+              <a
+                href={shop.mapUrl}
+                target="_blank"
+                class="hover:underline cursor-pointer"
+              >
                 Map
               </a>
             </p>
